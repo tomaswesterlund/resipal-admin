@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
-import 'package:resipal_core/lib.dart';
 
 class ContractCard extends StatelessWidget {
   final ContractEntity contract;
@@ -46,7 +45,7 @@ class ContractCard extends StatelessWidget {
                                   style: GoogleFonts.raleway(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.secondary100,
+                                    color: AppColors.grey500,
                                   ),
                                 ),
                               ],
@@ -71,7 +70,7 @@ class ContractCard extends StatelessWidget {
                                   color: AppColors.grey400,
                                 ),
                               ),
-                              AmountText.fromCents(contract.amountInCents, fontSize: 18, color: AppColors.secondary),
+                              AmountText.fromCents(contract.amountInCents, fontSize: 18, color: AppColors.grey700),
                             ],
                           ),
                           TextButton(

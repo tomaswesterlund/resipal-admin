@@ -63,7 +63,7 @@ class PropertyCard extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const Divider(height: 24, thickness: 1, color: Color(0xFFF4F5F4)),
+                      const Divider(height: 12, thickness: 1, color: Color(0xFFF4F5F4)),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -79,7 +79,11 @@ class PropertyCard extends StatelessWidget {
                                   color: AppColors.grey400,
                                 ),
                               ),
-                              AmountText.fromCents(property.totalOverdueFeeInCents, fontSize: 18, color: statusColor),
+                              AmountText.fromCents(
+                                property.totalOverdueFeeInCents,
+                                fontSize: 18,
+                                color: AppColors.grey800,
+                              ),
                             ],
                           ),
                           TextButton(

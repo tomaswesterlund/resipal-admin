@@ -32,7 +32,7 @@ class HomeOverview extends StatelessWidget {
                   Text(
                     community.name,
                     style: GoogleFonts.raleway(
-                      color: AppColors.secondary,
+                      color: AppColors.grey600,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -52,13 +52,11 @@ class HomeOverview extends StatelessWidget {
                         'Propiedades',
                         community.propertyRegistry.count.toString(),
                         Icons.home_work_outlined,
-                        AppColors.secondary,
                       ),
                       _buildStatCard(
                         'Miembros',
                         community.directory.members.length.toString(),
-                        Icons.people_outline,
-                        AppColors.secondary,
+                        Icons.people_outline
                       ),
                     ],
                   ),
@@ -95,19 +93,19 @@ class HomeOverview extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon, Color color) {
+  Widget _buildStatCard(String label, String value, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.secondary100),
+        border: Border.all(color: AppColors.grey300),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(icon, color: color, size: 24),
+          Icon(icon, color: AppColors.grey600, size: 24),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -116,14 +114,14 @@ class HomeOverview extends StatelessWidget {
                 style: GoogleFonts.raleway(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.secondary900,
+                  color: AppColors.grey900,
                 ),
               ),
               Text(
                 label,
                 style: GoogleFonts.raleway(
                   fontSize: 12,
-                  color: AppColors.secondary300,
+                  color: AppColors.grey500,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -160,7 +158,7 @@ class HomeOverview extends StatelessWidget {
               title,
               style: GoogleFonts.raleway(
                 fontWeight: FontWeight.bold, 
-                color: AppColors.secondary700
+                color: AppColors.grey700
               ),
             ),
           ),

@@ -55,7 +55,7 @@ class PaymentCard extends StatelessWidget {
                               AmountText.fromCents(
                                 payment.amountInCents,
                                 fontSize: 18,
-                                color: isApproved ? AppColors.secondary : AppColors.grey800!,
+                                color: AppColors.grey700,
                               ),
                             ],
                           ),
@@ -118,7 +118,7 @@ class PaymentCard extends StatelessWidget {
 
                           TextButton(
                             style: TextButton.styleFrom(
-                              foregroundColor: AppColors.secondary,
+                              foregroundColor: AppColors.grey800,
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               textStyle: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 13),
                             ),
