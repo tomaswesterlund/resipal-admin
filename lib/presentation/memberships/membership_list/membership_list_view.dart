@@ -22,10 +22,22 @@ class MembershipListView extends StatelessWidget {
           if (state is EmptyState) return const _Empty();
 
           if (state is LoadedState) {
-            return ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              itemCount: state.members.length,
-              itemBuilder: (context, index) => MembershipCard(state.members[index]),
+            return Column(
+              children: [
+                FilterSelector(
+                  options: [
+                    FilterSelectorItem(label: 'Todos', value: 'todos'),
+                    FilterSelectorItem(label: 'Morosos', value: 'morosos'),
+                  ],
+                  selectedValue: FilterSelectorItem(label: 'Todos', value: 'todos'),
+                  onSelected: (newSelector) {},
+                ),
+                ListView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  itemCount: state.members.length,
+                  itemBuilder: (context, index) => MembershipCard(state.members[index]),
+                ),
+              ],
             );
           }
 
@@ -49,10 +61,7 @@ class _Empty extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: const Color(0xFF1A4644).withOpacity(0.1), 
-                shape: BoxShape.circle
-              ),
+              decoration: BoxDecoration(color: const Color(0xFF1A4644).withOpacity(0.1), shape: BoxShape.circle),
               child: const Icon(Icons.people_outline, size: 64, color: Color(0xFF1A4644)),
             ),
             const SizedBox(height: 32),

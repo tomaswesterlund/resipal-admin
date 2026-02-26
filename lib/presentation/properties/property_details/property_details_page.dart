@@ -104,7 +104,7 @@ class _PropertyContent extends StatelessWidget {
           style: GoogleFonts.raleway(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
         if (amount != null)
-          AmountText.fromCents(amount, fontSize: 16, color: amount > 0 ? AppColors.danger : AppColors.secondary)
+          AmountText.fromCents(amount, fontSize: 16, color: amount > 0 ? AppColors.danger : AppColors.grey900)
         else
           Text(
             value,

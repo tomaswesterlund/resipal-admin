@@ -15,7 +15,7 @@ class PaymentListCubit extends Cubit<PaymentListState> {
 
   final List<FilterSelectorItem> selectorItems = [
     FilterSelectorItem(label: 'Todos', value: 'todos'),
-    FilterSelectorItem(label: 'Pagados', value: 'pagados'),
+    FilterSelectorItem(label: 'Confirmados', value: 'confirmados'),
     FilterSelectorItem(label: 'En revisíon', value: 'revision'),
   ];
 
@@ -57,7 +57,7 @@ class PaymentListCubit extends Cubit<PaymentListState> {
       return;
     }
 
-    if (newSelector.value == 'pagados') {
+    if (newSelector.value == 'confirmados') {
       final filtered = allPayments.where((x) => x.status == PaymentStatus.approved).toList();
       emit(LoadedState(filtered, selectorItems, newSelector));
       return;

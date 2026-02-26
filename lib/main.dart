@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
           primary: AppColors.primary,
           surface: AppColors.surface,
         ),
+        appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         scaffoldBackgroundColor: AppColors.background,
         textTheme: GoogleFonts.ralewayTextTheme(),
       ),

@@ -15,7 +15,7 @@ class HomeOverview extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeOverviewCubit()..initialize(),
       child: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.background,
         body: BlocBuilder<HomeOverviewCubit, HomeOverviewState>(
           builder: (context, state) {
             if (state is LoadingState) return const LoadingView();
@@ -165,7 +165,7 @@ class HomeOverview extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: count > 0 ? color : AppColors.secondary100,
+              color: count > 0 ? color : color.withOpacity(0.3),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

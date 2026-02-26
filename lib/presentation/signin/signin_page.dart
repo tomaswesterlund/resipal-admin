@@ -10,7 +10,6 @@ import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 
-
 class SigninPage extends StatelessWidget {
   const SigninPage({super.key});
 
@@ -31,7 +30,11 @@ class SigninPage extends StatelessWidget {
             }
 
             if (state is AdminSigningInState || state is AdminSignedInSuccessfullyState) {
-              return LoadingView(title: 'Iniciando sesión', description: 'Estamos configurando tu espacio...');
+              return LoadingView(
+                logo: ResipalLogo(),
+                title: 'Iniciando sesión',
+                description: 'Estamos configurando tu espacio...',
+              );
             }
 
             if (state is ErrorState) {
@@ -56,7 +59,16 @@ class _Signin extends StatelessWidget {
       body: Column(
         children: [
           // --- Brand Header ---
-          GreenBoxContainer(
+          Container(
+            padding: EdgeInsets.all(30),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [AppColors.primary700, AppColors.primary300],
+              ),
+            ),
             child: SafeArea(
               child: Container(
                 width: double.infinity,
@@ -83,7 +95,7 @@ class _Signin extends StatelessWidget {
               children: [
                 HeaderText.four(
                   'Panel de Administración',
-                  color: AppColors.secondary,
+                  color: AppColors.grey900,
                 ), // Changed from "Bienvenido de nuevo"
                 const SizedBox(height: 8),
                 const Text(

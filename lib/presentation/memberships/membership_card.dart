@@ -100,7 +100,7 @@ class MembershipCard extends StatelessWidget {
                                 _buildAmountColumn(
                                   label: 'Deuda',
                                   cents: member.resident.propertyRegistery.totalOverdueFeeInCents.toInt(),
-                                  color: hasDebt ? AppColors.danger : AppColors.secondary700,
+                                  color: hasDebt ? AppColors.danger : AppColors.grey900,
                                 ),
                               ],
                             ),
