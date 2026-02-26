@@ -4,11 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/payments/register_payment/register_payment_form_state.dart';
 import 'package:resipal_admin/presentation/payments/register_payment/register_payment_state.dart';
-import 'package:resipal_core/domain/entities/resident_entity.dart';
-import 'package:resipal_core/domain/use_cases/register_payment.dart';
-import 'package:resipal_core/domain/use_cases/residents/get_residents_by_community.dart';
-import 'package:resipal_core/services/image_service.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
 
 class RegisterPaymentCubit extends Cubit<RegisterPaymentState> {
   final AdminSessionService _sessionService = GetIt.I<AdminSessionService>();

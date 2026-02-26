@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:resipal_core/domain/entities/resident_entity.dart';
+import 'package:resipal_core/lib.dart';
 
 class RegisterPaymentFormState extends Equatable {
   final List<ResidentEntity> residents;

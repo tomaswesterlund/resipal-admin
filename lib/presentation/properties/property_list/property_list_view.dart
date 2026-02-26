@@ -5,9 +5,8 @@ import 'package:resipal_admin/presentation/properties/property_card.dart';
 import 'package:resipal_admin/presentation/properties/property_list/property_list_cubit.dart';
 import 'package:resipal_admin/presentation/properties/property_list/property_list_state.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 
 class PropertyListView extends StatelessWidget {

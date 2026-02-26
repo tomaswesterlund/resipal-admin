@@ -2,11 +2,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/payments/confirm_payment/confirm_payment_state.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/domain/use_cases/payments/confirm_payment_received.dart';
-import 'package:resipal_core/domain/use_cases/payments/fetch_payment_by_id.dart';
-import 'package:resipal_core/domain/use_cases/payments/watch_payment_by_id.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class ConfirmPaymentCubit extends Cubit<ConfirmPaymentState> {
   final LoggerService _logger = GetIt.I<LoggerService>();

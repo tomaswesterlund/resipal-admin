@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/shared/app_colors.dart';
-import 'package:resipal_core/domain/entities/contract_entity.dart';
-import 'package:resipal_core/presentation/shared/texts/amount_text.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
+import 'package:resipal_core/lib.dart';
 
 class ContractCard extends StatelessWidget {
   final ContractEntity contract;
@@ -46,7 +46,7 @@ class ContractCard extends StatelessWidget {
                                   style: GoogleFonts.raleway(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.auxiliarScale[500],
+                                    color: AppColors.secondary100,
                                   ),
                                 ),
                               ],
@@ -68,7 +68,7 @@ class ContractCard extends StatelessWidget {
                                 style: GoogleFonts.raleway(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.auxiliarScale[400],
+                                  color: AppColors.grey400,
                                 ),
                               ),
                               AmountText.fromCents(contract.amountInCents, fontSize: 18, color: AppColors.secondary),

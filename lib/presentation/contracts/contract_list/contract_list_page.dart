@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/contracts/contract_card.dart';
 import 'package:resipal_admin/presentation/contracts/register_contract/register_contract_page.dart';
-import 'package:resipal_admin/shared/buttons/primary_cta_button.dart';
-import 'package:resipal_admin/shared/loading/loading_bar.dart';
-import 'package:resipal_admin/shared/state_switcher.dart';
-import 'package:resipal_admin/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
+import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'contract_list_cubit.dart';
 import 'contract_list_state.dart';
@@ -22,7 +17,7 @@ class ContractListPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => ContractListCubit()..initialize(),
       child: Scaffold(
-        backgroundColor: BaseAppColors.background,
+        backgroundColor: AppColors.background,
         appBar: const MyAppBar(title: 'Contratos y Cuotas'),
         body: BlocBuilder<ContractListCubit, ContractListState>(
           builder: (context, state) {
@@ -92,7 +87,7 @@ class _Empty extends StatelessWidget {
           ),
           const SizedBox(height: 48),
 
-          PrimaryCtaButton(label: 'Configurar mi primer contrato', onPressed: () => Go.to(RegisterContractPage())),
+          PrimaryButton(label: 'Configurar mi primer contrato', onPressed: () => Go.to(RegisterContractPage())),
         ],
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:resipal_core/domain/entities/community/community_entity.dart';
-import 'package:resipal_core/domain/entities/user_entity.dart';
+import 'package:resipal_core/lib.dart';
 
 abstract class AuthState extends Equatable {
   @override

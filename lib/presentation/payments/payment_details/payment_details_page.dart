@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/payments/confirm_payment/confirm_payment_button.dart';
 import 'package:resipal_admin/presentation/payments/payment_header.dart';
-import 'package:resipal_admin/shared/buttons/primary_cta_button.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/domain/enums/payment_status.dart';
-import 'package:resipal_core/helpers/formatters/date_formatters.dart';
 import 'payment_details_cubit.dart';
 import 'payment_details_state.dart';
-import 'package:resipal_core/presentation/shared/cards/default_card.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/images/receipt_preview.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/section_header_text.dart';
-import 'package:resipal_core/presentation/shared/tiles/detail_tile.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
-import 'package:resipal_core/presentation/shared/views/unknown_state_view.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class PaymentDetailsPage extends StatelessWidget {
   final String paymentId;
@@ -25,7 +15,7 @@ class PaymentDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BaseAppColors.background,
+      backgroundColor: AppColors.background,
       appBar: MyAppBar(title: 'Detalle de Pago'),
       body: BlocProvider(
         create: (ctx) => PaymentDetailsCubit()..initialize(paymentId),
@@ -73,7 +63,7 @@ class _Loaded extends StatelessWidget {
 
           if (payment.receiptPath != null && payment.receiptPath!.isNotEmpty) ...[
             SectionHeaderText(text: 'COMPROBANTE ADJUNTO'),
-            ReceiptPreview(receiptPath: payment.receiptPath!),
+            ImagePreview(imageUrl: payment.receiptPath!,),
             const SizedBox(height: 20),
           ],
 

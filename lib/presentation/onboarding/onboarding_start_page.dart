@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/onboarding/user_registration/onboarding_user_registration_page.dart';
-import 'package:resipal_admin/shared/buttons/primary_cta_button.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 
 class OnboardingStartPage extends StatelessWidget {
@@ -13,7 +12,7 @@ class OnboardingStartPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: BaseAppColors.background,
+      backgroundColor: AppColors.background,
       appBar: const MyAppBar(title: '¡Bienvenido a Resipal!', automaticallyImplyLeading: false),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24.0),
@@ -50,7 +49,7 @@ class OnboardingStartPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            PrimaryCtaButton(label: 'Comenzar ahora', onPressed: () => Go.to(OnboardingUserRegistrationPage())),
+            PrimaryButton(label: 'Comenzar ahora', onPressed: () => Go.to(OnboardingUserRegistrationPage())),
             const SizedBox(height: 16),
 
             // 3. Paid Tiers

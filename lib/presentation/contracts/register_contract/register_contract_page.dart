@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:resipal_admin/shared/app_colors.dart';
-import 'package:resipal_admin/shared/buttons/primary_cta_button.dart';
-import 'package:resipal_admin/shared/views/success_view.dart';
-import 'package:resipal_core/presentation/shared/inputs/text_input_field.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:wester_kit/lib.dart';
 import 'register_contract_cubit.dart';
 import 'register_contract_state.dart';
 import 'register_contract_form_state.dart';
@@ -95,7 +90,7 @@ class _ContractForm extends StatelessWidget {
             onChanged: cubit.updateDescription,
           ),
           const SizedBox(height: 48),
-          PrimaryCtaButton(label: 'CREAR CONTRATO', canSubmit: formState.canSubmit, onPressed: () => cubit.submit()),
+          PrimaryButton(label: 'CREAR CONTRATO', canSubmit: formState.canSubmit, onPressed: () => cubit.submit()),
         ],
       ),
     );

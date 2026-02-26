@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:resipal_core/domain/use_cases/properties/watch_property_by_id.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
 import 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {

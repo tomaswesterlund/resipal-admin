@@ -1,15 +1,6 @@
 import 'dart:async';
 import 'package:get_it/get_it.dart';
-import 'package:resipal_core/data/sources/application_data_source.dart';
-import 'package:resipal_core/data/sources/contract_data_source.dart';
-import 'package:resipal_core/data/sources/maintenance_fee_data_source.dart';
-import 'package:resipal_core/data/sources/user_data_source.dart';
-import 'package:resipal_core/data/sources/community_data_source.dart';
-import 'package:resipal_core/data/sources/invitation_data_source.dart';
-import 'package:resipal_core/data/sources/payment_data_source.dart';
-import 'package:resipal_core/data/sources/property_data_source.dart';
-import 'package:resipal_core/data/sources/visitor_data_source.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AdminSessionService {

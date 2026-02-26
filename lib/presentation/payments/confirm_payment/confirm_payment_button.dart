@@ -2,12 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/payments/confirm_payment/confirm_payment_cubit.dart';
 import 'package:resipal_admin/presentation/payments/confirm_payment/confirm_payment_state.dart';
-import 'package:resipal_admin/shared/buttons/primary_cta_button.dart';
-import 'package:resipal_admin/shared/loading/loading_bar.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/domain/enums/payment_status.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/unknown_state_view.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class ConfirmPaymentButton extends StatelessWidget {
   final PaymentEntity payment;
@@ -25,20 +21,21 @@ class ConfirmPaymentButton extends StatelessWidget {
           }
 
           if (state is SubmittingState) {
-            return PrimaryCtaButton(
-                label: 'Confirmar pago recibido',
-                canSubmit: false,
-                isLoading: true,
-              );
+            return PrimaryButton(
+              label: 'Confirmar pago recibido',
+              canSubmit: false,
+              isSubmitting: true,
+              onPressed: () {},
+            );
           }
 
           if (state is SubmittedSuccessfullyState) {
-            return PrimaryCtaButton(label: '¡Confirmado!', canSubmit: false, onPressed: () {});
+            return PrimaryButton(label: '¡Confirmado!', canSubmit: false, onPressed: () {});
           }
 
           if (state is LoadedState) {
             if (state.payment.status == PaymentStatus.pendingReview) {
-              return PrimaryCtaButton(
+              return PrimaryButton(
                 label: 'Confirmar pago recibido',
                 canSubmit: true,
                 // Use 'ctx' (the one from BlocBuilder) to find the cubit

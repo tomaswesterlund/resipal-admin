@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/home/admin_home_page.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_cubit.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_state.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/inputs/text_input_field.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
-import 'package:resipal_core/presentation/shared/views/success_view.dart';
+import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 
 class OnboardingCommunityRegistrationPage extends StatelessWidget {
@@ -21,7 +16,7 @@ class OnboardingCommunityRegistrationPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => OnboardingCommunityRegistrationCubit()..initialize(),
       child: Scaffold(
-        backgroundColor: BaseAppColors.background,
+        backgroundColor: AppColors.background,
         appBar: const MyAppBar(title: 'Nueva Comunidad', automaticallyImplyLeading: false),
         body: BlocBuilder<OnboardingCommunityRegistrationCubit, OnboardingCommunityRegistrationState>(
           builder: (context, state) {

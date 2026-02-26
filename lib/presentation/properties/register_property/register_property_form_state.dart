@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:resipal_core/domain/entities/contract_entity.dart';
-import 'package:resipal_core/domain/entities/resident_entity.dart';
-import 'package:resipal_core/domain/refs/user_ref.dart';
+import 'package:resipal_core/lib.dart';
 
 class RegisterPropertyFormState extends Equatable {
   final List<ResidentEntity> residents;

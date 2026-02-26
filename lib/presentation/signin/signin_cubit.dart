@@ -3,8 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/signin/signin_state.dart';
-import 'package:resipal_core/services/auth_service.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
 
 class SigninCubit extends Cubit<SigninState> {
   final AuthService _authService = GetIt.I<AuthService>();

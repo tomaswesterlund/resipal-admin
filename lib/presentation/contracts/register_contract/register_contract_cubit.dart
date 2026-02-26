@@ -1,12 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
-import 'package:resipal_core/domain/use_cases/contracts/create_contract.dart';
-import 'package:resipal_core/domain/use_cases/contracts/fetch_contract.dart';
-import 'package:resipal_core/helpers/formatters/currency_formatter.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:wester_kit/extensions/formatters/currency_formatter.dart';
 import 'register_contract_state.dart';
 import 'register_contract_form_state.dart';
+import 'package:resipal_core/lib.dart';
 
 class RegisterContractCubit extends Cubit<RegisterContractState> {
   final AdminSessionService _sessionService = GetIt.I<AdminSessionService>();

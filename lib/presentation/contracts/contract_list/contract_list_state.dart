@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:resipal_core/domain/entities/contract_entity.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 abstract class ContractListState extends Equatable {
   @override

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:resipal_core/domain/entities/application_entity.dart';
-import 'package:resipal_core/presentation/applications/application_card.dart';
-import 'package:resipal_core/presentation/shared/texts/body_text.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class AdminApplicationsView extends StatelessWidget {
   final List<ApplicationEntity> applications;
@@ -27,7 +26,8 @@ class AdminApplicationsView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 0),
       itemCount: applications.length,
       itemBuilder: (ctx, index) {
-        return ApplicationCard(applications[index]);
+        return Text('APPLICATION CARD');
+        //return ApplicationCard(applications[index]);
       },
     );
   }

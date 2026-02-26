@@ -36,7 +36,13 @@ dependencies:
   get_it: ^9.2.0
   google_fonts: ^8.0.1
   resipal_core:
-    path: ../../packages/resipal_core
+    git:
+      url: https://github.com/tomaswesterlund/resipal-core.git
+      ref: main
+  wester_kit:
+    git:
+      url: https://github.com/tomaswesterlund/WesterKit
+      ref: main
   rxdart: ^0.28.0
   short_navigation: ^2.5.3
   flutter_launcher_icons: ^0.14.4

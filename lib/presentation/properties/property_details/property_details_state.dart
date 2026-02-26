@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:resipal_core/domain/entities/property_entity.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 abstract class PropertyDetailsState extends Equatable {
   @override

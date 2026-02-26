@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/auth/auth_cubit.dart';
 import 'package:resipal_admin/presentation/auth/auth_state.dart';
 import 'package:resipal_admin/presentation/home/admin_home_page.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_page.dart';
 import 'package:resipal_admin/presentation/onboarding/onboarding_start_page.dart';
 import 'package:resipal_admin/presentation/signin/signin_page.dart';
-import 'package:resipal_admin/shared/views/access_denied_view.dart';
-import 'package:resipal_admin/shared/views/error_view.dart';
-import 'package:resipal_admin/shared/views/loading_view.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/views/unknown_state_view.dart';
+import 'package:resipal_core/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
+import 'package:wester_kit/lib.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -89,8 +86,8 @@ class _UserHasNoAdminMembership extends StatelessWidget {
           // 1. Visual Icon
           Container(
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(color: BaseAppColors.secondary.withOpacity(0.1), shape: BoxShape.circle),
-            child: Icon(Icons.domain_add_rounded, size: 64, color: BaseAppColors.secondary),
+            decoration: BoxDecoration(color: AppColors.secondary.withOpacity(0.1), shape: BoxShape.circle),
+            child: Icon(Icons.domain_add_rounded, size: 64, color: AppColors.secondary),
           ),
           const SizedBox(height: 32),
 

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/payments/payment_card.dart';
-import 'package:resipal_admin/shared/app_colors.dart';
-import 'package:resipal_admin/shared/dynamic_selector.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 import 'payment_list_cubit.dart';
 import 'payment_list_state.dart';
 
@@ -28,7 +27,7 @@ class PaymentListView extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    DynamicSelector(
+                    FilterSelector(
                       options: state.selectorItems,
                       selectedValue: state.selector,
                       onSelected: (newSelector) => context.read<PaymentListCubit>().onSelectorChanged(newSelector),

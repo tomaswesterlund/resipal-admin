@@ -2,16 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:resipal_admin/admin_session_service.dart';
-import 'package:resipal_core/domain/entities/contract_entity.dart';
-import 'package:resipal_core/domain/entities/resident_entity.dart';
-import 'package:resipal_core/domain/use_cases/contracts/get_contracts_by_community.dart';
-import 'package:resipal_core/domain/use_cases/properties/fetch_property_by_id.dart';
-import 'package:resipal_core/domain/use_cases/properties/register_property.dart';
-import 'package:resipal_core/domain/use_cases/residents/get_residents_by_community.dart';
-import 'register_property_form_state.dart';
-import 'register_property_state.dart';
-import 'package:resipal_core/services/image_service.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_admin/presentation/properties/register_property/register_property_form_state.dart';
+import 'package:resipal_admin/presentation/properties/register_property/register_property_state.dart';
+import 'package:resipal_core/lib.dart';
+
+
 
 class RegisterPropertyCubit extends Cubit<RegisterPropertyState> {
   final ImageService _imageService = GetIt.I<ImageService>();

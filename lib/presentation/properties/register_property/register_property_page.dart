@@ -1,24 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/contracts/register_contract/register_contract_page.dart';
-import 'package:resipal_admin/shared/app_colors.dart';
-import 'package:resipal_admin/shared/buttons/primary_cta_button.dart';
-import 'package:resipal_core/domain/entities/contract_entity.dart';
-import 'package:resipal_core/domain/entities/resident_entity.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'register_property_cubit.dart';
 import 'register_property_form_state.dart';
 import 'register_property_state.dart';
-import 'package:resipal_core/presentation/shared/inputs/entry_dropdown_field.dart';
-import 'package:resipal_core/presentation/shared/inputs/text_input_field.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
-import 'package:resipal_core/presentation/shared/views/success_view.dart';
-import 'package:resipal_core/presentation/shared/views/unknown_state_view.dart';
 
 class RegisterPropertyPage extends StatelessWidget {
   const RegisterPropertyPage({super.key});
@@ -97,11 +87,10 @@ class _Form extends StatelessWidget {
           EntityDropdownField<ContractEntity>(
             label: "Seleccionar contrato",
             isRequired: true,
-            helpText:
-                "Vincula un contrato legal vigente a este registro. Este campo es obligatorio para habilitar el seguimiento de pagos y vigencia de la estancia.",
+            helpText: "Vincula un contrato legal vigente a este registro...",
             items: formState.contracts,
             value: null,
-            itemLabel: (contract) => contract.name,
+            itemLabelBuilder: (contract) => contract.name,
             onChanged: (contract) => cubit.onContractSelected(contract),
           ),
           SizedBox(height: 20.0),
@@ -109,11 +98,10 @@ class _Form extends StatelessWidget {
           EntityDropdownField<ResidentEntity>(
             label: "Seleccionar residente",
             isRequired: false,
-            helpText:
-                "Busca y selecciona al residente responsable de esta unidad. Si no aparece en la lista, asegúrate de que haya sido dado de alta previamente en el directorio.",
+            helpText: "Busca y selecciona al residente...",
             items: formState.residents,
             value: null,
-            itemLabel: (resident) => resident.user.name,
+            itemLabelBuilder: (resident) => resident.user.name,
             onChanged: (resident) => cubit.onResidentSelected(resident),
           ),
           SizedBox(height: 20.0),
@@ -142,7 +130,7 @@ class _Form extends StatelessWidget {
           //   ),
           // const SizedBox(height: 24.0),
           Center(
-            child: PrimaryCtaButton(
+            child: PrimaryButton(
               label: 'REGISTRAR PROPIEDAD',
               // icon: Icons.add_home,
               canSubmit: formState.canSubmit,
@@ -168,8 +156,8 @@ class _NoContractsFound extends StatelessWidget {
           // Visual indicator for missing configuration
           Container(
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(color: BaseAppColors.secondary.withOpacity(0.1), shape: BoxShape.circle),
-            child: Icon(Icons.description_outlined, size: 64, color: BaseAppColors.secondary),
+            decoration: BoxDecoration(color: AppColors.secondary.withOpacity(0.1), shape: BoxShape.circle),
+            child: Icon(Icons.description_outlined, size: 64, color: AppColors.secondary),
           ),
           const SizedBox(height: 32),
 

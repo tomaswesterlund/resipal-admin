@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_core/domain/entities/membership_entity.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/texts/amount_text.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/ui/texts/amount_text.dart';
+import 'package:wester_kit/ui/texts/header_text.dart';
 
 class MembershipCard extends StatelessWidget {
   final MembershipEntity member;
@@ -13,7 +13,7 @@ class MembershipCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool hasDebt = member.resident.propertyRegistery.hasDebt;
-    final Color statusColor = hasDebt ? BaseAppColors.danger : BaseAppColors.secondary;
+    final Color statusColor = hasDebt ? AppColors.danger : AppColors.secondary;
 
     // Property Label Logic (Stayed the same)
     final List<String> propertyNames = member.resident.propertyRegistery.properties.map((p) => p.name).toList();
@@ -55,13 +55,13 @@ class MembershipCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                HeaderText.five(member.resident.user.name, color: BaseAppColors.auxiliarScale[900]!),
+                                HeaderText.five(member.resident.user.name, color: AppColors.secondary900),
                                 const SizedBox(height: 2),
                                 Text(
                                   propertiesLabel,
                                   style: GoogleFonts.raleway(
                                     fontSize: 12,
-                                    color: BaseAppColors.auxiliarScale[500],
+                                    color: AppColors.secondary300,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -86,20 +86,20 @@ class MembershipCard extends StatelessWidget {
                                 _buildAmountColumn(
                                   label: 'Balance',
                                   cents: member.resident.paymentLedger.totalBalanceInCents,
-                                  color: BaseAppColors.secondary,
+                                  color: AppColors.secondary,
                                 ),
                                 const SizedBox(width: 16), // Reduced from 24 to fit 3 items
                                 _buildAmountColumn(
                                   label: 'Pendiente',
                                   // Added the pending amount here
                                   cents: member.resident.paymentLedger.pendingPaymentAmountInCents,
-                                  color: BaseAppColors.warning,
+                                  color: AppColors.warning,
                                 ),
                                 const SizedBox(width: 16),
                                 _buildAmountColumn(
                                   label: 'Deuda',
                                   cents: member.resident.propertyRegistery.totalOverdueFeeInCents.toInt(),
-                                  color: hasDebt ? BaseAppColors.danger : BaseAppColors.auxiliarScale[800]!,
+                                  color: hasDebt ? AppColors.danger : AppColors.secondary700,
                                 ),
                               ],
                             ),
@@ -108,7 +108,7 @@ class MembershipCard extends StatelessWidget {
                           // Right: Action
                           TextButton(
                             style: TextButton.styleFrom(
-                              foregroundColor: BaseAppColors.secondary,
+                              foregroundColor: AppColors.secondary,
                               padding: EdgeInsets.zero, // More compact for 3-column layout
                               textStyle: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 13),
                             ),
@@ -141,7 +141,7 @@ class MembershipCard extends StatelessWidget {
           style: GoogleFonts.raleway(
             fontSize: 9, // Slightly smaller to prevent overflow
             fontWeight: FontWeight.w700,
-            color: BaseAppColors.auxiliarScale[400],
+            color: AppColors.secondary300,
           ),
         ),
         AmountText.fromCents(
@@ -156,9 +156,9 @@ class MembershipCard extends StatelessWidget {
   Widget _buildRoleBadges() {
     return Row(
       children: [
-        if (member.isAdmin) _buildSmallIcon(Icons.admin_panel_settings, BaseAppColors.secondaryScale[400]!),
-        if (member.isSecurity) _buildSmallIcon(Icons.shield_outlined, BaseAppColors.secondaryScale[400]!),
-        if (member.isResident) _buildSmallIcon(Icons.home_work_outlined, BaseAppColors.secondaryScale[400]!),
+        if (member.isAdmin) _buildSmallIcon(Icons.admin_panel_settings, AppColors.secondary300),
+        if (member.isSecurity) _buildSmallIcon(Icons.shield_outlined, AppColors.secondary300),
+        if (member.isResident) _buildSmallIcon(Icons.home_work_outlined, AppColors.secondary300),
       ],
     );
   }

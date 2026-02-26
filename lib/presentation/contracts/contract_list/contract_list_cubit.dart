@@ -2,8 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
-import 'package:resipal_core/domain/use_cases/contracts/watch_contracts_by_community.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
 import 'contract_list_state.dart';
 
 class ContractListCubit extends Cubit<ContractListState> {

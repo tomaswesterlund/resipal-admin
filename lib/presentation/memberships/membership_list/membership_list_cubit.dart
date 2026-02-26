@@ -3,8 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/memberships/membership_list/membership_list_state.dart';
-import 'package:resipal_core/domain/use_cases/memberships/watch_memberships_by_community.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
 
 class MemberListCubit extends Cubit<MembershipListState> {
   final LoggerService _logger = GetIt.I<LoggerService>();

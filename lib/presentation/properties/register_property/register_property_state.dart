@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-
 import 'register_property_form_state.dart';
 
 class RegisterPropertyState extends Equatable {

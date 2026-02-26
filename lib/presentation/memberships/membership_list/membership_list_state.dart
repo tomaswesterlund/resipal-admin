@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:resipal_core/domain/entities/membership_entity.dart';
+import 'package:resipal_core/lib.dart';
 
 abstract class MembershipListState extends Equatable {
   @override

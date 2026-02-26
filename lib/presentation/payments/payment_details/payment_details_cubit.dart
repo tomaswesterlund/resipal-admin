@@ -3,11 +3,9 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/domain/use_cases/payments/get_payment_by_id.dart';
-import 'package:resipal_core/domain/use_cases/payments/watch_payment_by_id.dart';
 import 'payment_details_state.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
   final LoggerService _logger = GetIt.I<LoggerService>();

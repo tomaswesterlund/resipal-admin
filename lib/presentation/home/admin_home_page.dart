@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
 import 'package:resipal_admin/presentation/home/admin_applications_view.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
@@ -8,14 +9,9 @@ import 'package:resipal_admin/presentation/payments/payment_list/payment_list_vi
 import 'package:resipal_admin/presentation/payments/register_payment/register_payment_page.dart';
 import 'package:resipal_admin/presentation/properties/property_list/property_list_view.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
-import 'package:resipal_admin/shared/app_colors.dart';
-import 'package:resipal_admin/shared/floating_nav_bar.dart';
-import 'package:resipal_core/domain/entities/community/community_entity.dart';
-import 'package:resipal_core/domain/entities/user_entity.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/texts/section_header_text.dart';
 import 'package:short_navigation/short_navigation.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class AdminHomePage extends StatefulWidget {
   final CommunityEntity community;
@@ -122,7 +118,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Resipal Admin v1.0.4',
-                style: GoogleFonts.raleway(fontSize: 10, color: AppColors.auxiliarScale[400]),
+                style: GoogleFonts.raleway(fontSize: 10, color: AppColors.secondary),
               ),
             ),
           ],
@@ -213,7 +209,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 
   Widget _buildDrawerItem({required IconData icon, required String label, required VoidCallback onTap, Color? color}) {
-    final itemColor = color ?? AppColors.auxiliarScale[700]!;
+    final itemColor = color ?? AppColors.grey700!;
 
     return ListTile(
       leading: Icon(icon, color: itemColor, size: 22),

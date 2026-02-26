@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
-import 'package:resipal_admin/shared/dynamic_selector.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 abstract class PaymentListState extends Equatable {
   @override
@@ -13,8 +13,8 @@ class LoadingState extends PaymentListState {}
 
 class LoadedState extends PaymentListState {
   final List<PaymentEntity> payments;
-  final List<DynamicSelectorItem> selectorItems;
-  final DynamicSelectorItem selector;
+  final List<FilterSelectorItem> selectorItems;
+  final FilterSelectorItem selector;
 
   LoadedState(this.payments, this.selectorItems, this.selector);
 

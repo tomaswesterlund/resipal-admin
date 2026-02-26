@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:resipal_admin/presentation/payments/payment_icon.dart';
 import 'package:resipal_admin/presentation/payments/payment_status_pill.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/domain/enums/payment_status.dart';
-import 'package:resipal_core/helpers/formatters/currency_formatter.dart';
-import 'package:resipal_core/presentation/shared/cards/default_card.dart';
-import 'package:resipal_core/presentation/shared/texts/amount_text.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class PaymentHeader extends StatelessWidget {
   final PaymentEntity payment;

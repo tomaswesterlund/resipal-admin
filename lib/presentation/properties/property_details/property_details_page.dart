@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_core/domain/entities/property_entity.dart';
-import 'package:resipal_core/domain/entities/maintenance_fee_entity.dart';
-import 'package:resipal_core/presentation/shared/colors/base_app_colors.dart';
-import 'package:resipal_core/presentation/shared/my_app_bar.dart';
-import 'package:resipal_core/presentation/shared/texts/amount_text.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 import 'property_details_cubit.dart';
 import 'property_details_state.dart';
 
@@ -21,7 +16,7 @@ class PropertyDetailsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => PropertyDetailsCubit(propertyId: propertyId)..initialize(),
       child: Scaffold(
-        backgroundColor: BaseAppColors.background,
+        backgroundColor: AppColors.background,
         appBar: const MyAppBar(title: 'Detalle de Propiedad'),
         body: BlocBuilder<PropertyDetailsCubit, PropertyDetailsState>(
           builder: (context, state) {
@@ -109,7 +104,7 @@ class _PropertyContent extends StatelessWidget {
           style: GoogleFonts.raleway(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey),
         ),
         if (amount != null)
-          AmountText.fromCents(amount, fontSize: 16, color: amount > 0 ? BaseAppColors.danger : BaseAppColors.secondary)
+          AmountText.fromCents(amount, fontSize: 16, color: amount > 0 ? AppColors.danger : AppColors.secondary)
         else
           Text(
             value,
@@ -143,8 +138,8 @@ class _FeeTile extends StatelessWidget {
 
   Color _getStatusColor(dynamic status) {
     // Basic mapping example
-    if (status.toString().contains('paid')) return BaseAppColors.secondary;
-    if (status.toString().contains('overdue')) return BaseAppColors.danger;
+    if (status.toString().contains('paid')) return AppColors.secondary;
+    if (status.toString().contains('overdue')) return AppColors.danger;
     return Colors.orange;
   }
 }

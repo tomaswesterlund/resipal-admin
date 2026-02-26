@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/presentation/shared/colors/payment_colors.dart';
+import 'package:resipal_admin/presentation/shared/colors/payment_colors.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 class PaymentIcon extends StatelessWidget {
   final PaymentEntity payment;

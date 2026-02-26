@@ -2,11 +2,8 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
-import 'package:resipal_admin/shared/dynamic_selector.dart';
-import 'package:resipal_core/domain/entities/payment/payment_entity.dart';
-import 'package:resipal_core/domain/enums/payment_status.dart';
-import 'package:resipal_core/domain/use_cases/payments/watch_payments_by_community.dart';
-import 'package:resipal_core/services/logger_service.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 import 'payment_list_state.dart';
 
 class PaymentListCubit extends Cubit<PaymentListState> {
@@ -16,13 +13,13 @@ class PaymentListCubit extends Cubit<PaymentListState> {
 
   StreamSubscription? _subscription;
 
-  final List<DynamicSelectorItem> selectorItems = [
-    DynamicSelectorItem(label: 'Todos', value: 'todos'),
-    DynamicSelectorItem(label: 'Pagados', value: 'pagados'),
-    DynamicSelectorItem(label: 'En revisíon', value: 'revision'),
+  final List<FilterSelectorItem> selectorItems = [
+    FilterSelectorItem(label: 'Todos', value: 'todos'),
+    FilterSelectorItem(label: 'Pagados', value: 'pagados'),
+    FilterSelectorItem(label: 'En revisíon', value: 'revision'),
   ];
 
-  late DynamicSelectorItem selector;
+  late FilterSelectorItem selector;
   late List<PaymentEntity> allPayments;
 
   PaymentListCubit() : super(InitialState());
@@ -51,7 +48,7 @@ class PaymentListCubit extends Cubit<PaymentListState> {
         );
   }
 
-  void onSelectorChanged(DynamicSelectorItem newSelector) {
+  void onSelectorChanged(FilterSelectorItem newSelector) {
     selector = newSelector;
 
     // Filter

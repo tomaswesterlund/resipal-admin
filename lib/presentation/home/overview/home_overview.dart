@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/admin_session_service.dart';
+import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_cubit.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_state.dart';
-import 'package:resipal_admin/shared/app_colors.dart';
-import 'package:resipal_core/presentation/shared/texts/header_text.dart';
-import 'package:resipal_core/presentation/shared/views/error_view.dart';
-import 'package:resipal_core/presentation/shared/views/loading_view.dart';
+import 'package:wester_kit/lib.dart';
 
 class HomeOverview extends StatelessWidget {
   const HomeOverview({super.key});
@@ -36,7 +32,7 @@ class HomeOverview extends StatelessWidget {
                   Text(
                     community.name,
                     style: GoogleFonts.raleway(
-                      color: AppColors.auxiliarScale[500],
+                      color: AppColors.secondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -105,7 +101,7 @@ class HomeOverview extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.auxiliarScale[100]!),
+        border: Border.all(color: AppColors.secondary100),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,14 +116,14 @@ class HomeOverview extends StatelessWidget {
                 style: GoogleFonts.raleway(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.auxiliarScale[900],
+                  color: AppColors.secondary900,
                 ),
               ),
               Text(
                 label,
                 style: GoogleFonts.raleway(
                   fontSize: 12,
-                  color: AppColors.auxiliarScale[500],
+                  color: AppColors.secondary300,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -164,14 +160,14 @@ class HomeOverview extends StatelessWidget {
               title,
               style: GoogleFonts.raleway(
                 fontWeight: FontWeight.bold, 
-                color: AppColors.auxiliarScale[800]
+                color: AppColors.secondary700
               ),
             ),
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: count > 0 ? color : AppColors.auxiliarScale[100],
+              color: count > 0 ? color : AppColors.secondary100,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

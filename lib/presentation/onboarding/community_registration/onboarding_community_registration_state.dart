@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_form_state.dart';
-import 'package:resipal_core/domain/entities/community/community_entity.dart';
-import 'package:resipal_core/domain/entities/user_entity.dart';
+import 'package:resipal_core/lib.dart';
+import 'package:wester_kit/lib.dart';
 
 abstract class OnboardingCommunityRegistrationState extends Equatable {
   @override
