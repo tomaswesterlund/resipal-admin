@@ -7,6 +7,7 @@ import 'package:resipal_admin/presentation/auth/auth_state.dart';
 import 'package:resipal_admin/presentation/home/admin_home_page.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_page.dart';
 import 'package:resipal_admin/presentation/onboarding/onboarding_start_page.dart';
+import 'package:resipal_admin/presentation/shared/resipal_logo.dart';
 import 'package:resipal_admin/presentation/signin/signin_page.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
@@ -43,6 +44,7 @@ class AuthPage extends StatelessWidget {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  ResipalLogo(),
                   HeaderText.giga('RESIPAL'),
                   const SizedBox(height: 24),
                   LoadingView(
