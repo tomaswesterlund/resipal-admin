@@ -54,7 +54,7 @@ class HomeOverview extends StatelessWidget {
                         Icons.home_work_outlined,
                       ),
                       _buildStatCard(
-                        'Miembros',
+                        'Usuarios',
                         community.directory.members.length.toString(),
                         Icons.people_outline
                       ),

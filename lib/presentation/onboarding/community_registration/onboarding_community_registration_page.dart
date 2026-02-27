@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
-import 'package:resipal_admin/presentation/home/admin_home_page.dart';
+import 'package:resipal_admin/presentation/home/home_page/admin_home_page.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_cubit.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_state.dart';
 import 'package:wester_kit/lib.dart';

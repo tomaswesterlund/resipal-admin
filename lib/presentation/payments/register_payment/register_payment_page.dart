@@ -78,6 +78,16 @@ class _Form extends StatelessWidget {
           AmountInputField(label: 'Monto', isRequired: true, onChanged: cubit.updateAmount),
 
           const SizedBox(height: 24),
+          DatePickerField(
+            label: 'Fecha de pago',
+            isRequired: true,
+            helpText:
+                'Selecciona la fecha exacta en la que se realizó la transferencia o el depósito, tal como aparece en tu comprobante.',
+            selectedDate: formState.payDate,
+            onDateChanged: cubit.updatePayDate,
+          ),
+
+          const SizedBox(height: 24),
           TextInputField(
             label: 'Referencia / No. de Operación',
             hint: 'Ej: TRANS-12345',
@@ -93,7 +103,7 @@ class _Form extends StatelessWidget {
           ),
           const SizedBox(height: 24),
           if (formState.receiptImage != null)
-            ImagePreview(imageUrl: formState.receiptImage!.path)
+            XFileImagePreview(xFile: formState.receiptImage!)
           else
             ImagePickerButtons(
               onCamera: () => cubit.pickImage(ImageSource.camera),

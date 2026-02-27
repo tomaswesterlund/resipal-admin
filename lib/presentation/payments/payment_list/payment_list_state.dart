@@ -13,13 +13,13 @@ class LoadingState extends PaymentListState {}
 
 class LoadedState extends PaymentListState {
   final List<PaymentEntity> payments;
-  final List<FilterSelectorItem> selectorItems;
-  final FilterSelectorItem selector;
+  final List<FilterSelectorItem> filterItems;
+  final FilterSelectorItem selectedFilter;
 
-  LoadedState(this.payments, this.selectorItems, this.selector);
+  LoadedState(this.payments, this.filterItems, this.selectedFilter);
 
   @override
-  List<Object?> get props => [payments, selectorItems, selector];
+  List<Object?> get props => [payments, filterItems, selectedFilter];
 }
 
 class EmptyState extends PaymentListState {}

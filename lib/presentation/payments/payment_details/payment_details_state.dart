@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/lib.dart';
 
 abstract class PaymentDetailsState extends Equatable {
   @override
@@ -13,6 +12,7 @@ class LoadingState extends PaymentDetailsState {}
 
 class LoadedState extends PaymentDetailsState {
   final PaymentEntity payment;
+  
 
   LoadedState(this.payment);
 

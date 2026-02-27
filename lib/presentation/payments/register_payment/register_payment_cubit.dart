@@ -11,7 +11,6 @@ class RegisterPaymentCubit extends Cubit<RegisterPaymentState> {
   final LoggerService _logger = GetIt.I<LoggerService>();
   final ImageService _imageService = GetIt.I<ImageService>();
 
-
   final ImagePicker _picker = ImagePicker();
 
   RegisterPaymentCubit() : super(InitialState());
@@ -26,7 +25,7 @@ class RegisterPaymentCubit extends Cubit<RegisterPaymentState> {
       return;
     }
 
-    _formState = RegisterPaymentFormState(residents: residents);
+    _formState = RegisterPaymentFormState(residents: residents, payDate: DateTime.now());
     emit(FormEditingState(_formState));
   }
 
@@ -37,6 +36,11 @@ class RegisterPaymentCubit extends Cubit<RegisterPaymentState> {
 
   void updateAmount(double newAmount) {
     _formState = _formState.copyWith(amount: newAmount);
+    emit(FormEditingState(_formState));
+  }
+
+  void updatePayDate(DateTime? newPayDate) {
+    _formState = _formState.copyWith(payDate: newPayDate);
     emit(FormEditingState(_formState));
   }
 
@@ -90,7 +94,7 @@ class RegisterPaymentCubit extends Cubit<RegisterPaymentState> {
       await RegisterPayment().call(
         communityId: _sessionService.communityId,
         amountInCents: _formState.amountInCents,
-        date: DateTime.now(),
+        date: _formState.payDate!,
         reference: _formState.reference,
         note: _formState.note,
         receiptPath: imagePath,

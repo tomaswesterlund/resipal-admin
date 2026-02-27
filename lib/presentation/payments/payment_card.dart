@@ -37,9 +37,9 @@ class PaymentCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Header: Reference & Status Icon
+                      // Header: Amount & Status Icon
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,14 +52,26 @@ class PaymentCard extends StatelessWidget {
                                   color: AppColors.grey400,
                                 ),
                               ),
-                              AmountText.fromCents(
-                                payment.amountInCents,
-                                fontSize: 18,
-                                color: AppColors.grey700,
+                              
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  AmountText.fromCents(payment.amountInCents, fontSize: 18, color: AppColors.grey700),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'de ${payment.user.name}',
+                                    style: GoogleFonts.raleway(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.grey500,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
-
+                          const Spacer(),
                           Icon(
                             isApproved
                                 ? Icons.check_circle
@@ -72,15 +84,9 @@ class PaymentCard extends StatelessWidget {
                         ],
                       ),
 
-                      // Text(
-                      //   payment.note ?? 'Comprobante de pago adjunto',
-                      //   maxLines: 1,
-                      //   overflow: TextOverflow.ellipsis,
-                      //   style: GoogleFonts.raleway(color: AppColors.auxiliarScale[500], fontSize: 13),
-                      // ),
-                      const Divider(height: 12, thickness: 1, color: Color(0xFFF4F5F4)),
+                      const Divider(height: 20, thickness: 1, color: Color(0xFFF4F5F4)),
 
-                      // Footer: Status, Date & Amount
+                      // Footer: Status & Date
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -104,7 +110,6 @@ class PaymentCard extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 4),
-
                               Text(
                                 'Fecha de pago: ${payment.date.toShortDate()}',
                                 style: GoogleFonts.raleway(
@@ -127,8 +132,6 @@ class PaymentCard extends StatelessWidget {
                               children: [Text('Detalles'), SizedBox(width: 4), Icon(Icons.arrow_forward_ios, size: 12)],
                             ),
                           ),
-
-                          // Right side: Amount
                         ],
                       ),
                     ],

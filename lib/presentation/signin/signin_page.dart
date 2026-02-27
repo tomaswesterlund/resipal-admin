@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/auth/auth_page.dart';
-import 'package:resipal_admin/presentation/home/admin_home_page.dart';
+import 'package:resipal_admin/presentation/home/home_page/admin_home_page.dart';
 import 'package:resipal_admin/presentation/shared/resipal_logo.dart';
 import 'package:resipal_admin/presentation/signin/signin_cubit.dart';
 import 'package:resipal_admin/presentation/signin/signin_state.dart';

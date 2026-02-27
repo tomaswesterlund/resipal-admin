@@ -7,6 +7,7 @@ class RegisterPaymentFormState extends Equatable {
   final List<ResidentEntity> residents;
   final ResidentEntity? resident;
   final double amount;
+  final DateTime? payDate;
   final String reference;
   final String note;
   final XFile? receiptImage;
@@ -15,12 +16,13 @@ class RegisterPaymentFormState extends Equatable {
     required this.residents,
     this.resident,
     this.amount = 0.0,
+    this.payDate,
     this.reference = '',
     this.note = '',
     this.receiptImage,
   });
 
-  bool get canSubmit => resident != null && amount > 0 && reference.isNotEmpty && receiptImage != null;
+  bool get canSubmit => resident != null && amount > 0 && payDate != null && reference.isNotEmpty && receiptImage != null;
 
   int get amountInCents => (amount * 100).toInt();
 
@@ -28,6 +30,7 @@ class RegisterPaymentFormState extends Equatable {
     List<ResidentEntity>? residents,
     ResidentEntity? resident,
     double? amount,
+    DateTime? payDate,
     String? reference,
     String? note,
     XFile? receiptImage,
@@ -36,6 +39,7 @@ class RegisterPaymentFormState extends Equatable {
       residents: residents ?? this.residents,
       resident: resident ?? this.resident,
       amount: amount ?? this.amount,
+      payDate: payDate ?? this.payDate,
       reference: reference ?? this.reference,
       note: note ?? this.note,
       receiptImage: receiptImage ?? this.receiptImage,
@@ -46,6 +50,7 @@ class RegisterPaymentFormState extends Equatable {
     return <String, dynamic>{
       'residentId': resident?.user.id,
       'amount': amount,
+      'payDate': payDate,
       'reference': reference,
       'note': note,
       'receiptImage': receiptImage?.path,
@@ -53,5 +58,5 @@ class RegisterPaymentFormState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [residents, resident, amount, reference, note, receiptImage];
+  List<Object?> get props => [residents, resident, amount, payDate, reference, note, receiptImage];
 }

@@ -805,7 +805,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "354b14e96288404f32e0baea9f3e6ad17d859efd"
+      resolved-ref: d1c27638e2ea8b82f09e6778e0011f4815b44723
       url: "https://github.com/tomaswesterlund/resipal-core.git"
     source: git
     version: "0.0.1"
@@ -882,7 +882,7 @@ packages:
     source: hosted
     version: "2.4.1"
   shimmer:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shimmer
       sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
@@ -1123,7 +1123,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: a26d35ad0a34639ca3ef2c1933e1c545c3a289e8
+      resolved-ref: d9af11ac03cd2a549e9de41ca24249d8a3953a6a
       url: "https://github.com/tomaswesterlund/WesterKit"
     source: git
     version: "0.0.1"

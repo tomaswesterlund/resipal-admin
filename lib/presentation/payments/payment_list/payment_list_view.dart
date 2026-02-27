@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/payments/payment_card.dart';
-import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 import 'payment_list_cubit.dart';
 import 'payment_list_state.dart';
@@ -28,9 +27,9 @@ class PaymentListView extends StatelessWidget {
                 child: Column(
                   children: [
                     FilterSelector(
-                      options: state.selectorItems,
-                      selectedValue: state.selector,
-                      onSelected: (newSelector) => context.read<PaymentListCubit>().onSelectorChanged(newSelector),
+                      options: state.filterItems,
+                      selectedValue: state.selectedFilter,
+                      onSelected: (newSelector) => context.read<PaymentListCubit>().onFilterChanged(newSelector),
                     ),
                     SizedBox(height: 16.0,),
                     ListView.separated(

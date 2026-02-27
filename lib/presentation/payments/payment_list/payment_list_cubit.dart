@@ -6,6 +6,8 @@ import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 import 'payment_list_state.dart';
 
+enum PaymentFilter { all, confirmed, pendingReview }
+
 class PaymentListCubit extends Cubit<PaymentListState> {
   final WatchPaymentsByCommunity _watchPayments = WatchPaymentsByCommunity();
   final LoggerService _logger = GetIt.I<LoggerService>();
@@ -13,13 +15,13 @@ class PaymentListCubit extends Cubit<PaymentListState> {
 
   StreamSubscription? _subscription;
 
-  final List<FilterSelectorItem> selectorItems = [
-    FilterSelectorItem(label: 'Todos', value: 'todos'),
-    FilterSelectorItem(label: 'Confirmados', value: 'confirmados'),
-    FilterSelectorItem(label: 'En revisíon', value: 'revision'),
+  final List<FilterSelectorItem> filterItems = [
+    FilterSelectorItem(label: 'Todos', value: PaymentFilter.all),
+    FilterSelectorItem(label: 'Confirmados', value: PaymentFilter.confirmed),
+    FilterSelectorItem(label: 'En revisión', value: PaymentFilter.pendingReview),
   ];
 
-  late FilterSelectorItem selector;
+  late FilterSelectorItem selectedFilter;
   late List<PaymentEntity> allPayments;
 
   PaymentListCubit() : super(InitialState());
@@ -28,7 +30,7 @@ class PaymentListCubit extends Cubit<PaymentListState> {
     emit(LoadingState());
     _subscription?.cancel();
 
-    selector = selectorItems.first;
+    selectedFilter = filterItems.first;
 
     _subscription = _watchPayments
         .call(_sessionService.communityId)
@@ -37,8 +39,9 @@ class PaymentListCubit extends Cubit<PaymentListState> {
             if (payments.isEmpty) {
               emit(EmptyState());
             } else {
+              payments.sort((a, b) => b.date.compareTo(a.date));
               allPayments = payments;
-              emit(LoadedState(payments, selectorItems, selector));
+              emit(LoadedState(payments, filterItems, selectedFilter));
             }
           },
           onError: (e, s) {
@@ -48,26 +51,22 @@ class PaymentListCubit extends Cubit<PaymentListState> {
         );
   }
 
-  void onSelectorChanged(FilterSelectorItem newSelector) {
-    selector = newSelector;
+  void onFilterChanged(FilterSelectorItem newFilter) {
+    selectedFilter = newFilter;
+    var payments = allPayments;
 
-    // Filter
-    if (newSelector.value == 'todos') {
-      emit(LoadedState(allPayments, selectorItems, newSelector));
-      return;
+    if (newFilter.value == PaymentFilter.confirmed) {
+      payments = allPayments.where((x) => x.status == PaymentStatus.approved).toList();
     }
 
-    if (newSelector.value == 'confirmados') {
-      final filtered = allPayments.where((x) => x.status == PaymentStatus.approved).toList();
-      emit(LoadedState(filtered, selectorItems, newSelector));
-      return;
+    if (newFilter.value == PaymentFilter.pendingReview) {
+      payments = allPayments.where((x) => x.status == PaymentStatus.pendingReview).toList();
     }
 
-    if (newSelector.value == 'revision') {
-      final filtered = allPayments.where((x) => x.status == PaymentStatus.pendingReview).toList();
-      emit(LoadedState(filtered, selectorItems, newSelector));
-      return;
-    }
+    payments.sort((a, b) => b.date.compareTo(a.date));
+
+    emit(LoadedState(payments, filterItems, newFilter));
+    return;
   }
 
   @override

@@ -6,10 +6,10 @@ import 'package:wester_kit/ui/texts/amount_text.dart';
 import 'package:wester_kit/ui/texts/body_text.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
 
-class MembershipCard extends StatelessWidget {
+class UserCard extends StatelessWidget {
   final MembershipEntity member;
 
-  const MembershipCard(this.member, {super.key});
+  const UserCard(this.member, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +116,7 @@ class MembershipCard extends StatelessWidget {
                             onPressed: () {
                               // Go.to(MemberDetailsPage(memberId: member.id));
                             },
-                            child: const Row(
+                            child: Row(
                               children: [
                                 BodyText.small('Detalles'),
                                 SizedBox(width: 2),

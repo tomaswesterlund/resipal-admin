@@ -33,7 +33,67 @@ class MyApp extends StatelessWidget {
         ),
         appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         scaffoldBackgroundColor: AppColors.background,
-        textTheme: GoogleFonts.ralewayTextTheme(),
+        textTheme: TextTheme(
+          // HEADINGS (TÍTULOS)
+          displayLarge: GoogleFonts.raleway(
+            fontSize: 48,
+            height: 54 / 48,
+            fontWeight: FontWeight.w900, // Black
+          ),
+          headlineLarge: GoogleFonts.raleway(
+            fontSize: 32,
+            height: 40 / 32,
+            fontWeight: FontWeight.bold, // H1
+          ),
+          headlineMedium: GoogleFonts.raleway(
+            fontSize: 24,
+            height: 32 / 24,
+            fontWeight: FontWeight.bold, // H2
+          ),
+          headlineSmall: GoogleFonts.raleway(
+            fontSize: 20,
+            height: 28 / 20,
+            fontWeight: FontWeight.bold, // H3
+          ),
+          titleLarge: GoogleFonts.raleway(
+            fontSize: 18,
+            height: 24 / 18,
+            fontWeight: FontWeight.bold, // H4
+          ),
+          titleMedium: GoogleFonts.raleway(
+            fontSize: 16,
+            height: 20 / 16,
+            fontWeight: FontWeight.bold, // H5
+          ),
+          titleSmall: GoogleFonts.raleway(
+            fontSize: 14,
+            height: 16 / 14,
+            fontWeight: FontWeight.bold, // H6
+          ),
+
+          // BODY (CUERPO DE TEXTO)
+          bodyLarge: GoogleFonts.raleway(
+            fontSize: 18,
+            height: 28 / 18,
+            fontWeight: FontWeight.normal, // Body Parrafo 01
+          ),
+          bodyMedium: GoogleFonts.raleway(
+            fontSize: 16,
+            height: 24 / 16,
+            fontWeight: FontWeight.normal, // Body Parrafo 02
+          ),
+          bodySmall: GoogleFonts.raleway(
+            fontSize: 14,
+            height: 20 / 14,
+            fontWeight: FontWeight.normal, // Body Parrafo 03
+          ),
+          labelSmall: GoogleFonts.poppins(
+            // Caption / Tiny
+            fontSize: 12,
+            height: 16 / 12,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
       ),
       home: const AuthPage(),
     );

@@ -5,11 +5,9 @@ import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'payment_details_state.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/lib.dart';
 
 class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
   final LoggerService _logger = GetIt.I<LoggerService>();
-  final AdminSessionService _sessionService = GetIt.I<AdminSessionService>();
 
   final WatchPaymentById _watchPaymentById = WatchPaymentById();
   StreamSubscription? _streamSubscription;
@@ -23,7 +21,7 @@ class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
       _streamSubscription = _watchPaymentById
           .call(paymentId)
           .listen(
-            (payment) {
+            (payment) async {
               emit(LoadedState(payment));
             },
             onError: (e, s) {
