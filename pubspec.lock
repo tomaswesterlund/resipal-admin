@@ -805,7 +805,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: d1c27638e2ea8b82f09e6778e0011f4815b44723
+      resolved-ref: "1d93aa2b6b496ce2a49c6f4aca5cc9bfed69285a"
       url: "https://github.com/tomaswesterlund/resipal-core.git"
     source: git
     version: "0.0.1"

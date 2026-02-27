@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:resipal_admin/presentation/applications/list/application_list_view.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
-import 'package:resipal_admin/presentation/home/admin_applications_view.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
 import 'package:resipal_admin/presentation/users/user_list/user_list_view.dart';
 import 'package:resipal_admin/presentation/payments/payment_list/payment_list_view.dart';
@@ -49,7 +49,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 const HomeOverview(),
                 const PropertyListView(),
                 const PaymentListView(),
-                AdminApplicationsView(community.directory.pendingApplications),
+                const ApplicationListView(),
                 const UserListView(),
               ],
             ),
@@ -66,7 +66,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 FloatingNavBarItem(
                   icon: Icons.account_balance_wallet_outlined,
                   label: 'Pagos',
-                  warningBadgeCount: community.paymentLedger.pendingPayments.length,
+                  badgeCount: community.paymentLedger.pendingPayments.length,
                 ),
                 FloatingNavBarItem(
                   icon: Icons.person_add_alt_1_outlined,
