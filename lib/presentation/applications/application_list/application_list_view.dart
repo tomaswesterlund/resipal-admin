@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/applications/application_card.dart';
-import 'package:resipal_admin/presentation/applications/list/application_list_cubit.dart';
-import 'package:resipal_admin/presentation/applications/list/application_list_state.dart';
+import 'package:resipal_admin/presentation/applications/application_list/application_list_cubit.dart';
+import 'package:resipal_admin/presentation/applications/application_list/application_list_state.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:wester_kit/lib.dart';
 

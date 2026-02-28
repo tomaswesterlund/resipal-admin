@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:resipal_admin/presentation/users/user_details/user_details_page.dart';
 import 'package:resipal_core/lib.dart';
+import 'package:short_navigation/short_navigation.dart';
 import 'package:wester_kit/ui/texts/amount_text.dart';
 import 'package:wester_kit/ui/texts/body_text.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
@@ -113,9 +115,7 @@ class UserCard extends StatelessWidget {
                               padding: EdgeInsets.zero, // More compact for 3-column layout
                               textStyle: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 13),
                             ),
-                            onPressed: () {
-                              // Go.to(MemberDetailsPage(memberId: member.id));
-                            },
+                            onPressed: () => Go.to(UserDetailsPage(member)),
                             child: Row(
                               children: [
                                 BodyText.small('Detalles'),

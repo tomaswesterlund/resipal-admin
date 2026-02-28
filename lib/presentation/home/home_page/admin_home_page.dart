@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/applications/list/application_list_view.dart';
+import 'package:resipal_admin/presentation/applications/application_list/application_list_view.dart';
+import 'package:resipal_admin/presentation/properties/properties_page.dart';
 import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
-import 'package:resipal_admin/presentation/users/user_list/user_list_view.dart';
-import 'package:resipal_admin/presentation/payments/payment_list/payment_list_view.dart';
+import 'package:resipal_admin/presentation/users/user_list_view.dart';
+import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
 import 'package:resipal_admin/presentation/payments/register_payment/register_payment_page.dart';
-import 'package:resipal_admin/presentation/properties/property_list/property_list_view.dart';
+import 'package:resipal_admin/presentation/properties/property_list_view.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
+import 'package:resipal_admin/presentation/users/users_page.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
@@ -36,7 +38,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
       create: (context) => AdminHomeCubit()..initialize(widget.community),
       child: BlocBuilder<AdminHomeCubit, AdminHomeState>(
         builder: (context, state) {
-          // Fallback to widget data if stream hasn't emitted yet
           final community = (state is LoadedState) ? state.community : widget.community;
 
           return Scaffold(
@@ -47,10 +48,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
               index: _currentPageIndex,
               children: [
                 const HomeOverview(),
-                const PropertyListView(),
-                const PaymentListView(),
+                PropertyListView(community.propertyRegistry.properties),
+                PaymentListView(community.paymentLedger.payments),
                 const ApplicationListView(),
-                const UserListView(),
+                UserListView(community.directory.members),
               ],
             ),
             bottomNavigationBar: FloatingNavBar(
@@ -62,7 +63,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               },
               items: [
                 FloatingNavBarItem(icon: Icons.dashboard_outlined, label: 'Inicio'),
-                FloatingNavBarItem(icon: Icons.apartment_rounded, label: 'Propiedades'),
+                FloatingNavBarItem(icon: Icons.house_outlined, label: 'Propiedades'),
                 FloatingNavBarItem(
                   icon: Icons.account_balance_wallet_outlined,
                   label: 'Pagos',
@@ -80,6 +81,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             drawer: Drawer(
               backgroundColor: AppColors.background,
+              width: MediaQuery.of(context).size.width * 0.85, // Slightly wider for better accessibility
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
               ),
@@ -88,7 +90,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   _buildDrawerHeader(community),
                   Expanded(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -104,11 +106,18 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             label: 'Contratos',
                             onTap: () => Go.to(const ContractListPage()),
                           ),
-                          _buildDrawerItem(icon: Icons.apartment_outlined, label: 'Propiedades', onTap: () {}),
-                          _buildDrawerItem(icon: Icons.manage_accounts_outlined, label: 'Usuarios', onTap: () {}),
-                          // Added Reports Item here
+                          _buildDrawerItem(
+                            icon: Icons.apartment_outlined,
+                            label: 'Propiedades',
+                            onTap: () => Go.to(PropertiesPage(community.paymentLedger.payments)),
+                          ),
+                          _buildDrawerItem(
+                            icon: Icons.manage_accounts_outlined,
+                            label: 'Usuarios',
+                            onTap: () => Go.to(UsersPage(community.directory.members)),
+                          ),
                           _buildDrawerItem(icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
-                          const Padding(padding: EdgeInsets.symmetric(vertical: 16.0), child: Divider()),
+                          const Padding(padding: EdgeInsets.symmetric(vertical: 20.0), child: Divider(thickness: 1)),
                           const SectionHeaderText(text: 'SISTEMA'),
                           const SizedBox(height: 16),
                           _buildDrawerItem(
@@ -117,15 +126,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             color: AppColors.danger,
                             onTap: () {},
                           ),
+                          SizedBox(height: 12.0,),
+                          Center(
+                            child: Text(
+                              'Resipal Admin v1.0.4',
+                              style: GoogleFonts.raleway(fontSize: 12, color: AppColors.hint),
+                            ),
+                          ),
                         ],
                       ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Resipal Admin v1.0.4',
-                      style: GoogleFonts.raleway(fontSize: 10, color: AppColors.secondary),
                     ),
                   ),
                 ],
@@ -184,7 +193,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget _buildDrawerHeader(CommunityEntity community) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.only(top: 60, left: 24, bottom: 24, right: 24),
+      padding: const EdgeInsets.only(top: 60, left: 24, bottom: 32, right: 24),
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: const BorderRadius.only(bottomRight: Radius.circular(40)),
@@ -193,30 +202,52 @@ class _AdminHomePageState extends State<AdminHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 30,
+            radius: 35, // Slightly bigger avatar
             backgroundColor: Colors.white.withOpacity(0.2),
-            child: const Icon(Icons.business, color: Colors.white, size: 30),
+            child: const Icon(Icons.business, color: Colors.white, size: 35),
           ),
           const SizedBox(height: 16),
           HeaderText.five(community.name, color: Colors.white),
-          Text(widget.user.email, style: GoogleFonts.raleway(color: Colors.white70, fontSize: 12)),
+          const SizedBox(height: 4),
+          Text(widget.user.email, style: GoogleFonts.raleway(color: Colors.white.withOpacity(0.8), fontSize: 13)),
         ],
       ),
     );
   }
 
   Widget _buildDrawerItem({required IconData icon, required String label, required VoidCallback onTap, Color? color}) {
-    final itemColor = color ?? AppColors.grey700!;
-    return ListTile(
-      leading: Icon(icon, color: itemColor, size: 22),
-      title: Text(
-        label,
-        style: GoogleFonts.raleway(fontSize: 14, fontWeight: FontWeight.w600, color: itemColor),
+    // Determine colors based on whether a custom color (like danger) was passed
+    final primaryColor = color ?? AppColors.primary;
+    final itemTextColor = color ?? AppColors.grey700!;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12.0), // Spacing between buttons
+      child: ListTile(
+        leading: Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(color: primaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+          child: Icon(icon, color: itemTextColor, size: 24),
+        ),
+        title: Text(
+          label,
+          style: GoogleFonts.raleway(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color: itemTextColor,
+            letterSpacing: 0.3,
+          ),
+        ),
+        // Add a subtle background to the whole tile to make it look like a button
+        tileColor: Colors.white,
+        hoverColor: primaryColor.withOpacity(0.05),
+        splashColor: primaryColor.withOpacity(0.1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: AppColors.grey200 ?? Colors.grey.shade200, width: 1),
+        ),
+        onTap: onTap,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      onTap: onTap,
-      dense: true,
-      visualDensity: VisualDensity.compact,
     );
   }
 }
