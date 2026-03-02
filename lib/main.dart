@@ -19,8 +19,6 @@ Future main() async {
   );
   GetIt.instance.registerSingleton<ResipalSupabaseConfig>(supabaseConfig);
 
-  // Setup Google OAUTH
-
   await ServiceLocator().initializeContainers();
   GetIt.instance.registerSingleton<AdminSessionService>(AdminSessionService());
 
