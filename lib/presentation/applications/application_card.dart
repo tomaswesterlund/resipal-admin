@@ -5,7 +5,6 @@ import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/extensions/formatters/date_formatters.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
-import 'package:short_navigation/short_navigation.dart';
 
 class ApplicationCard extends StatelessWidget {
   final ApplicationEntity application;

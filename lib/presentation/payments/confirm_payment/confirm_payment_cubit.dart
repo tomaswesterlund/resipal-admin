@@ -3,7 +3,6 @@ import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/payments/confirm_payment/confirm_payment_state.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/lib.dart';
 
 class ConfirmPaymentCubit extends Cubit<ConfirmPaymentState> {
   final LoggerService _logger = GetIt.I<LoggerService>();

@@ -13,7 +13,7 @@ class OnboardingUserRegistrationFormState extends Equatable {
     return true;
   }
 
-  OnboardingUserRegistrationFormState({this.name = '', this.phoneNumber = '', this.email = ''});
+  const OnboardingUserRegistrationFormState({this.name = '', this.phoneNumber = '', this.email = ''});
 
   OnboardingUserRegistrationFormState copyWith({String? name, String? phoneNumber, String? email}) {
     return OnboardingUserRegistrationFormState(

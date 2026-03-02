@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/lib.dart';
 
  abstract class ConfirmPaymentState extends Equatable {
   @override

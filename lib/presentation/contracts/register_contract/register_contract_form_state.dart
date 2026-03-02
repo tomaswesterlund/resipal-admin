@@ -24,7 +24,7 @@ class RegisterContractFormState extends Equatable {
       name: name ?? this.name,
       amount: amount ?? this.amount,
       description: description ?? this.description,
-      period: this.period,
+      period: period,
     );
   }
 

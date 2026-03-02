@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
 import 'package:resipal_admin/presentation/properties/property_list_view.dart';
 import 'package:resipal_admin/presentation/users/user_information_view.dart';

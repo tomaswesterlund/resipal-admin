@@ -4,12 +4,11 @@ import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/properties/property_details/property_details_page.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
-import 'package:resipal_core/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 
 class PropertyCard extends StatelessWidget {
   final PropertyEntity property;
-  const PropertyCard(this.property);
+  const PropertyCard(this.property, {super.key});
 
   @override
   Widget build(BuildContext context) {

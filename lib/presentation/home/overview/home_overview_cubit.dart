@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_state.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/lib.dart';
 
 class HomeOverviewCubit extends Cubit<HomeOverviewState> {
   final LoggerService _logger = GetIt.I<LoggerService>();

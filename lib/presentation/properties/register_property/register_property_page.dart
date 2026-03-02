@@ -63,7 +63,7 @@ class RegisterPropertyPage extends StatelessWidget {
 
 class _Form extends StatelessWidget {
   final RegisterPropertyFormState formState;
-  const _Form(this.formState, {super.key});
+  const _Form(this.formState);
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +144,7 @@ class _Form extends StatelessWidget {
 }
 
 class _NoContractsFound extends StatelessWidget {
-  const _NoContractsFound({super.key});
+  const _NoContractsFound();
 
   @override
   Widget build(BuildContext context) {

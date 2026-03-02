@@ -126,7 +126,7 @@ class _Loaded extends StatelessWidget {
 }
 
 class _PaymentDetailsShimmer extends StatelessWidget {
-  const _PaymentDetailsShimmer({super.key});
+  const _PaymentDetailsShimmer();
 
   @override
   Widget build(BuildContext context) {

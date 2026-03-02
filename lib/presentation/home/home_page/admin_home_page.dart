@@ -19,6 +19,8 @@ import 'package:wester_kit/lib.dart';
 import 'admin_home_cubit.dart';
 import 'admin_home_state.dart';
 
+enum AdminHomePages { home, properties, payments, applications, users }
+
 class AdminHomePage extends StatefulWidget {
   final CommunityEntity community;
   final UserEntity user;
@@ -30,7 +32,7 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
-  int _currentPageIndex = 0;
+  int _currentPageIndex = AdminHomePages.home.index;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,18 @@ class _AdminHomePageState extends State<AdminHomePage> {
             body: IndexedStack(
               index: _currentPageIndex,
               children: [
-                const HomeOverview(),
+                HomeOverview(
+                  onPendingApplicationsPressed: () {
+                    setState(() {
+                      _currentPageIndex = AdminHomePages.applications.index;
+                    });
+                  },
+                  onPendingPaymentsPressed: () {
+                    setState(() {
+                      _currentPageIndex = AdminHomePages.payments.index;
+                    });
+                  },
+                ),
                 PropertyListView(community.propertyRegistry.properties),
                 PaymentListView(community.paymentLedger.payments),
                 const ApplicationListView(),
@@ -126,7 +139,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             color: AppColors.danger,
                             onTap: () {},
                           ),
-                          SizedBox(height: 12.0,),
+                          SizedBox(height: 12.0),
                           Center(
                             child: Text(
                               'Resipal Admin v1.0.4',
@@ -174,17 +187,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget? _getFAB() {
     switch (_currentPageIndex) {
       case 1:
-        return FloatingActionButton(
-          backgroundColor: AppColors.primary,
-          onPressed: () => Go.to(const RegisterPropertyPage()),
-          child: const Icon(Icons.add, color: Colors.white),
-        );
+        return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPropertyPage()));
       case 2:
-        return FloatingActionButton(
-          backgroundColor: AppColors.primary,
-          onPressed: () => Go.to(const RegisterPaymentPage()),
-          child: const Icon(Icons.add, color: Colors.white),
-        );
+        return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPaymentPage()));
       default:
         return null;
     }
@@ -218,7 +223,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget _buildDrawerItem({required IconData icon, required String label, required VoidCallback onTap, Color? color}) {
     // Determine colors based on whether a custom color (like danger) was passed
     final primaryColor = color ?? AppColors.primary;
-    final itemTextColor = color ?? AppColors.grey700!;
+    final itemTextColor = color ?? AppColors.grey700;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0), // Spacing between buttons
@@ -243,7 +248,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         splashColor: primaryColor.withOpacity(0.1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: AppColors.grey200 ?? Colors.grey.shade200, width: 1),
+          side: BorderSide(color: AppColors.grey200, width: 1),
         ),
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

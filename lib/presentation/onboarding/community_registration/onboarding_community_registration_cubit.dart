@@ -4,7 +4,6 @@ import 'package:resipal_admin/admin_session_service.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_form_state.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_state.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/lib.dart';
 
 class OnboardingCommunityRegistrationCubit extends Cubit<OnboardingCommunityRegistrationState> {
   final LoggerService _logger = GetIt.I<LoggerService>();

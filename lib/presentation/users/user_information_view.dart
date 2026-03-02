@@ -61,7 +61,7 @@ class UserInformationView extends StatelessWidget {
             _buildFinancialStat(
               'Deuda Actual',
               registry.totalOverdueFeeInCents.toInt(),
-              registry.hasDebt ? AppColors.danger : AppColors.grey400!,
+              registry.hasDebt ? AppColors.danger : AppColors.grey400,
             ),
           ],
         ),
@@ -79,7 +79,7 @@ class UserInformationView extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.grey300!),
+        border: Border.all(color: AppColors.grey300),
       ),
       child: Column(children: children),
     );

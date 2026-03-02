@@ -6,7 +6,7 @@ import 'package:wester_kit/lib.dart';
 
 class ContractCard extends StatelessWidget {
   final ContractEntity contract;
-  const ContractCard(this.contract);
+  const ContractCard(this.contract, {super.key});
 
   @override
   Widget build(BuildContext context) {

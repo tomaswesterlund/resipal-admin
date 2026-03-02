@@ -5,7 +5,7 @@ import 'package:resipal_core/lib.dart';
 class ApplicationStatusBadge extends StatelessWidget {
   final ApplicationStatus status;
 
-  const ApplicationStatusBadge({required this.status});
+  const ApplicationStatusBadge({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {

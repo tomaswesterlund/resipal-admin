@@ -62,7 +62,7 @@ class _PaymentListViewState extends State<PaymentListView> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: filteredPayments.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                separatorBuilder: (_, _) => const SizedBox(height: 8),
                 itemBuilder: (context, index) => PaymentCard(filteredPayments[index]),
               ),
 

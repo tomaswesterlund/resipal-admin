@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:resipal_admin/admin_session_service.dart';
 import 'payment_details_state.dart';
 import 'package:resipal_core/lib.dart';
 

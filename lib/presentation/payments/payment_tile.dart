@@ -6,7 +6,7 @@ import 'package:wester_kit/lib.dart';
 
 class PaymentTile extends StatelessWidget {
   final PaymentEntity payment;
-  const PaymentTile(this.payment);
+  const PaymentTile(this.payment, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -24,11 +24,7 @@ class ContractListPage extends StatelessWidget {
             return StateSwitcher(child: _buildStateWidget(state));
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: const Color(0xFF1A4644),
-          onPressed: () => Go.to(RegisterContractPage()),
-          child: const Icon(Icons.add, color: Colors.white),
-        ),
+        floatingActionButton: WkFloatingActionButton(onPressed: () => Go.to(const RegisterContractPage())),
       ),
     );
   }

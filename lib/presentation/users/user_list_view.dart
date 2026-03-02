@@ -78,7 +78,7 @@ class _UserListViewState extends State<UserListView> {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: filteredMemberships.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
+                separatorBuilder: (_, _) => const SizedBox(height: 8),
                 // Note: Passing m.resident as per your MembershipEntity definition
                 itemBuilder: (context, index) => UserCard(filteredMemberships[index]),
               ),

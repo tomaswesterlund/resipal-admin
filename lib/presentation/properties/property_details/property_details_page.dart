@@ -126,7 +126,7 @@ class _FeeTile extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        title: Text('Cuota de ${fee}', style: GoogleFonts.raleway(fontWeight: FontWeight.bold)),
+        title: Text('Cuota de $fee', style: GoogleFonts.raleway(fontWeight: FontWeight.bold)),
         subtitle: Text(
           fee.status.name.toUpperCase(),
           style: TextStyle(color: _getStatusColor(fee.status), fontSize: 11, fontWeight: FontWeight.bold),
