@@ -78,3 +78,4 @@ pubspec_overrides.yaml
 # Exceptions to keep (optional)
 !/ios/Runner/Base.lproj/LaunchScreen.storyboard
 !/ios/Runner/Base.lproj/Main.storyboard
+.env
