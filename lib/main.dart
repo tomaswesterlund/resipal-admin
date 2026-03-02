@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/admin_session_service.dart';
@@ -9,6 +10,7 @@ import 'package:short_navigation/short_navigation.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await ServiceLocator().initializeContainers();
   GetIt.instance.registerSingleton<AdminSessionService>(AdminSessionService());
 
