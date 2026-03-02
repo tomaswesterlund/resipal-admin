@@ -21,7 +21,7 @@ class _UserListViewState extends State<UserListView> {
     super.initState();
     _filterOptions = [
       const FilterSelectorItem(label: 'Todos', value: 'all'),
-      const FilterSelectorItem(label: 'Administradores', value: 'admin'),
+      const FilterSelectorItem(label: 'Admins', value: 'admin'),
       const FilterSelectorItem(label: 'Residentes', value: 'resident'),
       const FilterSelectorItem(label: 'Seguridad', value: 'security'),
     ];
