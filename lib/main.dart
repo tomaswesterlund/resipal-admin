@@ -11,6 +11,16 @@ import 'package:short_navigation/short_navigation.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+
+  // Setup Supabase
+  final supabaseConfig = ResipalSupabaseConfig(
+    url: dotenv.get('SUPABASE_URL'),
+    anonKey: dotenv.get('SUPABASE_ANON_KEY')
+  );
+  GetIt.instance.registerSingleton<ResipalSupabaseConfig>(supabaseConfig);
+
+  // Setup Google OAUTH
+
   await ServiceLocator().initializeContainers();
   GetIt.instance.registerSingleton<AdminSessionService>(AdminSessionService());
 

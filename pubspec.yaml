@@ -72,6 +72,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/
+    - .env
 
 package_rename_config:
   android:

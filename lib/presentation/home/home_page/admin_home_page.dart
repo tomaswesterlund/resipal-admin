@@ -122,7 +122,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           _buildDrawerItem(
                             icon: Icons.apartment_outlined,
                             label: 'Propiedades',
-                            onTap: () => Go.to(PropertiesPage(community.paymentLedger.payments)),
+                            onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties)),
                           ),
                           _buildDrawerItem(
                             icon: Icons.manage_accounts_outlined,

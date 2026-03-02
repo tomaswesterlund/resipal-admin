@@ -64,7 +64,7 @@ class _Signin extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [AppColors.primary700, AppColors.primary300],
+                colors: [AppColors.primary700, AppColors.background],
               ),
             ),
             child: SafeArea(
@@ -75,10 +75,11 @@ class _Signin extends StatelessWidget {
                   children: [
                     ResipalLogo(),
                     const SizedBox(height: 16),
-                    HeaderText.giga('Resipal Admin', color: Colors.white), // Added "Admin"
+                    HeaderText.giga('Resipal Admin', color: AppColors.grey800, textAlign: TextAlign.center,), 
+                    const SizedBox(height: 8),
                     const Text(
                       'Gestión y Administración',
-                      style: TextStyle(color: Colors.white70, fontSize: 14, letterSpacing: 0.5),
+                      style: TextStyle(color: AppColors.grey500, fontSize: 14, letterSpacing: 0.5),
                     ), // Changed from "Bienvenido a tu hogar"
                   ],
                 ),
