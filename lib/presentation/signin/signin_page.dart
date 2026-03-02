@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/auth/auth_page.dart';
 import 'package:resipal_admin/presentation/shared/resipal_logo.dart';
 import 'package:resipal_admin/presentation/signin/signin_cubit.dart';
@@ -19,16 +18,16 @@ class SigninPage extends StatelessWidget {
         child: BlocConsumer<SigninCubit, SigninState>(
           listener: (context, state) {
             if (state is AdminSignedInSuccessfullyState) {
-              Go.to(AuthPage());
+              Go.to(const AuthPage());
             }
           },
           builder: (context, state) {
             if (state is InitialState) {
-              return _Signin();
+              return const _Signin();
             }
 
             if (state is AdminSigningInState || state is AdminSignedInSuccessfullyState) {
-              return LoadingView(
+              return const LoadingView(
                 logo: ResipalLogo(),
                 title: 'Iniciando sesión',
                 description: 'Estamos configurando tu espacio...',
@@ -36,10 +35,10 @@ class SigninPage extends StatelessWidget {
             }
 
             if (state is ErrorState) {
-              return ErrorView();
+              return const ErrorView();
             }
 
-            return UnknownStateView();
+            return const UnknownStateView();
           },
         ),
       ),
@@ -52,35 +51,43 @@ class _Signin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: colorScheme.background,
       body: Column(
         children: [
           // --- Brand Header ---
           Container(
-            padding: EdgeInsets.all(30),
+            padding: const EdgeInsets.all(30),
             width: double.infinity,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [AppColors.primary700, AppColors.background],
+                colors: [
+                  colorScheme.primaryContainer.withOpacity(0.4), // Soft brand start
+                  colorScheme.background, // Fades into page color
+                ],
               ),
             ),
             child: SafeArea(
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 0.0),
                 child: Column(
                   children: [
-                    ResipalLogo(),
+                    const ResipalLogo(),
                     const SizedBox(height: 16),
-                    HeaderText.giga('Resipal Admin', color: AppColors.grey800, textAlign: TextAlign.center,), 
+                    HeaderText.giga('Resipal Admin', color: colorScheme.onBackground, textAlign: TextAlign.center),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'Gestión y Administración',
-                      style: TextStyle(color: AppColors.grey500, fontSize: 14, letterSpacing: 0.5),
-                    ), // Changed from "Bienvenido a tu hogar"
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.onBackground.withOpacity(0.7),
+                        letterSpacing: 0.5,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -92,24 +99,21 @@ class _Signin extends StatelessWidget {
             padding: const EdgeInsets.all(24.0),
             child: Column(
               children: [
-                HeaderText.four(
-                  'Panel de Administración',
-                  color: AppColors.grey900,
-                ), // Changed from "Bienvenido de nuevo"
+                HeaderText.four('Panel de Administración', color: colorScheme.onBackground),
                 const SizedBox(height: 8),
-                const Text(
-                  'Inicia sesión para gestionar el complejo residencial', // Refined for Admin clarity
+                Text(
+                  'Inicia sesión para gestionar el complejo residencial',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: AppColors.hint),
+                  style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
 
                 // Google Sign In
                 SocialLoginButton(
                   label: 'Continuar con Google',
                   icon: Icons.g_mobiledata_rounded,
-                  backgroundColor: Colors.white,
-                  textColor: Colors.black87,
+                  backgroundColor: colorScheme.surface,
+                  textColor: colorScheme.onSurface,
                   onPressed: () => context.read<SigninCubit>().signin(),
                 ),
 
@@ -119,26 +123,24 @@ class _Signin extends StatelessWidget {
                 SocialLoginButton(
                   label: 'Continuar con Apple',
                   icon: Icons.apple,
-                  backgroundColor: Colors.black,
+                  backgroundColor: Colors.black, // Apple branding usually stays black
                   textColor: Colors.white,
                   onPressed: () {
                     // TODO: Implement Apple Sign In
                   },
                 ),
-
-                const SizedBox(height: 40),
               ],
             ),
           ),
           const Spacer(),
-          const SafeArea(
+          SafeArea(
             top: false,
             child: Padding(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 20),
               child: Text(
                 'Acceso exclusivo para administradores autorizados',
-                style: TextStyle(fontSize: 10, color: AppColors.hint),
-              ), // Added a subtle security/role reminder
+                style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.outline, fontSize: 10),
+              ),
             ),
           ),
         ],

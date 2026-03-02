@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_cubit.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_state.dart';
 import 'package:wester_kit/lib.dart';
@@ -9,14 +7,22 @@ import 'package:wester_kit/lib.dart';
 class HomeOverview extends StatelessWidget {
   final VoidCallback onPendingPaymentsPressed;
   final VoidCallback onPendingApplicationsPressed;
-  const HomeOverview({required this.onPendingPaymentsPressed, required this.onPendingApplicationsPressed, super.key});
+  
+  const HomeOverview({
+    required this.onPendingPaymentsPressed, 
+    required this.onPendingApplicationsPressed, 
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocProvider(
       create: (context) => HomeOverviewCubit()..initialize(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: colorScheme.background,
         body: BlocBuilder<HomeOverviewCubit, HomeOverviewState>(
           builder: (context, state) {
             if (state is LoadingState) return const LoadingView();
@@ -32,7 +38,10 @@ class HomeOverview extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     community.name,
-                    style: GoogleFonts.raleway(color: AppColors.grey600, fontWeight: FontWeight.w600),
+                    style: theme.textTheme.titleSmall?.copyWith(
+                      color: colorScheme.outline,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 24),
 
@@ -47,11 +56,17 @@ class HomeOverview extends StatelessWidget {
                     childAspectRatio: 1.5,
                     children: [
                       _buildStatCard(
+                        context,
                         'Propiedades',
                         community.propertyRegistry.count.toString(),
                         Icons.home_work_outlined,
                       ),
-                      _buildStatCard('Usuarios', community.directory.members.length.toString(), Icons.people_outline),
+                      _buildStatCard(
+                        context,
+                        'Usuarios', 
+                        community.directory.members.length.toString(), 
+                        Icons.people_outline,
+                      ),
                     ],
                   ),
 
@@ -66,7 +81,8 @@ class HomeOverview extends StatelessWidget {
                     title: 'Pagos por revisar',
                     count: community.paymentLedger.pendingPayments.length,
                     icon: Icons.receipt_long_outlined,
-                    color: AppColors.warning,
+                    // Replaces AppColors.warning with Terracotta/Secondary
+                    color: colorScheme.secondary, 
                     onPressed: onPendingPaymentsPressed
                   ),
                   const SizedBox(height: 12),
@@ -75,7 +91,8 @@ class HomeOverview extends StatelessWidget {
                     title: 'Solicitudes de ingreso',
                     count: community.directory.pendingApplications.length,
                     icon: Icons.person_add_outlined,
-                    color: AppColors.info,
+                    // Replaces AppColors.info with System/Info Tertiary
+                    color: colorScheme.tertiary,
                     onPressed: onPendingApplicationsPressed
                   ),
                 ],
@@ -89,29 +106,39 @@ class HomeOverview extends StatelessWidget {
     );
   }
 
-  Widget _buildStatCard(String label, String value, IconData icon) {
+  Widget _buildStatCard(BuildContext context, String label, String value, IconData icon) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.grey300),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(icon, color: AppColors.grey600, size: 24),
+          Icon(icon, color: colorScheme.primary, size: 24),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 value,
-                style: GoogleFonts.raleway(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.grey900),
+                style: theme.textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.bold, 
+                  color: colorScheme.onSurface,
+                  fontFamily: 'NotoSansMono', // Consistent with numeric guide
+                ),
               ),
               Text(
                 label,
-                style: GoogleFonts.raleway(fontSize: 12, color: AppColors.grey500, fontWeight: FontWeight.w600),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: colorScheme.outline, 
+                  fontWeight: FontWeight.w600,
+                ),
               ),
             ],
           ),
@@ -128,14 +155,17 @@ class HomeOverview extends StatelessWidget {
     required Color color,
     required VoidCallback onPressed
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: color.withOpacity(0.2)),
+          border: Border.all(color: colorScheme.outlineVariant),
         ),
         child: Row(
           children: [
@@ -147,22 +177,28 @@ class HomeOverview extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: GoogleFonts.raleway(fontWeight: FontWeight.bold, color: AppColors.grey700),
+                style: theme.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold, 
+                  color: colorScheme.onSurface,
+                ),
               ),
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: count > 0 ? color : color.withOpacity(0.3),
+                color: count > 0 ? color : color.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
                 count.toString(),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: Colors.white, 
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            SizedBox(width: 12),
-            Icon(Icons.arrow_forward_ios, size: 16, color: AppColors.grey600,),
+            const SizedBox(width: 12),
+            Icon(Icons.arrow_forward_ios, size: 14, color: colorScheme.outline),
           ],
         ),
       ),

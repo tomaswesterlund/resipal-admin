@@ -1,48 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:wester_kit/wk_app_colors.dart';
 
-class AppColors extends WkAppColors {
+class AppColors {
   // --- Brand Colors ---
-  static const Color primary = WkAppColors.primary;
-  static const Color secondary = WkAppColors.secondary;
-  static const Color background = WkAppColors.background;
-  static const Color surface = WkAppColors.surface;
+  static const Color primary = primary700;
+  static const Color secondary = secondary500;
+  static const Color background = Color(0xFFF9FAFB);
+  static const Color surface = Colors.white;
 
-  // --- Primary Scale ---
-  static const Color primary50 = WkAppColors.primary50;
-  static const Color primary100 = WkAppColors.primary100;
-  static const Color primary300 = WkAppColors.primary300;
-  static const Color primary700 = WkAppColors.primary700;
-  static const Color primary900 = WkAppColors.primary900;
+  // --- Primary Scale (Resipal Green) ---
+  static const Color primary50 = Color(0xFFE4EFEE);
+  static const Color primary100 = Color(0xFFC1D6D4);
+  static const Color primary200 = Color(0xFF9BBBB9);
+  static const Color primary300 = Color(0xFF75A09D);
+  static const Color primary400 = Color(0xFF588C88);
+  static const Color primary500 = Color(0xFF3C7873);
+  static const Color primary600 = Color(0xFF336863);
+  static const Color primary700 = Color(0xFF1A4644); // Base Branded Green
+  static const Color primary800 = Color(0xFF133634);
+  static const Color primary900 = Color(0xFF0C2423);
 
-  // --- Secondary Scale ---
-  static const Color secondary50 = WkAppColors.secondary50;
-  static const Color secondary100 = WkAppColors.secondary100;
-  static const Color secondary300 = WkAppColors.secondary300;
-  static const Color secondary700 = WkAppColors.secondary700;
-  static const Color secondary900 = WkAppColors.secondary900;
+  // --- Secondary Scale (Terracotta / Action Required) ---
+  static const Color secondary50 = Color(0xFFFBF2F0);
+  static const Color secondary100 = Color(0xFFF5DED9);
+  static const Color secondary200 = Color(0xFFEBBDB3);
+  static const Color secondary300 = Color(0xFFE09C8D);
+  static const Color secondary400 = Color(0xFFD67B67);
+  static const Color secondary500 = Color(0xFFE07A5F); // Base Branded Terracotta
+  static const Color secondary600 = Color(0xFFC26650);
+  static const Color secondary700 = Color(0xFFA35241);
+  static const Color secondary800 = Color(0xFF854133);
+  static const Color secondary900 = Color(0xFF663026);
 
   // --- Neutral / Grey Scale ---
-  static const Color grey50 = WkAppColors.grey50;
-  static const Color grey100 = WkAppColors.grey100; // Hover states
-  static const Color grey200 = WkAppColors.grey200; // Borders / Dividers
-  static const Color grey300 = WkAppColors.grey300; // Disabled elements
-  static const Color grey400 = WkAppColors.grey400; // Hint text
-  static const Color grey500 = WkAppColors.grey500; // Secondary text
-  static const Color grey600 = WkAppColors.grey600; // Medium emphasis text
-  static const Color grey700 = WkAppColors.grey700; // High emphasis text
-  static const Color grey800 = WkAppColors.grey800; // Heading text
-  static const Color grey900 = WkAppColors.grey900; // Near black
+  static const Color grey50 = Color(0xFFF9FAFB);
+  static const Color grey100 = Color(0xFFF3F4F6); // Hover states
+  static const Color grey200 = Color(0xFFE5E7EB); // Borders / Dividers
+  static const Color grey300 = Color(0xFFD1D5DB); // Disabled elements
+  static const Color grey400 = Color(0xFF9CA3AF); // Hint text
+  static const Color grey500 = Color(0xFF6B7280); // Secondary text
+  static const Color grey600 = Color(0xFF4B5563); // Medium emphasis
+  static const Color grey700 = Color(0xFF374151); // High emphasis
+  static const Color grey800 = Color(0xFF1F2937); // Heading text
+  static const Color grey900 = Color(0xFF111827); // Near black
 
   // --- Status & Feedback ---
-  static const Color info = WkAppColors.info;
-  static const Color danger = WkAppColors.danger;
-  static const Color warning = WkAppColors.warning;
-  static const Color success = WkAppColors.success;
+  static const Color info = Color(0xFF3B82F6); // System Blue
+  static const Color danger = Color(0xFFEF4444); // System Red
+  static const Color warning = Color(0xFFF59E0B); // System Amber
+  static const Color success = Color(0xFF10B981); // System Emerald
 
   // --- Text & Hints ---
-  static const Color textPrimary = WkAppColors.textPrimary;
-  static const Color textSecondary = WkAppColors.textSecondary;
-  static const Color hint = WkAppColors.hint;
-  static const Color disabled = WkAppColors.disabled;
+  static const Color textPrimary = Color(0xFF111827);
+  static const Color textSecondary = Color(0xFF4B5563);
+  static const Color hint = Color(0xFF9CA3AF);
+  static const Color disabled = Color(0xFFD1D5DB);
 }

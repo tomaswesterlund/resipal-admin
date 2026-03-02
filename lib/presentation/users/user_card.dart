@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/users/user_details/user_details_page.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
@@ -15,10 +13,14 @@ class UserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool hasDebt = member.resident.propertyRegistery.hasDebt;
-    final Color statusColor = hasDebt ? AppColors.danger : AppColors.success;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-    // Property Label Logic (Stayed the same)
+    // Mapping states to Theme Colors
+    final bool hasDebt = member.resident.propertyRegistery.hasDebt;
+    final Color statusColor = hasDebt ? colorScheme.error : Colors.green.shade600;
+
+    // Property Label Logic
     final List<String> propertyNames = member.resident.propertyRegistery.properties.map((p) => p.name).toList();
     String propertiesLabel = 'Sin propiedades';
     if (propertyNames.isNotEmpty) {
@@ -33,9 +35,9 @@ class UserCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: statusColor.withOpacity(0.2), width: 1),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -43,6 +45,7 @@ class UserCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Branded Status Indicator
               Container(width: 6, color: statusColor),
               Expanded(
                 child: Padding(
@@ -58,70 +61,68 @@ class UserCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                HeaderText.five(member.resident.user.name, color: AppColors.grey900),
+                                HeaderText.five(member.resident.user.name, color: colorScheme.onSurface),
                                 const SizedBox(height: 2),
                                 Text(
                                   propertiesLabel,
-                                  style: GoogleFonts.raleway(
-                                    fontSize: 12,
-                                    color: AppColors.grey600,
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: colorScheme.outline,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          _buildRoleBadges(),
+                          _buildRoleBadges(context),
                         ],
                       ),
 
-                      const Divider(height: 24, thickness: 1, color: Color(0xFFF4F5F4)),
+                      const Divider(height: 24, thickness: 1),
 
-                      // Footer: Balance, Pending, and Debt
+                      // Footer: Financial Metrics
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          // Financial Columns Group
                           Expanded(
                             child: Row(
                               children: [
                                 _buildAmountColumn(
-                                  label: 'Balance',
+                                  context,
+                                  label: 'BALANCE',
                                   cents: member.resident.paymentLedger.totalBalanceInCents,
-                                  color: AppColors.success,
+                                  color: Colors.green.shade600,
                                 ),
-                                const SizedBox(width: 16), // Reduced from 24 to fit 3 items
+                                const SizedBox(width: 12),
                                 _buildAmountColumn(
-                                  label: 'Pendiente',
-                                  // Added the pending amount here
+                                  context,
+                                  label: 'PENDIENTE',
                                   cents: member.resident.paymentLedger.pendingPaymentAmountInCents,
-                                  color: AppColors.warning,
+                                  color: colorScheme.secondary, // Secondary is our Warning/Amber scale
                                 ),
-                                const SizedBox(width: 16),
+                                const SizedBox(width: 12),
                                 _buildAmountColumn(
-                                  label: 'Deuda',
+                                  context,
+                                  label: 'DEUDA',
                                   cents: member.resident.propertyRegistery.totalOverdueFeeInCents.toInt(),
-                                  color: hasDebt ? AppColors.danger : AppColors.grey900,
+                                  color: hasDebt ? colorScheme.error : colorScheme.onSurface,
                                 ),
                               ],
                             ),
                           ),
 
-                          // Right: Action
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              foregroundColor: AppColors.grey500,
-                              padding: EdgeInsets.zero, // More compact for 3-column layout
-                              textStyle: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 13),
-                            ),
-                            onPressed: () => Go.to(UserDetailsPage(member)),
-                            child: Row(
-                              children: [
-                                BodyText.small('Detalles'),
-                                SizedBox(width: 2),
-                                Icon(Icons.arrow_forward_ios, size: 10),
-                              ],
+                          // Action Button
+                          GestureDetector(
+                            onTap: () => Go.to(UserDetailsPage(member)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                children: [
+                                  BodyText.small('Detalles', color: colorScheme.primary, fontWeight: FontWeight.bold),
+                                  const SizedBox(width: 4),
+                                  Icon(Icons.arrow_forward_ios, size: 10, color: colorScheme.primary),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -137,40 +138,43 @@ class UserCard extends StatelessWidget {
     );
   }
 
-  Widget _buildAmountColumn({required String label, required int cents, required Color color}) {
+  Widget _buildAmountColumn(BuildContext context, {required String label, required int cents, required Color color}) {
+    final theme = Theme.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           label,
-          style: GoogleFonts.raleway(
-            fontSize: 9, // Slightly smaller to prevent overflow
-            fontWeight: FontWeight.w700,
-            color: AppColors.grey500,
+          style: theme.textTheme.labelSmall?.copyWith(
+            fontSize: 8,
+            letterSpacing: 0.5,
+            fontWeight: FontWeight.w800,
+            color: theme.colorScheme.outline,
           ),
         ),
         AmountText.fromCents(
           cents,
-          fontSize: 14, // Reduced from 16 to fit the 3rd column safely
+          fontSize: 13,
           color: color,
         ),
       ],
     );
   }
 
-  Widget _buildRoleBadges() {
+  Widget _buildRoleBadges(BuildContext context) {
+    final iconColor = Theme.of(context).colorScheme.outlineVariant;
     return Row(
       children: [
-        if (member.isAdmin) _buildSmallIcon(Icons.admin_panel_settings, AppColors.grey400),
-        if (member.isSecurity) _buildSmallIcon(Icons.shield_outlined, AppColors.grey400),
-        if (member.isResident) _buildSmallIcon(Icons.home_work_outlined, AppColors.grey400),
+        if (member.isAdmin) _buildSmallIcon(Icons.admin_panel_settings, iconColor),
+        if (member.isSecurity) _buildSmallIcon(Icons.shield_outlined, iconColor),
+        if (member.isResident) _buildSmallIcon(Icons.home_work_outlined, iconColor),
       ],
     );
   }
 
   Widget _buildSmallIcon(IconData icon, Color color) {
     return Padding(
-      padding: const EdgeInsets.only(left: 4),
+      padding: const EdgeInsets.only(left: 6),
       child: Icon(icon, size: 18, color: color),
     );
   }

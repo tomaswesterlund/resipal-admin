@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
@@ -11,6 +9,9 @@ class UserInformationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     final resident = membership.resident;
     final user = resident.user;
     final ledger = resident.paymentLedger;
@@ -22,10 +23,10 @@ class UserInformationView extends StatelessWidget {
         // --- Profile Section ---
         HeaderText.five('Perfil del Usuario'),
         const SizedBox(height: 12),
-        _buildInfoContainer([
-          _buildDetailRow(Icons.email_outlined, 'Correo electrónico', user.email),
-          _buildDetailRow(Icons.calendar_today_outlined, 'Miembro desde', membership.createdAt.toShortDate()),
-          _buildDetailRow(Icons.fingerprint_outlined, 'ID de Usuario', user.id.substring(0, 8).toUpperCase()),
+        _buildInfoContainer(context, [
+          _buildDetailRow(context, Icons.email_outlined, 'Correo electrónico', user.email),
+          _buildDetailRow(context, Icons.calendar_today_outlined, 'Miembro desde', membership.createdAt.toShortDate()),
+          _buildDetailRow(context, Icons.fingerprint_outlined, 'ID de Usuario', user.id.substring(0, 8).toUpperCase()),
         ]),
 
         const SizedBox(height: 24),
@@ -37,9 +38,11 @@ class UserInformationView extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            if (membership.isAdmin) _buildRoleChip('Administrador', Icons.admin_panel_settings, AppColors.primary),
-            if (membership.isResident) _buildRoleChip('Residente', Icons.home_outlined, AppColors.success),
-            if (membership.isSecurity) _buildRoleChip('Seguridad', Icons.shield_outlined, AppColors.info),
+            if (membership.isAdmin)
+              _buildRoleChip(context, 'Administrador', Icons.admin_panel_settings, colorScheme.primary),
+            if (membership.isResident) _buildRoleChip(context, 'Residente', Icons.home_outlined, Colors.green.shade600),
+            if (membership.isSecurity)
+              _buildRoleChip(context, 'Seguridad', Icons.shield_outlined, colorScheme.tertiary),
           ],
         ),
 
@@ -57,65 +60,72 @@ class UserInformationView extends StatelessWidget {
           mainAxisSpacing: 16,
           childAspectRatio: 1.4,
           children: [
-            _buildFinancialStat('Balance Total', ledger.totalBalanceInCents, AppColors.success),
+            _buildFinancialStat(context, 'Balance Total', ledger.totalBalanceInCents, Colors.green.shade600),
             _buildFinancialStat(
+              context,
               'Deuda Actual',
               registry.totalOverdueFeeInCents.toInt(),
-              registry.hasDebt ? AppColors.danger : AppColors.grey400,
+              registry.hasDebt ? colorScheme.error : colorScheme.outline,
             ),
           ],
         ),
 
-        const SizedBox(height: 96), // Space for navigation/FAB overlap
+        const SizedBox(height: 96),
       ],
     );
   }
 
   // --- Helper Builders ---
 
-  Widget _buildInfoContainer(List<Widget> children) {
+  Widget _buildInfoContainer(BuildContext context, List<Widget> children) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.grey300),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(children: children),
     );
   }
 
-  Widget _buildDetailRow(IconData icon, String label, String value, {Color? valueColor}) {
+  Widget _buildDetailRow(BuildContext context, IconData icon, String label, String value) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          Icon(icon, size: 18, color: AppColors.grey500),
+          Icon(icon, size: 18, color: colorScheme.outline),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
               label,
-              style: GoogleFonts.raleway(fontSize: 13, color: AppColors.grey600, fontWeight: FontWeight.w500),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           Text(
             value,
-            style: GoogleFonts.raleway(
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-              color: valueColor ?? AppColors.grey800,
-            ),
+            style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFinancialStat(String label, int cents, Color color) {
+  Widget _buildFinancialStat(BuildContext context, String label, int cents, Color color) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: color.withOpacity(0.2)),
       ),
@@ -124,19 +134,24 @@ class UserInformationView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            label,
-            style: GoogleFonts.raleway(fontSize: 10, color: AppColors.grey500, fontWeight: FontWeight.w700),
+            label.toUpperCase(),
+            style: theme.textTheme.labelSmall?.copyWith(
+              letterSpacing: 0.5,
+              color: colorScheme.outline,
+              fontWeight: FontWeight.w800,
+            ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
           AmountText.fromCents(cents, fontSize: 18, color: color),
         ],
       ),
     );
   }
 
-  Widget _buildRoleChip(String label, IconData icon, Color color) {
+  Widget _buildRoleChip(BuildContext context, String label, IconData icon, Color color) {
+    final theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -145,7 +160,7 @@ class UserInformationView extends StatelessWidget {
           const SizedBox(width: 6),
           Text(
             label,
-            style: GoogleFonts.raleway(fontSize: 11, fontWeight: FontWeight.bold, color: color),
+            style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold, color: color),
           ),
         ],
       ),

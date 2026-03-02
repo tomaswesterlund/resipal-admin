@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/home/home_page/admin_home_page.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_cubit.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_state.dart';
@@ -13,10 +11,14 @@ class OnboardingCommunityRegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocProvider(
       create: (context) => OnboardingCommunityRegistrationCubit()..initialize(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        // Pulls from your mapped AppColors.background
+        backgroundColor: colorScheme.background,
         appBar: const MyAppBar(title: 'Nueva Comunidad', automaticallyImplyLeading: false),
         body: BlocBuilder<OnboardingCommunityRegistrationCubit, OnboardingCommunityRegistrationState>(
           builder: (context, state) {
@@ -38,7 +40,7 @@ class OnboardingCommunityRegistrationPage extends StatelessWidget {
               );
             }
 
-            if (state is ErrorState) return ErrorView();
+            if (state is ErrorState) return const ErrorView();
 
             if (state is FormEditingState) {
               final form = state.formstate;
@@ -49,11 +51,14 @@ class OnboardingCommunityRegistrationPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    HeaderText.five('Datos de la Comunidad', color: const Color(0xFF1A4644)),
+                    // Uses Primary Green from Theme
+                    HeaderText.five('Datos de la Comunidad', color: colorScheme.primary),
                     const SizedBox(height: 8),
                     Text(
                       'Define el nombre y la ubicación de la comunidad que vas a administrar.',
-                      style: GoogleFonts.raleway(fontSize: 14, color: Colors.grey.shade600),
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: colorScheme.outline, // Replaces Colors.grey.shade600
+                      ),
                     ),
                     const SizedBox(height: 32),
 
@@ -85,19 +90,26 @@ class OnboardingCommunityRegistrationPage extends StatelessWidget {
 
                     const SizedBox(height: 48),
 
+                    // Primary Button - Linked to Theme
                     SizedBox(
                       width: double.infinity,
                       height: 55,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1A4644),
-                          disabledBackgroundColor: Colors.grey.shade300,
+                          backgroundColor: colorScheme.primary,
+                          foregroundColor: colorScheme.onPrimary,
+                          disabledBackgroundColor: colorScheme.outlineVariant,
+                          elevation: 0,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                         ),
                         onPressed: form.canSubmit ? () => cubit.submit() : null,
                         child: Text(
                           'Crear Comunidad',
-                          style: GoogleFonts.raleway(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+                          style: theme.textTheme.labelLarge?.copyWith(
+                            color: form.canSubmit ? colorScheme.onPrimary : colorScheme.outline,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
@@ -105,7 +117,7 @@ class OnboardingCommunityRegistrationPage extends StatelessWidget {
                 ),
               );
             }
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: CircularProgressIndicator(color: colorScheme.primary));
           },
         ),
       ),

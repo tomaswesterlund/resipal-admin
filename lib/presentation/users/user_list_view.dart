@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/users/user_card.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
@@ -32,7 +30,10 @@ class _UserListViewState extends State<UserListView> {
 
   @override
   Widget build(BuildContext context) {
-    // 1. Filter Logic based on your MembershipEntity boolean flags
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // 1. Filter Logic
     final filteredMemberships = widget.memberships.where((m) {
       switch (_selectedFilter.value) {
         case 'admin':
@@ -42,11 +43,11 @@ class _UserListViewState extends State<UserListView> {
         case 'security':
           return m.isSecurity;
         default:
-          return true; // 'all'
+          return true; 
       }
     }).toList();
 
-    // 2. Sort by resident name (alphabetical)
+    // 2. Sort Alphabetically
     filteredMemberships.sort(
       (a, b) => (a.resident.user.name).toLowerCase().compareTo((b.resident.user.name).toLowerCase()),
     );
@@ -58,7 +59,7 @@ class _UserListViewState extends State<UserListView> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // Filter Selector using String values to represent your booleans
+            // Theme-aware Filter Selector
             FilterSelector<String?>(
               options: _filterOptions,
               selectedValue: _selectedFilter,
@@ -72,14 +73,13 @@ class _UserListViewState extends State<UserListView> {
             const SizedBox(height: 16.0),
 
             if (filteredMemberships.isEmpty)
-              _buildEmptyFilterState()
+              _buildEmptyFilterState(context)
             else
               ListView.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 itemCount: filteredMemberships.length,
                 separatorBuilder: (_, _) => const SizedBox(height: 8),
-                // Note: Passing m.resident as per your MembershipEntity definition
                 itemBuilder: (context, index) => UserCard(filteredMemberships[index]),
               ),
 
@@ -90,17 +90,21 @@ class _UserListViewState extends State<UserListView> {
     );
   }
 
-  Widget _buildEmptyFilterState() {
+  Widget _buildEmptyFilterState(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.only(top: 40.0),
       child: Column(
         children: [
-          Icon(Icons.person_search_outlined, color: AppColors.primary.withOpacity(0.5), size: 48),
+          Icon(Icons.person_search_outlined, color: colorScheme.primary.withOpacity(0.3), size: 48),
           const SizedBox(height: 12),
           Text(
             'No hay usuarios con este rol en la comunidad',
             textAlign: TextAlign.center,
-            style: GoogleFonts.raleway(color: Colors.grey, fontWeight: FontWeight.w500),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: colorScheme.outline,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -113,6 +117,9 @@ class _Empty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
@@ -121,23 +128,30 @@ class _Empty extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.1), shape: BoxShape.circle),
-              child: Icon(Icons.people_outline, size: 64, color: AppColors.primary),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withOpacity(0.1), 
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.people_outline, size: 64, color: colorScheme.primary),
             ),
             const SizedBox(height: 32),
-            HeaderText.four('Sin usuarios', textAlign: TextAlign.center, color: AppColors.primary),
+            HeaderText.four(
+              'Sin usuarios', 
+              textAlign: TextAlign.center, 
+              color: colorScheme.primary,
+            ),
             const SizedBox(height: 16),
             Text(
               'No hay usuarios registrados en esta comunidad todavía.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.raleway(fontSize: 15, color: Colors.grey.shade600),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
             ),
             const SizedBox(height: 32),
             TextButton.icon(
-              onPressed: null,
+              onPressed: null, // Logic to be implemented
               icon: const Icon(Icons.person_add_alt_1),
               label: const Text('Registrar miembro'),
-              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
             ),
           ],
         ),

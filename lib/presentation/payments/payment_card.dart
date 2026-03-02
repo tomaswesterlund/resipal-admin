@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/payments/payment_details/payment_details_page.dart';
-import 'package:resipal_admin/presentation/shared/colors/payment_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
@@ -14,15 +11,18 @@ class PaymentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color statusColor = PaymentColors.getColor(payment);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final Color statusColor = _getStatusColor(context);
     final bool isApproved = payment.status == PaymentStatus.approved;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: statusColor.withOpacity(0.2), width: 1),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -30,6 +30,7 @@ class PaymentCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // Side indicator bar
               Container(width: 6, color: statusColor),
               Expanded(
                 child: Padding(
@@ -37,41 +38,49 @@ class PaymentCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Header: Amount & Status Icon
+                      // Header: Amount & Resident Info
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Monto pagado',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.grey400,
-                                ),
-                              ),
-                              
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.baseline,
-                                textBaseline: TextBaseline.alphabetic,
-                                children: [
-                                  AmountText.fromCents(payment.amountInCents, fontSize: 18, color: AppColors.grey700),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    'de ${payment.user.name}',
-                                    style: GoogleFonts.raleway(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: AppColors.grey500,
-                                    ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'MONTO PAGADO',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    fontSize: 9,
+                                    letterSpacing: 0.5,
+                                    fontWeight: FontWeight.w800,
+                                    color: colorScheme.outline,
                                   ),
-                                ],
-                              ),
-                            ],
+                                ),
+                                const SizedBox(height: 2),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                                  textBaseline: TextBaseline.alphabetic,
+                                  children: [
+                                    AmountText.fromCents(
+                                      payment.amountInCents,
+                                      fontSize: 18,
+                                      color: colorScheme.onSurface,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Expanded(
+                                      child: Text(
+                                        'de ${payment.user.name}',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: theme.textTheme.bodyMedium?.copyWith(
+                                          color: colorScheme.outline,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                          const Spacer(),
                           Icon(
                             isApproved
                                 ? Icons.check_circle
@@ -84,9 +93,9 @@ class PaymentCard extends StatelessWidget {
                         ],
                       ),
 
-                      const Divider(height: 20, thickness: 1, color: Color(0xFFF4F5F4)),
+                      Divider(height: 24, thickness: 1, color: colorScheme.outlineVariant),
 
-                      // Footer: Status & Date
+                      // Footer: Status Badge & Date
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
@@ -102,34 +111,41 @@ class PaymentCard extends StatelessWidget {
                                 ),
                                 child: Text(
                                   payment.status.displayName.toUpperCase(),
-                                  style: GoogleFonts.raleway(
+                                  style: theme.textTheme.labelSmall?.copyWith(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
                                     color: statusColor,
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: 6),
                               Text(
-                                'Fecha de pago: ${payment.date.toShortDate()}',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 12,
+                                'Fecha: ${payment.date.toShortDate()}',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.outline,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.grey600,
                                 ),
                               ),
                             ],
                           ),
 
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              foregroundColor: AppColors.grey800,
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              textStyle: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 13),
-                            ),
-                            onPressed: () => Go.to(PaymentDetailsPage(paymentId: payment.id)),
-                            child: const Row(
-                              children: [Text('Detalles'), SizedBox(width: 4), Icon(Icons.arrow_forward_ios, size: 12)],
+                          GestureDetector(
+                            onTap: () => Go.to(PaymentDetailsPage(paymentId: payment.id)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Detalles',
+                                    style: theme.textTheme.labelLarge?.copyWith(
+                                      color: colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(Icons.arrow_forward_ios, size: 12, color: colorScheme.primary),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -143,5 +159,19 @@ class PaymentCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getStatusColor(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    switch (payment.status) {
+      case PaymentStatus.approved:
+        return Colors.green.shade600;
+      case PaymentStatus.pendingReview:
+        return colorScheme.secondary;
+      case PaymentStatus.cancelled:
+        return colorScheme.error;
+      default:
+        return colorScheme.outline;
+    }
   }
 }

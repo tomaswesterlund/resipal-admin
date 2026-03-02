@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
@@ -10,22 +8,30 @@ class PaymentTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.grey.shade100),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
+          // Branded Icon Container
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.secondary.withOpacity(0.1),
+              color: colorScheme.secondary.withOpacity(0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.receipt_long_rounded, color: AppColors.secondary),
+            child: Icon(
+              Icons.receipt_long_rounded, 
+              color: colorScheme.secondary, 
+              size: 20,
+            ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -34,19 +40,25 @@ class PaymentTile extends StatelessWidget {
               children: [
                 Text(
                   'Pago de Cuota',
-                  style: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 14),
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   payment.createdAt.toShortDate(),
-                  style: GoogleFonts.raleway(fontSize: 12, color: Colors.grey),
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.outline,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),
           ),
+          // Currency Display using Mono Font via AmountText
           AmountText.fromCents(
             payment.amountInCents,
             fontSize: 16,
-            color: AppColors.secondary,
+            color: colorScheme.secondary,
           ),
         ],
       ),

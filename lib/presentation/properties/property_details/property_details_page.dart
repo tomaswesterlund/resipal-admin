@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 import 'property_details_cubit.dart';
@@ -13,15 +11,17 @@ class PropertyDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return BlocProvider(
       create: (context) => PropertyDetailsCubit(propertyId: propertyId)..initialize(),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: colorScheme.background,
         appBar: const MyAppBar(title: 'Detalle de Propiedad'),
         body: BlocBuilder<PropertyDetailsCubit, PropertyDetailsState>(
           builder: (context, state) {
             if (state is LoadingState) return const LoadingView();
-            if (state is ErrorState) return ErrorView();
+            if (state is ErrorState) return const ErrorView();
             if (state is LoadedState) return _PropertyContent(state.property);
             return const SizedBox.shrink();
           },
@@ -37,6 +37,8 @@ class _PropertyContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -45,9 +47,9 @@ class _PropertyContent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildHeaderCard(),
+                _buildHeaderCard(context),
                 const SizedBox(height: 24),
-                HeaderText.five('Historial de Cuotas', color: const Color(0xFF1A4644)),
+                HeaderText.five('Historial de Cuotas', color: colorScheme.primary),
                 const SizedBox(height: 12),
               ],
             ),
@@ -66,28 +68,40 @@ class _PropertyContent extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderCard() {
+  Widget _buildHeaderCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))],
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05), 
+            blurRadius: 10, 
+            offset: const Offset(0, 4),
+          )
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          HeaderText.four(property.name, color: const Color(0xFF1A4644)),
+          HeaderText.four(property.name, color: colorScheme.primary),
           Text(
             property.resident?.name ?? 'Sin residente',
-            style: GoogleFonts.raleway(color: Colors.grey.shade600, fontWeight: FontWeight.w500),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colorScheme.outline, 
+              fontWeight: FontWeight.w500,
+            ),
           ),
-          const Divider(height: 32),
+          Divider(height: 32, color: colorScheme.outlineVariant),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _infoColumn('Contrato', property.contract?.name ?? 'N/A'),
-              _infoColumn('Deuda Total', '', amount: property.totalOverdueFeeInCents),
+              _infoColumn(context, 'Contrato', property.contract?.name ?? 'N/A'),
+              _infoColumn(context, 'Deuda Total', '', amount: property.totalOverdueFeeInCents),
             ],
           ),
         ],
@@ -95,20 +109,34 @@ class _PropertyContent extends StatelessWidget {
     );
   }
 
-  Widget _infoColumn(String label, String value, {int? amount}) {
+  Widget _infoColumn(BuildContext context, String label, String value, {int? amount}) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          label,
-          style: GoogleFonts.raleway(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.grey),
+          label.toUpperCase(),
+          style: theme.textTheme.labelSmall?.copyWith(
+            fontWeight: FontWeight.bold, 
+            color: colorScheme.outline,
+            letterSpacing: 0.5,
+          ),
         ),
         if (amount != null)
-          AmountText.fromCents(amount, fontSize: 16, color: amount > 0 ? AppColors.danger : AppColors.grey900)
+          AmountText.fromCents(
+            amount, 
+            fontSize: 16, 
+            color: amount > 0 ? colorScheme.error : colorScheme.onSurface,
+          )
         else
           Text(
             value,
-            style: GoogleFonts.raleway(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87),
+            style: theme.textTheme.bodyLarge?.copyWith(
+              fontWeight: FontWeight.w600, 
+              color: colorScheme.onSurface,
+            ),
           ),
       ],
     );
@@ -121,25 +149,41 @@ class _FeeTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Card(
+      elevation: 0,
       margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      color: colorScheme.surface,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: BorderSide(color: colorScheme.outlineVariant),
+      ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        title: Text('Cuota de $fee', style: GoogleFonts.raleway(fontWeight: FontWeight.bold)),
+        title: Text(
+          'Cuota de ${fee.dueDate.toShortDate()}', // Assumes a date formatting helper
+          style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
         subtitle: Text(
           fee.status.name.toUpperCase(),
-          style: TextStyle(color: _getStatusColor(fee.status), fontSize: 11, fontWeight: FontWeight.bold),
+          style: theme.textTheme.labelSmall?.copyWith(
+            color: _getStatusColor(context, fee.status), 
+            fontWeight: FontWeight.bold,
+          ),
         ),
         trailing: AmountText.fromCents(fee.amountInCents, fontSize: 16),
       ),
     );
   }
 
-  Color _getStatusColor(dynamic status) {
-    // Basic mapping example
-    if (status.toString().contains('paid')) return AppColors.secondary;
-    if (status.toString().contains('overdue')) return AppColors.danger;
-    return Colors.orange;
+  Color _getStatusColor(BuildContext context, dynamic status) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final statusStr = status.toString().toLowerCase();
+
+    if (statusStr.contains('paid')) return Colors.green.shade600;
+    if (statusStr.contains('overdue')) return colorScheme.error;
+    return Colors.orange; // Default for pending/processing
   }
 }

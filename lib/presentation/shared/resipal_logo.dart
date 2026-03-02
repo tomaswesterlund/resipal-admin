@@ -6,6 +6,6 @@ class ResipalLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset('assets/resipal_logo_blue.svg', semanticsLabel: 'Dart Logo');
+    return SvgPicture.asset('assets/resipal_logo_green.svg', semanticsLabel: 'Dart Logo');
   }
 }

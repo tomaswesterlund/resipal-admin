@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:flutter/material.dart';
 import 'package:resipal_core/lib.dart';
 
 class ApplicationStatusBadge extends StatelessWidget {
@@ -9,30 +8,44 @@ class ApplicationStatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color color;
-    String text;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    final Color color;
+    final String text;
 
     switch (status) {
       case ApplicationStatus.pendingReview:
-        color = AppColors.warning;
+        // Using Secondary (Terracotta/Warm Green) for pending actions
+        color = colorScheme.secondary;
         text = 'Pendiente';
       case ApplicationStatus.approved:
-        color = AppColors.success;
+        // Resipal Green / Success
+        color = Colors.green.shade600;
         text = 'Aprobada';
       case ApplicationStatus.rejected:
-        color = AppColors.danger;
+        color = colorScheme.error;
         text = 'Rechazada';
       default:
-        color = AppColors.grey400;
+        color = colorScheme.outline;
         text = 'Desconocido';
     }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: color.withOpacity(0.2), width: 1),
+      ),
       child: Text(
         text.toUpperCase(),
-        style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold),
+        style: theme.textTheme.labelSmall?.copyWith(
+          color: color,
+          fontSize: 10,
+          fontWeight: FontWeight.w900,
+          letterSpacing: 0.8,
+        ),
       ),
     );
   }

@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/applications/application_list/application_list_view.dart';
-import 'package:resipal_admin/presentation/properties/properties_page.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
-import 'package:resipal_admin/presentation/users/user_list_view.dart';
 import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
 import 'package:resipal_admin/presentation/payments/register_payment/register_payment_page.dart';
+import 'package:resipal_admin/presentation/properties/properties_page.dart';
 import 'package:resipal_admin/presentation/properties/property_list_view.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
+import 'package:resipal_admin/presentation/users/user_list_view.dart';
 import 'package:resipal_admin/presentation/users/users_page.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:resipal_core/lib.dart';
@@ -36,6 +34,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocProvider(
       create: (context) => AdminHomeCubit()..initialize(widget.community),
       child: BlocBuilder<AdminHomeCubit, AdminHomeState>(
@@ -45,21 +46,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
           return Scaffold(
             appBar: MyAppBar(title: _getAppBarTitle(), actions: _getAppBarActions()),
             extendBody: true,
-            backgroundColor: AppColors.background,
+            backgroundColor: colorScheme.background,
             body: IndexedStack(
               index: _currentPageIndex,
               children: [
                 HomeOverview(
-                  onPendingApplicationsPressed: () {
-                    setState(() {
-                      _currentPageIndex = AdminHomePages.applications.index;
-                    });
-                  },
-                  onPendingPaymentsPressed: () {
-                    setState(() {
-                      _currentPageIndex = AdminHomePages.payments.index;
-                    });
-                  },
+                  onPendingApplicationsPressed: () => setState(() => _currentPageIndex = AdminHomePages.applications.index),
+                  onPendingPaymentsPressed: () => setState(() => _currentPageIndex = AdminHomePages.payments.index),
                 ),
                 PropertyListView(community.propertyRegistry.properties),
                 PaymentListView(community.paymentLedger.payments),
@@ -69,11 +62,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             ),
             bottomNavigationBar: FloatingNavBar(
               currentIndex: _currentPageIndex,
-              onChanged: (index) {
-                setState(() {
-                  _currentPageIndex = index;
-                });
-              },
+              onChanged: (index) => setState(() => _currentPageIndex = index),
               items: [
                 FloatingNavBarItem(icon: Icons.dashboard_outlined, label: 'Inicio'),
                 FloatingNavBarItem(icon: Icons.house_outlined, label: 'Propiedades'),
@@ -93,14 +82,14 @@ class _AdminHomePageState extends State<AdminHomePage> {
             floatingActionButton: _getFAB(),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             drawer: Drawer(
-              backgroundColor: AppColors.background,
-              width: MediaQuery.of(context).size.width * 0.85, // Slightly wider for better accessibility
+              backgroundColor: colorScheme.background,
+              width: MediaQuery.of(context).size.width * 0.85,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(topRight: Radius.circular(20), bottomRight: Radius.circular(20)),
               ),
               child: Column(
                 children: [
-                  _buildDrawerHeader(community),
+                  _buildDrawerHeader(context, community),
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
@@ -109,41 +98,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         children: [
                           const SectionHeaderText(text: 'CONFIGURACIÓN'),
                           const SizedBox(height: 16),
-                          _buildDrawerItem(
-                            icon: Icons.settings_applications_outlined,
-                            label: 'Comunidad',
-                            onTap: () {},
-                          ),
-                          _buildDrawerItem(
-                            icon: Icons.description_outlined,
-                            label: 'Contratos',
-                            onTap: () => Go.to(const ContractListPage()),
-                          ),
-                          _buildDrawerItem(
-                            icon: Icons.apartment_outlined,
-                            label: 'Propiedades',
-                            onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties)),
-                          ),
-                          _buildDrawerItem(
-                            icon: Icons.manage_accounts_outlined,
-                            label: 'Usuarios',
-                            onTap: () => Go.to(UsersPage(community.directory.members)),
-                          ),
-                          _buildDrawerItem(icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
+                          _buildDrawerItem(context, icon: Icons.settings_applications_outlined, label: 'Comunidad', onTap: () {}),
+                          _buildDrawerItem(context, icon: Icons.description_outlined, label: 'Contratos', onTap: () => Go.to(const ContractListPage())),
+                          _buildDrawerItem(context, icon: Icons.apartment_outlined, label: 'Propiedades', onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties))),
+                          _buildDrawerItem(context, icon: Icons.manage_accounts_outlined, label: 'Usuarios', onTap: () => Go.to(UsersPage(community.directory.members))),
+                          _buildDrawerItem(context, icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
                           const Padding(padding: EdgeInsets.symmetric(vertical: 20.0), child: Divider(thickness: 1)),
                           const SectionHeaderText(text: 'SISTEMA'),
                           const SizedBox(height: 16),
-                          _buildDrawerItem(
-                            icon: Icons.logout_rounded,
-                            label: 'Cerrar Sesión',
-                            color: AppColors.danger,
-                            onTap: () {},
-                          ),
-                          SizedBox(height: 12.0),
+                          _buildDrawerItem(context, icon: Icons.logout_rounded, label: 'Cerrar Sesión', color: colorScheme.error, onTap: () {}),
+                          const SizedBox(height: 12.0),
                           Center(
                             child: Text(
                               'Resipal Admin v1.0.4',
-                              style: GoogleFonts.raleway(fontSize: 12, color: AppColors.hint),
+                              style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.outline),
                             ),
                           ),
                         ],
@@ -166,89 +134,86 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   List<Widget> _getAppBarActions() {
     switch (_currentPageIndex) {
-      case 0:
-        return [IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {})];
-      case 1:
-        return [IconButton(icon: const Icon(Icons.add_business), onPressed: () {})];
-      case 2:
-        return [
+      case 0: return [IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {})];
+      case 1: return [IconButton(icon: const Icon(Icons.add_business), onPressed: () {})];
+      case 2: return [
           IconButton(icon: const Icon(Icons.file_download), onPressed: () {}),
           IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
         ];
-      case 3:
-        return [IconButton(icon: const Icon(Icons.playlist_add_check), onPressed: () {})];
-      case 4:
-        return [IconButton(icon: const Icon(Icons.person_add), onPressed: () {})];
-      default:
-        return [];
+      case 3: return [IconButton(icon: const Icon(Icons.playlist_add_check), onPressed: () {})];
+      case 4: return [IconButton(icon: const Icon(Icons.person_add), onPressed: () {})];
+      default: return [];
     }
   }
 
   Widget? _getFAB() {
-    switch (_currentPageIndex) {
-      case 1:
-        return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPropertyPage()));
-      case 2:
-        return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPaymentPage()));
-      default:
-        return null;
+    if (_currentPageIndex == 1) {
+      return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPropertyPage()));
     }
+    if (_currentPageIndex == 2) {
+      return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPaymentPage()));
+    }
+    return null;
   }
 
-  Widget _buildDrawerHeader(CommunityEntity community) {
+  Widget _buildDrawerHeader(BuildContext context, CommunityEntity community) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(top: 60, left: 24, bottom: 32, right: 24),
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        color: colorScheme.primary,
         borderRadius: const BorderRadius.only(bottomRight: Radius.circular(40)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CircleAvatar(
-            radius: 35, // Slightly bigger avatar
-            backgroundColor: Colors.white.withOpacity(0.2),
-            child: const Icon(Icons.business, color: Colors.white, size: 35),
+            radius: 35,
+            backgroundColor: colorScheme.onPrimary.withOpacity(0.2),
+            child: Icon(Icons.business, color: colorScheme.onPrimary, size: 35),
           ),
           const SizedBox(height: 16),
-          HeaderText.five(community.name, color: Colors.white),
+          HeaderText.five(community.name, color: colorScheme.onPrimary),
           const SizedBox(height: 4),
-          Text(widget.user.email, style: GoogleFonts.raleway(color: Colors.white.withOpacity(0.8), fontSize: 13)),
+          Text(
+            widget.user.email, 
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colorScheme.onPrimary.withOpacity(0.8)),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildDrawerItem({required IconData icon, required String label, required VoidCallback onTap, Color? color}) {
-    // Determine colors based on whether a custom color (like danger) was passed
-    final primaryColor = color ?? AppColors.primary;
-    final itemTextColor = color ?? AppColors.grey700;
+  Widget _buildDrawerItem(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap, Color? color}) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
+    final primaryColor = color ?? colorScheme.primary;
+    final itemTextColor = color ?? colorScheme.onSurface;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0), // Spacing between buttons
+      padding: const EdgeInsets.only(bottom: 12.0),
       child: ListTile(
         leading: Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(color: primaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-          child: Icon(icon, color: itemTextColor, size: 24),
+          decoration: BoxDecoration(
+            color: primaryColor.withOpacity(0.1), 
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Icon(icon, color: primaryColor, size: 24),
         ),
         title: Text(
           label,
-          style: GoogleFonts.raleway(
-            fontSize: 16,
+          style: theme.textTheme.bodyLarge?.copyWith(
             fontWeight: FontWeight.w700,
             color: itemTextColor,
-            letterSpacing: 0.3,
           ),
         ),
-        // Add a subtle background to the whole tile to make it look like a button
-        tileColor: Colors.white,
-        hoverColor: primaryColor.withOpacity(0.05),
-        splashColor: primaryColor.withOpacity(0.1),
+        tileColor: colorScheme.surface,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
-          side: BorderSide(color: AppColors.grey200, width: 1),
+          side: BorderSide(color: colorScheme.outlineVariant),
         ),
         onTap: onTap,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),

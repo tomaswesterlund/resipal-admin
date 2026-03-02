@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_page.dart';
 import 'package:resipal_admin/presentation/onboarding/user_registration/onboarding_user_registration_cubit.dart';
 import 'package:resipal_admin/presentation/onboarding/user_registration/onboarding_user_registration_state.dart';
@@ -13,17 +11,20 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return BlocProvider(
       create: (context) => OnboardingUserRegistrationCubit()..initialize(),
       child: BlocListener<OnboardingUserRegistrationCubit, OnboardingUserRegistrationState>(
         listener: (context, state) {},
         child: Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: colorScheme.background,
           appBar: const MyAppBar(title: 'Perfil de Administrador', automaticallyImplyLeading: false),
           body: BlocBuilder<OnboardingUserRegistrationCubit, OnboardingUserRegistrationState>(
             builder: (context, state) {
-              if (state is InitialState || state is FormSubmittingState) {
-                return const Center(child: CircularProgressIndicator());
+              if (state is InitialState) {
+                return Center(child: CircularProgressIndicator(color: colorScheme.primary));
               }
 
               if (state is FormSubmittingState) {
@@ -46,7 +47,7 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
               }
 
               if (state is ErrorState) {
-                return ErrorView();
+                return const ErrorView();
               }
 
               if (state is FormEditingState) {
@@ -58,11 +59,11 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      HeaderText.five('Completa tu perfil', color: const Color(0xFF1A4644)),
+                      HeaderText.five('Completa tu perfil', color: colorScheme.primary),
                       const SizedBox(height: 8),
                       Text(
                         'Estos datos se utilizarán para que los residentes puedan contactarte y para generar tus reportes.',
-                        style: GoogleFonts.raleway(fontSize: 14, color: Colors.grey.shade600),
+                        style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
                       ),
                       const SizedBox(height: 32),
 
@@ -88,9 +89,12 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                       _ReadOnlyEmailField(email: form.email),
 
                       const SizedBox(height: 48),
-                      PrimaryButton(
-                        label: 'Finalizar Registro',
-                        onPressed: form.canSubmit ? () => cubit.submit() : null,
+                      SizedBox(
+                        width: double.infinity,
+                        child: PrimaryButton(
+                          label: 'Finalizar Registro',
+                          onPressed: form.canSubmit ? () => cubit.submit() : null,
+                        ),
                       ),
                     ],
                   ),
@@ -111,6 +115,9 @@ class _ReadOnlyEmailField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -118,24 +125,30 @@ class _ReadOnlyEmailField extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
           child: Text(
             'Correo Electrónico',
-            style: GoogleFonts.raleway(fontSize: 14.0, fontWeight: FontWeight.w600, color: const Color(0xFF1A4644)),
+            style: theme.textTheme.labelLarge?.copyWith(
+              fontWeight: FontWeight.w600, 
+              color: colorScheme.primary,
+            ),
           ),
         ),
         Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
+            color: colorScheme.surfaceVariant, // Standardized "locked" field color
             borderRadius: BorderRadius.circular(20.0),
-            border: Border.all(color: Colors.grey.shade300),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
-          child: Text(email, style: GoogleFonts.raleway(fontSize: 16.0, color: Colors.grey.shade600)),
+          child: Text(
+            email, 
+            style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline),
+          ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, top: 4.0),
           child: Text(
             'El correo está vinculado a tu cuenta.',
-            style: GoogleFonts.raleway(fontSize: 11, color: Colors.grey),
+            style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.outline),
           ),
         ),
       ],

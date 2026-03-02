@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/applications/application_status_badge.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/extensions/formatters/date_formatters.dart';
-import 'package:wester_kit/ui/texts/header_text.dart';
+import 'package:wester_kit/lib.dart';
 
 class ApplicationCard extends StatelessWidget {
   final ApplicationEntity application;
@@ -13,14 +10,16 @@ class ApplicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color statusColor = _getStatusColor(application.status);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final Color statusColor = _getStatusColor(context, application.status);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: statusColor.withOpacity(0.2), width: 1),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
@@ -46,14 +45,15 @@ class ApplicationCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Solicitud de ingreso',
-                                  style: GoogleFonts.raleway(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.grey400,
+                                  'SOLICITUD DE INGRESO',
+                                  style: theme.textTheme.labelSmall?.copyWith(
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w800,
+                                    letterSpacing: 0.5,
+                                    color: colorScheme.outline,
                                   ),
                                 ),
-                                HeaderText.six(application.name, color: AppColors.grey800),
+                                HeaderText.six(application.name, color: colorScheme.onSurface),
                               ],
                             ),
                           ),
@@ -62,26 +62,25 @@ class ApplicationCard extends StatelessWidget {
                       ),
 
                       // Contact Info
-                      const SizedBox(height: 8),
-                      _buildContactRow(Icons.email_outlined, application.email),
+                      const SizedBox(height: 12),
+                      _buildContactRow(context, Icons.email_outlined, application.email),
                       const SizedBox(height: 4),
-                      _buildContactRow(Icons.phone_outlined, application.phoneNumber),
+                      _buildContactRow(context, Icons.phone_outlined, application.phoneNumber),
 
-                      const Divider(height: 24, thickness: 1, color: Color(0xFFF4F5F4)),
+                      Divider(height: 32, thickness: 1, color: colorScheme.outlineVariant),
 
-                      // Message snippet if exists
+                      // Message snippet
                       if (application.message != null && application.message!.trim().isNotEmpty) ...[
                         Text(
-                          application.message!,
+                          '"${application.message!}"',
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.raleway(
-                            fontSize: 13,
+                          style: theme.textTheme.bodyMedium?.copyWith(
                             fontStyle: FontStyle.italic,
-                            color: AppColors.grey600,
+                            color: colorScheme.outline,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 16),
                       ],
 
                       // Footer: Badge & Date
@@ -93,29 +92,37 @@ class ApplicationCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ApplicationStatusBadge(status: application.status),
-                              const SizedBox(height: 6),
+                              const SizedBox(height: 8),
                               Text(
-                                'Enviada el ${application.createdAt.toShortDate()}',
-                                style: GoogleFonts.raleway(
-                                  fontSize: 12,
+                                'Enviada: ${application.createdAt.toShortDate()}',
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.outline,
                                   fontWeight: FontWeight.w600,
-                                  color: AppColors.grey500,
                                 ),
                               ),
                             ],
                           ),
 
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              foregroundColor: AppColors.grey800,
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
-                              textStyle: GoogleFonts.raleway(fontWeight: FontWeight.bold, fontSize: 13),
-                            ),
-                            onPressed: () {
+                          // Clean Action Button
+                          GestureDetector(
+                            onTap: () {
                               // Go.to(ApplicationDetailsPage(application: application));
                             },
-                            child: const Row(
-                              children: [Text('Ver más'), SizedBox(width: 4), Icon(Icons.arrow_forward_ios, size: 12)],
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Ver más',
+                                    style: theme.textTheme.labelLarge?.copyWith(
+                                      color: colorScheme.primary,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(Icons.arrow_forward_ios, size: 12, color: colorScheme.primary),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -131,28 +138,35 @@ class ApplicationCard extends StatelessWidget {
     );
   }
 
-  Widget _buildContactRow(IconData icon, String text) {
+  Widget _buildContactRow(BuildContext context, IconData icon, String text) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+    
     return Row(
       children: [
-        Icon(icon, size: 14, color: AppColors.grey400),
-        const SizedBox(width: 6),
+        Icon(icon, size: 14, color: colorScheme.outline),
+        const SizedBox(width: 8),
         Text(
           text,
-          style: GoogleFonts.raleway(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.grey600),
+          style: theme.textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurface.withOpacity(0.8),
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
   }
 
-  Color _getStatusColor(ApplicationStatus status) {
+  Color _getStatusColor(BuildContext context, ApplicationStatus status) {
+    final colorScheme = Theme.of(context).colorScheme;
     switch (status) {
       case ApplicationStatus.approved:
-        return AppColors.success;
+        return Colors.green.shade600;
       case ApplicationStatus.pendingReview:
-        return AppColors.warning;
+        return colorScheme.secondary; // Branded Warning
       case ApplicationStatus.rejected:
       case ApplicationStatus.revoked:
-        return AppColors.danger;
+        return colorScheme.error;
     }
   }
 

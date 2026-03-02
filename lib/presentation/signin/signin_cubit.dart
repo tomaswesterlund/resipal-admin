@@ -16,15 +16,10 @@ class SigninCubit extends Cubit<SigninState> {
   Future signin() async {
     try {
       emit(AdminSigningInState());
-      final iosClientId = dotenv.get('GOOGLE_OAUTH_IOS_CLIENT_ID');
-      final serverClientId = dotenv.get('SUPABASE_ANON_KEY');
-
-      await _authService.signInWithGoogle(iosClientId: iosClientId, serverClientId: serverClientId);
+      await _authService.signInWithGoogle();
 
       final authUser = _authService.getSignedInUser();
       final userId = authUser.id;
-
-      // await _sessionService.startWatchers(userId);
 
       emit(AdminSignedInSuccessfullyState());
     } catch (e, stack) {

@@ -15,9 +15,16 @@ Future main() async {
   // Setup Supabase
   final supabaseConfig = ResipalSupabaseConfig(
     url: dotenv.get('SUPABASE_URL'),
-    anonKey: dotenv.get('SUPABASE_ANON_KEY')
+    anonKey: dotenv.get('SUPABASE_ANON_KEY'),
   );
   GetIt.instance.registerSingleton<ResipalSupabaseConfig>(supabaseConfig);
+
+  // Setup Auth Config
+  final authConfig = AuthServiceConfig(
+    iosClientId: dotenv.get('GOOGLE_OAUTH_IOS_CLIENT_ID'),
+    serverClientId: dotenv.get('GOOGLE_OAUTH_SERVER_CLIENT_ID'),
+  );
+  GetIt.instance.registerSingleton<AuthServiceConfig>(authConfig);
 
   await ServiceLocator().initializeContainers();
   GetIt.instance.registerSingleton<AdminSessionService>(AdminSessionService());
@@ -36,10 +43,36 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.primary,
-          primary: AppColors.primary,
+        colorScheme: ColorScheme(
+          brightness: Brightness.light,
+          // --- Brand ---
+          primary: AppColors.primary700,
+          onPrimary: Colors.white,
+          primaryContainer: AppColors.primary100,
+          onPrimaryContainer: AppColors.primary900,
+
+          // --- Secondary (Terracotta) ---
+          secondary: AppColors.secondary500,
+          onSecondary: Colors.white,
+          secondaryContainer: AppColors.secondary100,
+          onSecondaryContainer: AppColors.secondary900,
+
+          // --- Surfaces ---
           surface: AppColors.surface,
+          onSurface: AppColors.textPrimary,
+          background: AppColors.background,
+          onBackground: AppColors.textPrimary,
+
+          // --- Feedback ---
+          error: AppColors.danger,
+          onError: Colors.white,
+
+          // --- Neutral / Outline ---
+          outline: AppColors.grey300,
+          outlineVariant: AppColors.grey200,
+
+          // --- Additional mapping ---
+          tertiary: AppColors.info, // Using info as tertiary for system blue accents
         ),
         appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         scaffoldBackgroundColor: AppColors.background,
@@ -48,7 +81,7 @@ class MyApp extends StatelessWidget {
           displayLarge: GoogleFonts.raleway(
             fontSize: 48,
             height: 54 / 48,
-            fontWeight: FontWeight.w900, // Black
+            fontWeight: FontWeight.w700, // Black
           ),
           headlineLarge: GoogleFonts.raleway(
             fontSize: 32,

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:resipal_admin/presentation/properties/property_card.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
@@ -32,7 +30,10 @@ class _PropertyListViewState extends State<PropertyListView> {
 
   @override
   Widget build(BuildContext context) {
-    // 1. Filter Logic: based on the hasDebt getter
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    // 1. Filter Logic
     final filteredProperties = _selectedFilter.value == null
         ? widget.properties
         : widget.properties.where((p) => p.hasDebt == _selectedFilter.value).toList();
@@ -47,7 +48,6 @@ class _PropertyListViewState extends State<PropertyListView> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            // Generic Filter Selector
             FilterSelector<bool?>(
               options: _filterOptions,
               selectedValue: _selectedFilter,
@@ -61,7 +61,7 @@ class _PropertyListViewState extends State<PropertyListView> {
             const SizedBox(height: 16.0),
 
             if (filteredProperties.isEmpty)
-              _buildEmptyFilterState()
+              _buildEmptyFilterState(context)
             else
               ListView.separated(
                 shrinkWrap: true,
@@ -78,17 +78,33 @@ class _PropertyListViewState extends State<PropertyListView> {
     );
   }
 
-  Widget _buildEmptyFilterState() {
+  Widget _buildEmptyFilterState(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
+    // Use Green if "Con deuda" filter is active but empty (Success state)
+    final bool isSuccessState = _selectedFilter.value == true;
+    final Color stateColor = isSuccessState ? Colors.green.shade600 : colorScheme.primary;
+
     return Padding(
       padding: const EdgeInsets.only(top: 40.0),
       child: Column(
         children: [
-          Icon(Icons.verified_user_outlined, color: AppColors.success.withOpacity(0.5), size: 48),
+          Icon(
+            isSuccessState ? Icons.verified_user_outlined : Icons.search_off_outlined, 
+            color: stateColor.withOpacity(0.5), 
+            size: 48,
+          ),
           const SizedBox(height: 12),
           Text(
-            _selectedFilter.value == true ? '¡Excelente! No hay unidades con deuda' : 'No hay unidades que coincidan',
+            isSuccessState 
+                ? '¡Excelente! No hay unidades con deuda' 
+                : 'No hay unidades que coincidan',
             textAlign: TextAlign.center,
-            style: GoogleFonts.raleway(color: Colors.grey, fontWeight: FontWeight.w500),
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colorScheme.outline, 
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),
@@ -101,6 +117,9 @@ class _Empty extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
@@ -109,23 +128,30 @@ class _Empty extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.1), shape: BoxShape.circle),
-              child: Icon(Icons.home_work_outlined, size: 64, color: AppColors.primary),
+              decoration: BoxDecoration(
+                color: colorScheme.primary.withOpacity(0.1), 
+                shape: BoxShape.circle,
+              ),
+              child: Icon(Icons.home_work_outlined, size: 64, color: colorScheme.primary),
             ),
             const SizedBox(height: 32),
-            HeaderText.four('Sin propiedades', textAlign: TextAlign.center, color: AppColors.primary),
+            HeaderText.four(
+              'Sin propiedades', 
+              textAlign: TextAlign.center, 
+              color: colorScheme.primary,
+            ),
             const SizedBox(height: 16),
             Text(
               'Aún no has dado de alta ninguna unidad en esta sección.',
               textAlign: TextAlign.center,
-              style: GoogleFonts.raleway(fontSize: 15, color: Colors.grey.shade600),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
             ),
             const SizedBox(height: 32),
             TextButton.icon(
               onPressed: () => Go.to(const RegisterPropertyPage()),
               icon: const Icon(Icons.add),
               label: const Text('Registrar propiedad'),
-              style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
             ),
           ],
         ),

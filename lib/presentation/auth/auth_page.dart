@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/auth/auth_cubit.dart';
 import 'package:resipal_admin/presentation/auth/auth_state.dart';
 import 'package:resipal_admin/presentation/home/home_page/admin_home_page.dart';
@@ -17,7 +15,10 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      backgroundColor: colorScheme.background,
       body: BlocProvider<AuthCubit>(
         create: (ctx) => AuthCubit()..initialize(),
         child: BlocConsumer<AuthCubit, AuthState>(
@@ -25,13 +26,11 @@ class AuthPage extends StatelessWidget {
             if (state is UserSignedIn) {
               Go.to(AdminHomePage(community: state.community, user: state.user));
             }
-
             if (state is UserNotSignedIn) {
-              Go.to(SigninPage());
+              Go.to(const SigninPage());
             }
-
             if (state is UserNotOnboarded) {
-              Go.to(OnboardingStartPage());
+              Go.to(const OnboardingStartPage());
             }
           },
           builder: (ctx, state) {
@@ -40,33 +39,27 @@ class AuthPage extends StatelessWidget {
                 state is UserSignedIn ||
                 state is UserNotSignedIn ||
                 state is UserNotOnboarded) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ResipalLogo(),
-                  HeaderText.giga('RESIPAL'),
-                  const SizedBox(height: 24),
-                  LoadingView(
-                    title: 'Iniciando Panel de Control',
-                    description: 'Verificando credenciales de administrador...',
-                  ),
-                ],
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const ResipalLogo(),
+                    HeaderText.giga('RESIPAL', color: colorScheme.primary),
+                    const SizedBox(height: 24),
+                    const LoadingView(
+                      title: 'Iniciando Panel de Control',
+                      description: 'Verificando credenciales de administrador...',
+                    ),
+                  ],
+                ),
               );
             }
 
-            if (state is UserIsNotAdmin) {
-              return AccessDeniedView();
-            }
+            if (state is UserIsNotAdmin) return const AccessDeniedView();
+            if (state is UserHasNoAdminMembership) return const _UserHasNoAdminMembership();
+            if (state is ErrorState) return const ErrorView();
 
-            if (state is UserHasNoAdminMembership) {
-              return _UserHasNoAdminMembership();
-            }
-
-            if (state is ErrorState) {
-              return ErrorView();
-            }
-
-            return UnknownStateView();
+            return const UnknownStateView();
           },
         ),
       ),
@@ -79,73 +72,64 @@ class _UserHasNoAdminMembership extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Padding(
       padding: const EdgeInsets.all(32.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // 1. Visual Icon
           Container(
             padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(color: AppColors.secondary.withOpacity(0.1), shape: BoxShape.circle),
-            child: Icon(Icons.domain_add_rounded, size: 64, color: AppColors.secondary),
+            decoration: BoxDecoration(color: colorScheme.secondary.withOpacity(0.1), shape: BoxShape.circle),
+            child: Icon(Icons.domain_add_rounded, size: 64, color: colorScheme.secondary),
           ),
           const SizedBox(height: 32),
 
-          // 2. Messaging
-          HeaderText.four('Sin comunidad asignada', textAlign: TextAlign.center, color: const Color(0xFF1A4644)),
+          HeaderText.four('Sin comunidad asignada', textAlign: TextAlign.center, color: colorScheme.primary),
           const SizedBox(height: 16),
           Text(
             'Tu perfil está listo, pero aún no administras ninguna comunidad. Puedes crear una nueva ahora mismo o esperar a ser invitado a una existente.',
             textAlign: TextAlign.center,
-            style: GoogleFonts.raleway(fontSize: 15, color: Colors.grey.shade600, height: 1.5),
+            style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline, height: 1.5),
           ),
           const SizedBox(height: 48),
 
-          // 3. Primary Action: Create Community
           SizedBox(
             width: double.infinity,
-            height: 55,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF1A4644),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              ),
+            child: PrimaryButton(
+              label: 'Crear una Comunidad',
               onPressed: () => Go.to(const OnboardingCommunityRegistrationPage()),
-              child: Text(
-                'Crear una Comunidad',
-                style: GoogleFonts.raleway(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
-              ),
             ),
           ),
 
           const SizedBox(height: 48),
 
-          // 4. Support Section
+          // Support Section
           Column(
             children: [
               Text(
                 '¿Necesitas ayuda con el acceso?',
-                style: GoogleFonts.raleway(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.grey.shade400),
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: colorScheme.outline.withOpacity(0.7),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _SupportIcon(
                     icon: Icons.chat_bubble_outline_rounded,
                     label: 'WhatsApp',
-                    onTap: () {
-                      // TODO: Implement url_launcher to wa.me/
-                    },
+                    onTap: () {}, // Implement WhatsApp launch
                   ),
-                  const SizedBox(width: 40),
+                  const SizedBox(width: 56),
                   _SupportIcon(
                     icon: Icons.email_outlined,
                     label: 'Correo',
-                    onTap: () {
-                      // TODO: Implement url_launcher to mailto:
-                    },
+                    onTap: () {}, // Implement Mail launch
                   ),
                 ],
               ),
@@ -157,8 +141,6 @@ class _UserHasNoAdminMembership extends StatelessWidget {
   }
 }
 
-// ... elsewhere in your file or as a private widget helper:
-
 class _SupportIcon extends StatelessWidget {
   final IconData icon;
   final String label;
@@ -168,16 +150,24 @@ class _SupportIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Column(
         children: [
-          Icon(icon, color: const Color(0xFF1A4644), size: 24),
-          const SizedBox(height: 4),
+          Icon(icon, color: colorScheme.primary, size: 28),
+          const SizedBox(height: 6),
           Text(
             label,
-            style: GoogleFonts.raleway(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF1A4644)),
+            style: theme.textTheme.labelSmall?.copyWith(
+              fontSize: 12,
+              fontWeight: FontWeight.w900,
+              color: colorScheme.primary,
+              letterSpacing: 0.5,
+            ),
           ),
         ],
       ),

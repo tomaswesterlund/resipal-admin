@@ -1,19 +1,26 @@
-import 'dart:ui';
-
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
+import 'package:flutter/material.dart';
 import 'package:resipal_core/lib.dart';
 
 class PaymentColors {
-  static Color getColor(PaymentEntity payment) {
+  /// Returns the appropriate theme color based on the [PaymentStatus].
+  /// This ensures that if the app theme changes (e.g. Dark Mode),
+  /// the status colors update automatically.
+  static Color getColor(BuildContext context, PaymentEntity payment) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     switch (payment.status) {
       case PaymentStatus.approved:
-        return AppColors.success;
+        // Maps to AppColors.success
+        return Colors.green.shade600;
       case PaymentStatus.pendingReview:
-        return AppColors.warning;
+        // Maps to AppColors.warning (Amber)
+        return Colors.amber.shade700;
       case PaymentStatus.cancelled:
-        return AppColors.danger;
+        // Maps to AppColors.danger (Terracotta/Red)
+        return colorScheme.error;
       case PaymentStatus.unknown:
-        return AppColors.info;
+        // Maps to AppColors.info (System Blue)
+        return colorScheme.tertiary;
     }
   }
 }

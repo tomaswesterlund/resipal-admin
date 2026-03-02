@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/shared/bucket_image/bucket_image.dart';
-import 'package:resipal_admin/presentation/shared/colors/app_colors.dart';
 import 'package:resipal_admin/presentation/payments/confirm_payment/confirm_payment_button.dart';
 import 'package:resipal_admin/presentation/payments/payment_header.dart';
 import 'package:shimmer/shimmer.dart';
@@ -16,14 +15,15 @@ class PaymentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return BlocProvider(
       create: (ctx) => PaymentDetailsCubit()..initialize(paymentId),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: colorScheme.background,
         appBar: const MyAppBar(title: 'Detalle de Pago'),
         body: BlocBuilder<PaymentDetailsCubit, PaymentDetailsState>(
           builder: (ctx, state) {
-            // StateSwitcher handles the cross-fade animation between the widgets
             return StateSwitcher(child: _buildStateWidget(state));
           },
         ),
@@ -55,6 +55,9 @@ class _Loaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20.0),
       child: Column(
@@ -71,11 +74,12 @@ class _Loaded extends StatelessWidget {
 
           if (payment.receiptPath != null) ...[
             const SectionHeaderText(text: 'COMPROBANTE ADJUNTO'),
+            // Note: BucketImage should also be updated to handle loading/error internally
             BucketImage(bucket: 'payments', path: payment.receiptPath!),
             const SizedBox(height: 20),
           ],
 
-          SectionHeaderText(text: 'INFORMACIÓN GENERAL'),
+          const SectionHeaderText(text: 'INFORMACIÓN GENERAL'),
           DefaultCard(
             child: Column(
               children: [
@@ -84,19 +88,19 @@ class _Loaded extends StatelessWidget {
                   label: 'Fecha de pago',
                   value: payment.date.toShortDate(),
                 ),
-                const Divider(height: 1),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 DetailTile(
                   icon: Icons.upload_file_rounded,
-                  label: 'Fecha de registro (en Resipal)',
+                  label: 'Fecha de registro',
                   value: payment.createdAt.toShortDate(),
                 ),
-                const Divider(height: 1),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 DetailTile(
                   icon: Icons.tag,
                   label: 'Referencia',
                   value: payment.reference?.isNotEmpty == true ? payment.reference! : 'Sin referencia',
                 ),
-                const Divider(height: 1),
+                Divider(height: 1, color: colorScheme.outlineVariant),
                 DetailTile(
                   icon: Icons.info_outline,
                   label: 'ID de registro',
@@ -113,10 +117,15 @@ class _Loaded extends StatelessWidget {
             DefaultCard(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Text(payment.note!, style: const TextStyle(fontSize: 15, color: Colors.black87, height: 1.4)),
+                child: Text(
+                  payment.note!, 
+                  style: theme.textTheme.bodyLarge?.copyWith(
+                    color: colorScheme.onSurface,
+                    height: 1.4,
+                  ),
+                ),
               ),
             ),
-
             const SizedBox(height: 20),
           ],
         ],
@@ -130,29 +139,26 @@ class _PaymentDetailsShimmer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Shimmer.fromColors(
-      baseColor: Colors.grey[300]!,
-      highlightColor: Colors.grey[100]!,
+      baseColor: colorScheme.surfaceVariant.withOpacity(0.4),
+      highlightColor: colorScheme.surface,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Header Shimmer
             Container(
               height: 100,
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
             ),
             const SizedBox(height: 32),
-
-            // Image Placeholder Shimmer
             Container(
               height: 200,
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
             ),
             const SizedBox(height: 32),
-
-            // Detail Card Shimmer
             Container(
               height: 240,
               decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12)),
