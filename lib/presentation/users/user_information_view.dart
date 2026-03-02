@@ -3,19 +3,14 @@ import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
 class UserInformationView extends StatelessWidget {
-  final MembershipEntity membership;
+  final UserEntity user;
 
-  const UserInformationView({super.key, required this.membership});
+  const UserInformationView({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
-    final resident = membership.resident;
-    final user = resident.user;
-    final ledger = resident.paymentLedger;
-    final registry = resident.propertyRegistery;
 
     return ListView(
       padding: const EdgeInsets.all(20),
@@ -25,7 +20,7 @@ class UserInformationView extends StatelessWidget {
         const SizedBox(height: 12),
         _buildInfoContainer(context, [
           _buildDetailRow(context, Icons.email_outlined, 'Correo electrónico', user.email),
-          _buildDetailRow(context, Icons.calendar_today_outlined, 'Miembro desde', membership.createdAt.toShortDate()),
+          _buildDetailRow(context, Icons.calendar_today_outlined, 'Miembro desde', user.createdAt.toShortDate()),
           _buildDetailRow(context, Icons.fingerprint_outlined, 'ID de Usuario', user.id.substring(0, 8).toUpperCase()),
         ]),
 
@@ -38,11 +33,9 @@ class UserInformationView extends StatelessWidget {
           spacing: 8,
           runSpacing: 8,
           children: [
-            if (membership.isAdmin)
-              _buildRoleChip(context, 'Administrador', Icons.admin_panel_settings, colorScheme.primary),
-            if (membership.isResident) _buildRoleChip(context, 'Residente', Icons.home_outlined, Colors.green.shade600),
-            if (membership.isSecurity)
-              _buildRoleChip(context, 'Seguridad', Icons.shield_outlined, colorScheme.tertiary),
+            if (user.isAdmin) _buildRoleChip(context, 'Administrador', Icons.admin_panel_settings, colorScheme.primary),
+            if (user.isResident) _buildRoleChip(context, 'Residente', Icons.home_outlined, Colors.green.shade600),
+            if (user.isSecurity) _buildRoleChip(context, 'Seguridad', Icons.shield_outlined, colorScheme.tertiary),
           ],
         ),
 
@@ -60,12 +53,17 @@ class UserInformationView extends StatelessWidget {
           mainAxisSpacing: 16,
           childAspectRatio: 1.4,
           children: [
-            _buildFinancialStat(context, 'Balance Total', ledger.totalBalanceInCents, Colors.green.shade600),
+            _buildFinancialStat(
+              context,
+              'Balance Total',
+              user.paymentLedger.totalBalanceInCents,
+              Colors.green.shade600,
+            ),
             _buildFinancialStat(
               context,
               'Deuda Actual',
-              registry.totalOverdueFeeInCents.toInt(),
-              registry.hasDebt ? colorScheme.error : colorScheme.outline,
+              user.propertyRegistery.totalOverdueFeeInCents.toInt(),
+              user.propertyRegistery.hasDebt ? colorScheme.error : colorScheme.outline,
             ),
           ],
         ),

@@ -7,9 +7,9 @@ import 'package:wester_kit/ui/texts/body_text.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
 
 class UserCard extends StatelessWidget {
-  final MembershipEntity member;
+  final UserEntity user;
 
-  const UserCard(this.member, {super.key});
+  const UserCard(this.user, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +17,12 @@ class UserCard extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     // Mapping states to Theme Colors
-    final bool hasDebt = member.resident.propertyRegistery.hasDebt;
+    final bool hasDebt = user.propertyRegistery.hasDebt;
     final Color statusColor = hasDebt ? colorScheme.error : Colors.green.shade600;
 
     // Property Label Logic
-    final List<String> propertyNames = member.resident.propertyRegistery.properties.map((p) => p.name).toList();
+    final List<String> propertyNames = user.propertyRegistery.properties.map((p) => p.name).toList();
+
     String propertiesLabel = 'Sin propiedades';
     if (propertyNames.isNotEmpty) {
       if (propertyNames.length == 1) {
@@ -61,7 +62,7 @@ class UserCard extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                HeaderText.five(member.resident.user.name, color: colorScheme.onSurface),
+                                HeaderText.five(user.name, color: colorScheme.onSurface),
                                 const SizedBox(height: 2),
                                 Text(
                                   propertiesLabel,
@@ -90,21 +91,21 @@ class UserCard extends StatelessWidget {
                                 _buildAmountColumn(
                                   context,
                                   label: 'BALANCE',
-                                  cents: member.resident.paymentLedger.totalBalanceInCents,
+                                  cents: user.paymentLedger.totalBalanceInCents,
                                   color: Colors.green.shade600,
                                 ),
                                 const SizedBox(width: 12),
                                 _buildAmountColumn(
                                   context,
                                   label: 'PENDIENTE',
-                                  cents: member.resident.paymentLedger.pendingPaymentAmountInCents,
+                                  cents: user.paymentLedger.pendingPaymentAmountInCents,
                                   color: colorScheme.secondary, // Secondary is our Warning/Amber scale
                                 ),
                                 const SizedBox(width: 12),
                                 _buildAmountColumn(
                                   context,
                                   label: 'DEUDA',
-                                  cents: member.resident.propertyRegistery.totalOverdueFeeInCents.toInt(),
+                                  cents: user.propertyRegistery.totalOverdueFeeInCents.toInt(),
                                   color: hasDebt ? colorScheme.error : colorScheme.onSurface,
                                 ),
                               ],
@@ -113,7 +114,7 @@ class UserCard extends StatelessWidget {
 
                           // Action Button
                           GestureDetector(
-                            onTap: () => Go.to(UserDetailsPage(member)),
+                            onTap: () => Go.to(UserDetailsPage(user)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(
@@ -165,9 +166,9 @@ class UserCard extends StatelessWidget {
     final iconColor = Theme.of(context).colorScheme.outlineVariant;
     return Row(
       children: [
-        if (member.isAdmin) _buildSmallIcon(Icons.admin_panel_settings, iconColor),
-        if (member.isSecurity) _buildSmallIcon(Icons.shield_outlined, iconColor),
-        if (member.isResident) _buildSmallIcon(Icons.home_work_outlined, iconColor),
+        if (user.isAdmin) _buildSmallIcon(Icons.admin_panel_settings, iconColor),
+        if (user.isSecurity) _buildSmallIcon(Icons.shield_outlined, iconColor),
+        if (user.isResident) _buildSmallIcon(Icons.home_work_outlined, iconColor),
       ],
     );
   }

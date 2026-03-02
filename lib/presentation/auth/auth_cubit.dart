@@ -21,35 +21,25 @@ class AuthCubit extends Cubit<AuthState> {
 
         await FetchUsers().call();
         await FetchCommunities().call();
-        await FetchApplications().byUserId(userId);
-        await FetchMemberships().byUserId(userId);
 
         final userOnboarded = await UserIsOnboarded().call(userId);
         if (userOnboarded == false) {
           emit(UserNotOnboarded());
           return;
         }
-
-        final userAccessRegistry = GetUserAccessRegistry().call(userId);
-
-        if (userAccessRegistry.adminMemberships.isNotEmpty) {
-          // TODO: Update this logic, ust get first for now
-          final membership = userAccessRegistry.adminMemberships.first;
-          await _sessionService.startWatchers(userId: userId, communityId: membership.community.id);
-
-          final user = GetUser().call(userId);
-          final community = GetCommunityById().call(membership.community.id);
-
-          emit(UserSignedIn(community, user));
+        
+        final user = GetUserById().call(userId);
+        
+        if (user.communityId == null) {
+          emit(CommunityNotOnboarded());
           return;
         }
 
-        if (userAccessRegistry.adminMemberships.isEmpty) {
-          emit(UserHasNoAdminMembership());
-          return;
-        }
+        final community = GetCommunityById().call(user.communityId!);
 
-        throw Exception('Unknown state!');
+        await _sessionService.startWatchers(userId: user.id, communityId: community.id);
+        emit(UserSignedIn(community, user));
+        return;
       } else {
         emit(UserNotSignedIn());
       }

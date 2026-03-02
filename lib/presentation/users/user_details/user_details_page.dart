@@ -6,8 +6,8 @@ import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
 class UserDetailsPage extends StatefulWidget {
-  final MembershipEntity membership;
-  const UserDetailsPage(this.membership, {super.key});
+  final UserEntity user;
+  const UserDetailsPage(this.user, {super.key});
 
   @override
   State<UserDetailsPage> createState() => _UserDetailsPageState();
@@ -34,7 +34,7 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
           FloatingNavBarItem(
             icon: Icons.account_balance_wallet_outlined,
             label: 'Pagos',
-            badgeCount: widget.membership.resident.paymentLedger.pendingPayments.length,
+            badgeCount: widget.user.paymentLedger.pendingPayments.length,
           ),
         ],
       ),
@@ -42,9 +42,9 @@ class _UserDetailsPageState extends State<UserDetailsPage> {
   }
 
   Widget _getBody(int index) {
-    if(index == 0) return UserInformationView(membership: widget.membership);
-    if (index == 1) return PropertyListView(widget.membership.resident.propertyRegistery.properties);
-    if (index == 2) return PaymentListView(widget.membership.resident.paymentLedger.payments);
+    if(index == 0) return UserInformationView(user: widget.user);
+    if (index == 1) return PropertyListView(widget.user.propertyRegistery.properties);
+    if (index == 2) return PaymentListView(widget.user.paymentLedger.payments);
 
     return Text('Unimplemented');
   }

@@ -4,9 +4,9 @@ import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
 class UserListView extends StatefulWidget {
-  final List<MembershipEntity> memberships;
+  final List<UserEntity> users;
 
-  const UserListView(this.memberships, {super.key});
+  const UserListView(this.users, {super.key});
 
   @override
   State<UserListView> createState() => _UserListViewState();
@@ -34,7 +34,7 @@ class _UserListViewState extends State<UserListView> {
     final colorScheme = theme.colorScheme;
 
     // 1. Filter Logic
-    final filteredMemberships = widget.memberships.where((m) {
+    final filteredMemberships = widget.users.where((m) {
       switch (_selectedFilter.value) {
         case 'admin':
           return m.isAdmin;
@@ -49,10 +49,10 @@ class _UserListViewState extends State<UserListView> {
 
     // 2. Sort Alphabetically
     filteredMemberships.sort(
-      (a, b) => (a.resident.user.name).toLowerCase().compareTo((b.resident.user.name).toLowerCase()),
+      (a, b) => (a.name).toLowerCase().compareTo((b.name).toLowerCase()),
     );
 
-    if (widget.memberships.isEmpty) return const _Empty();
+    if (widget.users.isEmpty) return const _Empty();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),

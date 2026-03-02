@@ -32,6 +32,10 @@ class AuthPage extends StatelessWidget {
             if (state is UserNotOnboarded) {
               Go.to(const OnboardingStartPage());
             }
+
+            if (state is CommunityNotOnboarded) {
+              Go.to(const OnboardingCommunityRegistrationPage());
+            }
           },
           builder: (ctx, state) {
             if (state is InitialState ||

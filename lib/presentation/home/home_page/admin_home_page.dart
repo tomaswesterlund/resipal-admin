@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:resipal_admin/presentation/applications/application_list/application_list_view.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
 import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
@@ -51,13 +50,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
               index: _currentPageIndex,
               children: [
                 HomeOverview(
-                  onPendingApplicationsPressed: () => setState(() => _currentPageIndex = AdminHomePages.applications.index),
+                  onPendingApplicationsPressed: () =>
+                      setState(() => _currentPageIndex = AdminHomePages.applications.index),
                   onPendingPaymentsPressed: () => setState(() => _currentPageIndex = AdminHomePages.payments.index),
                 ),
                 PropertyListView(community.propertyRegistry.properties),
                 PaymentListView(community.paymentLedger.payments),
-                const ApplicationListView(),
-                UserListView(community.directory.members),
+                UserListView(community.userDirectory.users),
               ],
             ),
             bottomNavigationBar: FloatingNavBar(
@@ -71,11 +70,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   label: 'Pagos',
                   badgeCount: community.paymentLedger.pendingPayments.length,
                 ),
-                FloatingNavBarItem(
-                  icon: Icons.person_add_alt_1_outlined,
-                  label: 'Solicitudes',
-                  badgeCount: community.directory.pendingApplications.length,
-                ),
+
                 FloatingNavBarItem(icon: Icons.groups_outlined, label: 'Usuarios'),
               ],
             ),
@@ -98,15 +93,41 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         children: [
                           const SectionHeaderText(text: 'CONFIGURACIÓN'),
                           const SizedBox(height: 16),
-                          _buildDrawerItem(context, icon: Icons.settings_applications_outlined, label: 'Comunidad', onTap: () {}),
-                          _buildDrawerItem(context, icon: Icons.description_outlined, label: 'Contratos', onTap: () => Go.to(const ContractListPage())),
-                          _buildDrawerItem(context, icon: Icons.apartment_outlined, label: 'Propiedades', onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties))),
-                          _buildDrawerItem(context, icon: Icons.manage_accounts_outlined, label: 'Usuarios', onTap: () => Go.to(UsersPage(community.directory.members))),
+                          _buildDrawerItem(
+                            context,
+                            icon: Icons.settings_applications_outlined,
+                            label: 'Comunidad',
+                            onTap: () {},
+                          ),
+                          _buildDrawerItem(
+                            context,
+                            icon: Icons.description_outlined,
+                            label: 'Contratos',
+                            onTap: () => Go.to(const ContractListPage()),
+                          ),
+                          _buildDrawerItem(
+                            context,
+                            icon: Icons.apartment_outlined,
+                            label: 'Propiedades',
+                            onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties)),
+                          ),
+                          _buildDrawerItem(
+                            context,
+                            icon: Icons.manage_accounts_outlined,
+                            label: 'Usuarios',
+                            onTap: () => Go.to(UsersPage(community.userDirectory.users)),
+                          ),
                           _buildDrawerItem(context, icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
                           const Padding(padding: EdgeInsets.symmetric(vertical: 20.0), child: Divider(thickness: 1)),
                           const SectionHeaderText(text: 'SISTEMA'),
                           const SizedBox(height: 16),
-                          _buildDrawerItem(context, icon: Icons.logout_rounded, label: 'Cerrar Sesión', color: colorScheme.error, onTap: () {}),
+                          _buildDrawerItem(
+                            context,
+                            icon: Icons.logout_rounded,
+                            label: 'Cerrar Sesión',
+                            color: colorScheme.error,
+                            onTap: () {},
+                          ),
                           const SizedBox(height: 12.0),
                           Center(
                             child: Text(
@@ -134,15 +155,21 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
   List<Widget> _getAppBarActions() {
     switch (_currentPageIndex) {
-      case 0: return [IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {})];
-      case 1: return [IconButton(icon: const Icon(Icons.add_business), onPressed: () {})];
-      case 2: return [
+      case 0:
+        return [IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {})];
+      case 1:
+        return [IconButton(icon: const Icon(Icons.add_business), onPressed: () {})];
+      case 2:
+        return [
           IconButton(icon: const Icon(Icons.file_download), onPressed: () {}),
           IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
         ];
-      case 3: return [IconButton(icon: const Icon(Icons.playlist_add_check), onPressed: () {})];
-      case 4: return [IconButton(icon: const Icon(Icons.person_add), onPressed: () {})];
-      default: return [];
+      case 3:
+        return [IconButton(icon: const Icon(Icons.playlist_add_check), onPressed: () {})];
+      case 4:
+        return [IconButton(icon: const Icon(Icons.person_add), onPressed: () {})];
+      default:
+        return [];
     }
   }
 
@@ -177,7 +204,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           HeaderText.five(community.name, color: colorScheme.onPrimary),
           const SizedBox(height: 4),
           Text(
-            widget.user.email, 
+            widget.user.email,
             style: Theme.of(context).textTheme.bodySmall?.copyWith(color: colorScheme.onPrimary.withOpacity(0.8)),
           ),
         ],
@@ -185,10 +212,16 @@ class _AdminHomePageState extends State<AdminHomePage> {
     );
   }
 
-  Widget _buildDrawerItem(BuildContext context, {required IconData icon, required String label, required VoidCallback onTap, Color? color}) {
+  Widget _buildDrawerItem(
+    BuildContext context, {
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    Color? color,
+  }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     final primaryColor = color ?? colorScheme.primary;
     final itemTextColor = color ?? colorScheme.onSurface;
 
@@ -197,18 +230,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
       child: ListTile(
         leading: Container(
           padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: primaryColor.withOpacity(0.1), 
-            borderRadius: BorderRadius.circular(8),
-          ),
+          decoration: BoxDecoration(color: primaryColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
           child: Icon(icon, color: primaryColor, size: 24),
         ),
         title: Text(
           label,
-          style: theme.textTheme.bodyLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-            color: itemTextColor,
-          ),
+          style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700, color: itemTextColor),
         ),
         tileColor: colorScheme.surface,
         shape: RoundedRectangleBorder(

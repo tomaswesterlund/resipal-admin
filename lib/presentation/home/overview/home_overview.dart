@@ -7,12 +7,8 @@ import 'package:wester_kit/lib.dart';
 class HomeOverview extends StatelessWidget {
   final VoidCallback onPendingPaymentsPressed;
   final VoidCallback onPendingApplicationsPressed;
-  
-  const HomeOverview({
-    required this.onPendingPaymentsPressed, 
-    required this.onPendingApplicationsPressed, 
-    super.key,
-  });
+
+  const HomeOverview({required this.onPendingPaymentsPressed, required this.onPendingApplicationsPressed, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +59,8 @@ class HomeOverview extends StatelessWidget {
                       ),
                       _buildStatCard(
                         context,
-                        'Usuarios', 
-                        community.directory.members.length.toString(), 
+                        'Usuarios',
+                        community.userDirectory.length.toString(),
                         Icons.people_outline,
                       ),
                     ],
@@ -82,18 +78,18 @@ class HomeOverview extends StatelessWidget {
                     count: community.paymentLedger.pendingPayments.length,
                     icon: Icons.receipt_long_outlined,
                     // Replaces AppColors.warning with Terracotta/Secondary
-                    color: colorScheme.secondary, 
-                    onPressed: onPendingPaymentsPressed
+                    color: colorScheme.secondary,
+                    onPressed: onPendingPaymentsPressed,
                   ),
                   const SizedBox(height: 12),
                   _buildActionTile(
                     context,
                     title: 'Solicitudes de ingreso',
-                    count: community.directory.pendingApplications.length,
+                    count: community.userDirectory.pendingApplications.length,
                     icon: Icons.person_add_outlined,
                     // Replaces AppColors.info with System/Info Tertiary
                     color: colorScheme.tertiary,
-                    onPressed: onPendingApplicationsPressed
+                    onPressed: onPendingApplicationsPressed,
                   ),
                 ],
               );
@@ -128,17 +124,14 @@ class HomeOverview extends StatelessWidget {
               Text(
                 value,
                 style: theme.textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.bold, 
+                  fontWeight: FontWeight.bold,
                   color: colorScheme.onSurface,
                   fontFamily: 'NotoSansMono', // Consistent with numeric guide
                 ),
               ),
               Text(
                 label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: colorScheme.outline, 
-                  fontWeight: FontWeight.w600,
-                ),
+                style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.outline, fontWeight: FontWeight.w600),
               ),
             ],
           ),
@@ -153,7 +146,7 @@ class HomeOverview extends StatelessWidget {
     required int count,
     required IconData icon,
     required Color color,
-    required VoidCallback onPressed
+    required VoidCallback onPressed,
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -177,10 +170,7 @@ class HomeOverview extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: theme.textTheme.bodyLarge?.copyWith(
-                  fontWeight: FontWeight.bold, 
-                  color: colorScheme.onSurface,
-                ),
+                style: theme.textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.bold, color: colorScheme.onSurface),
               ),
             ),
             Container(
@@ -191,10 +181,7 @@ class HomeOverview extends StatelessWidget {
               ),
               child: Text(
                 count.toString(),
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: Colors.white, 
-                  fontWeight: FontWeight.bold,
-                ),
+                style: theme.textTheme.labelSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.bold),
               ),
             ),
             const SizedBox(width: 12),

@@ -54,7 +54,7 @@ class OnboardingCommunityRegistrationCubit extends Cubit<OnboardingCommunityRegi
       await FetchCommunity().call(communityId);
       await FetchUsers().call(); // TODO Switch to listen by Community ID
       final community = GetCommunityById().call(communityId);
-      final user = GetUser().call(userId);
+      final user = GetUserById().call(userId);
 
       await _sessionService.startWatchers(userId: userId, communityId: community.id);
 
