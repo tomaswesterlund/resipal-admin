@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
           outlineVariant: AppColors.grey200,
 
           // --- Additional mapping ---
-          tertiary: AppColors.info, // Using info as tertiary for system blue accents
+          tertiary: AppColors.info,
         ),
         appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         scaffoldBackgroundColor: AppColors.background,
@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
           displayLarge: GoogleFonts.raleway(
             fontSize: 48,
             height: 54 / 48,
-            fontWeight: FontWeight.w700, // Black
+            fontWeight: FontWeight.w700, // GIGA
           ),
           headlineLarge: GoogleFonts.raleway(
             fontSize: 32,
