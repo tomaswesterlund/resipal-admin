@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
+import 'package:resipal_admin/presentation/home/applications/application_list_view.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
+import 'package:resipal_admin/presentation/members/member_list_view.dart';
 import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
 import 'package:resipal_admin/presentation/payments/register_payment/register_payment_page.dart';
 import 'package:resipal_admin/presentation/properties/properties_page.dart';
 import 'package:resipal_admin/presentation/properties/property_list_view.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
 import 'package:resipal_admin/presentation/users/register_user/register_user_page.dart';
-import 'package:resipal_admin/presentation/users/user_list_view.dart';
-import 'package:resipal_admin/presentation/users/users_page.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
@@ -17,7 +17,7 @@ import 'package:wester_kit/lib.dart';
 import 'admin_home_cubit.dart';
 import 'admin_home_state.dart';
 
-enum AdminHomePages { home, properties, payments, users }
+enum AdminHomePages { home, properties, payments, applications, members }
 
 class AdminHomePage extends StatefulWidget {
   final CommunityEntity community;
@@ -52,12 +52,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
               children: [
                 HomeOverview(
                   onPendingApplicationsPressed: () =>
-                      setState(() => _currentPageIndex = AdminHomePages.users.index),
+                      setState(() => _currentPageIndex = AdminHomePages.applications.index),
                   onPendingPaymentsPressed: () => setState(() => _currentPageIndex = AdminHomePages.payments.index),
                 ),
                 PropertyListView(community.propertyRegistry.properties),
                 PaymentListView(community.paymentLedger.payments),
-                UserListView(community.userDirectory.users),
+                ApplicationListView(community.applications),
+                MemberListView(community.memberDirectory.members),
               ],
             ),
             bottomNavigationBar: FloatingNavBar(
@@ -71,8 +72,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   label: 'Pagos',
                   badgeCount: community.paymentLedger.pendingPayments.length,
                 ),
-
-                FloatingNavBarItem(icon: Icons.groups_outlined, label: 'Usuarios'),
+                FloatingNavBarItem(
+                  icon: Icons.document_scanner,
+                  label: 'Solicitudes',
+                  warningBadgeCount: community.applications.length,
+                ),
+                FloatingNavBarItem(icon: Icons.groups_outlined, label: 'Miembros'),
               ],
             ),
             floatingActionButton: _getFAB(),
@@ -108,17 +113,25 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           ),
                           _buildDrawerItem(
                             context,
+                            icon: Icons.manage_accounts_outlined,
+                            label: 'Miembros',
+                            onTap: () {}, //() => Go.to(UsersPage(community.userDirectory.users)),
+                          ),
+
+                          _buildDrawerItem(
+                            context,
                             icon: Icons.apartment_outlined,
                             label: 'Propiedades',
                             onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties)),
                           ),
+
+                          _buildDrawerItem(context, icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
                           _buildDrawerItem(
                             context,
-                            icon: Icons.manage_accounts_outlined,
-                            label: 'Usuarios',
-                            onTap: () => Go.to(UsersPage(community.userDirectory.users)),
+                            icon: Icons.document_scanner,
+                            label: 'Solicitudes',
+                            onTap: () {}, //() => Go.to(UsersPage(community.userDirectory.users)),
                           ),
-                          _buildDrawerItem(context, icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
                           const Padding(padding: EdgeInsets.symmetric(vertical: 20.0), child: Divider(thickness: 1)),
                           const SectionHeaderText(text: 'SISTEMA'),
                           const SizedBox(height: 16),
@@ -150,7 +163,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 
   String _getAppBarTitle() {
-    const titles = ['Resipal - Administrator', 'Propiedades', 'Pagos', 'Usuarios'];
+    const titles = ['Resipal - Administrator', 'Propiedades', 'Pagos', 'Solicitudes', 'Miembros'];
     return titles[_currentPageIndex];
   }
 

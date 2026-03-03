@@ -21,6 +21,7 @@ class AuthCubit extends Cubit<AuthState> {
 
         await FetchUsers().call();
         await FetchCommunities().call();
+        await FetchMembershipsByUserId().call(userId: userId);
 
         final userOnboarded = await UserIsOnboarded().call(userId);
         if (userOnboarded == false) {
@@ -29,13 +30,17 @@ class AuthCubit extends Cubit<AuthState> {
         }
         
         final user = GetUserById().call(userId);
+        final memberships = GetMembershipsByUserId().call(userId: userId);
         
-        if (user.communityId == null) {
+        if (memberships.isEmpty) {
           emit(CommunityNotOnboarded());
           return;
         }
 
-        final community = GetCommunityById().call(user.communityId!);
+        // TODO: Check if the user has more than one community
+
+        final membership = memberships.first;
+        final community = GetCommunityById().call(membership.community.id);
 
         await _sessionService.startWatchers(userId: user.id, communityId: community.id);
         emit(UserSignedIn(community, user));

@@ -17,18 +17,18 @@ class AdminHomeCubit extends Cubit<AdminHomeState> {
       emit(LoadedState(community));
 
       _streamSubscription = _watchCommunityById
-          .call(community.id)
+          .call(communityId: community.id)
           .listen(
             (community) {
               emit(LoadedState(community));
             },
             onError: (e, s) {
-              _logger.logException(exception: e, stackTrace: s, featureArea: 'PropertyListCubit.initialize / listener');
+              _logger.logException(exception: e, stackTrace: s, featureArea: 'AdminHomeCubit.initialize / listener');
               emit(ErrorState());
             },
           );
     } catch (e, s) {
-      _logger.logException(exception: e, stackTrace: s, featureArea: 'PropertyListCubit.initialize');
+      _logger.logException(exception: e, stackTrace: s, featureArea: 'AdminHomeCubit.initialize');
       emit(ErrorState());
     }
   }

@@ -30,7 +30,7 @@ class HomeOverview extends StatelessWidget {
               return ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
-                  HeaderText.four('¡Bienvenido, ${state.user.name}!'),
+                  HeaderText.four('¡Bienvenido, ${state.member.name}!'),
                   const SizedBox(height: 4),
                   Text(
                     community.name,
@@ -60,7 +60,7 @@ class HomeOverview extends StatelessWidget {
                       _buildStatCard(
                         context,
                         'Usuarios',
-                        community.userDirectory.length.toString(),
+                        community.memberDirectory.length.toString(),
                         Icons.people_outline,
                       ),
                     ],
@@ -85,7 +85,7 @@ class HomeOverview extends StatelessWidget {
                   _buildActionTile(
                     context,
                     title: 'Solicitudes de ingreso',
-                    count: community.userDirectory.pendingApplications.length,
+                    count: community.applications.length,
                     icon: Icons.person_add_outlined,
                     // Replaces AppColors.info with System/Info Tertiary
                     color: colorScheme.tertiary,

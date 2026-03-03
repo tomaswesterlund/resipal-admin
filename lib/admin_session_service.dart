@@ -51,9 +51,12 @@ class AdminSessionService {
       await Future.wait([
         _setupSubscription(GetIt.I<CommunityDataSource>().watchById(communityId)),
         _setupSubscription(GetIt.I<UserDataSource>().watchById(userId)),
-        _setupSubscription(GetIt.I<InvitationDataSource>().watchByCommunityId(communityId)),
+        
+        _setupSubscription(GetIt.I<ApplicationDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<ContractDataSource>().watchByCommunityId(communityId)),
+        _setupSubscription(GetIt.I<InvitationDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<MaintenanceFeeDataSource>().watchByCommunityId(communityId)),
+        _setupSubscription(GetIt.I<MembershipDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<PaymentDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<PropertyDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<VisitorDataSource>().watchByCommunityId(communityId)),

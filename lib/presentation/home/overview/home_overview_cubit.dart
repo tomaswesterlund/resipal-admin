@@ -6,6 +6,7 @@ import 'package:resipal_admin/presentation/home/overview/home_overview_state.dar
 import 'package:resipal_core/lib.dart';
 
 class HomeOverviewCubit extends Cubit<HomeOverviewState> {
+  final AuthService _authService = GetIt.I<AuthService>();
   final LoggerService _logger = GetIt.I<LoggerService>();
   final AdminSessionService _sessionService = GetIt.I<AdminSessionService>();
 
@@ -19,21 +20,22 @@ class HomeOverviewCubit extends Cubit<HomeOverviewState> {
       emit(LoadingState());
 
       final communityId = _sessionService.communityId;
-      final user = GetSignedInUser().call();
+      final userId = _authService.getSignedInUserId();
+      final member = GetMemberByUserAndCommunityId().call(communityId: communityId, userId: userId);
 
       _streamSubscription = _watchCommunityById
-          .call(communityId)
+          .call(communityId: communityId)
           .listen(
             (community) {
-              emit(LoadedState(user, community));
+              emit(LoadedState(community: community, member: member));
             },
             onError: (e, s) {
-              _logger.logException(exception: e, stackTrace: s, featureArea: 'PropertyListCubit.initialize / listener');
+              _logger.logException(exception: e, stackTrace: s, featureArea: 'HomeOverviewCubit.initialize / listener');
               emit(ErrorState());
             },
           );
     } catch (e, s) {
-      _logger.logException(exception: e, stackTrace: s, featureArea: 'PropertyListCubit.initialize');
+      _logger.logException(exception: e, stackTrace: s, featureArea: 'HomeOverviewCubit.initialize');
       emit(ErrorState());
     }
   }

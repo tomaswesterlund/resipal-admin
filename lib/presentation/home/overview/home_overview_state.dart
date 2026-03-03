@@ -11,13 +11,13 @@ class InitialState extends HomeOverviewState {}
 class LoadingState extends HomeOverviewState {}
 
 class LoadedState extends HomeOverviewState {
-  final UserEntity user;
   final CommunityEntity community;
+  final MemberEntity member;
 
-  LoadedState(this.user, this.community);
+  LoadedState({required this.community, required this.member});
 
   @override
-  List<Object?> get props => [community];
+  List<Object?> get props => [community, member];
 }
 
 class EmptyState extends HomeOverviewState {}
