@@ -7,6 +7,7 @@ import 'package:resipal_admin/presentation/payments/register_payment/register_pa
 import 'package:resipal_admin/presentation/properties/properties_page.dart';
 import 'package:resipal_admin/presentation/properties/property_list_view.dart';
 import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
+import 'package:resipal_admin/presentation/users/register_user/register_user_page.dart';
 import 'package:resipal_admin/presentation/users/user_list_view.dart';
 import 'package:resipal_admin/presentation/users/users_page.dart';
 import 'package:short_navigation/short_navigation.dart';
@@ -16,7 +17,7 @@ import 'package:wester_kit/lib.dart';
 import 'admin_home_cubit.dart';
 import 'admin_home_state.dart';
 
-enum AdminHomePages { home, properties, payments, applications, users }
+enum AdminHomePages { home, properties, payments, users }
 
 class AdminHomePage extends StatefulWidget {
   final CommunityEntity community;
@@ -51,7 +52,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               children: [
                 HomeOverview(
                   onPendingApplicationsPressed: () =>
-                      setState(() => _currentPageIndex = AdminHomePages.applications.index),
+                      setState(() => _currentPageIndex = AdminHomePages.users.index),
                   onPendingPaymentsPressed: () => setState(() => _currentPageIndex = AdminHomePages.payments.index),
                 ),
                 PropertyListView(community.propertyRegistry.properties),
@@ -149,7 +150,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 
   String _getAppBarTitle() {
-    const titles = ['Resipal - Administrator', 'Propiedades', 'Pagos', 'Solicitudes', 'Usuarios'];
+    const titles = ['Resipal - Administrator', 'Propiedades', 'Pagos', 'Usuarios'];
     return titles[_currentPageIndex];
   }
 
@@ -165,9 +166,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
         ];
       case 3:
-        return [IconButton(icon: const Icon(Icons.playlist_add_check), onPressed: () {})];
-      case 4:
-        return [IconButton(icon: const Icon(Icons.person_add), onPressed: () {})];
+        return [IconButton(icon: const Icon(Icons.add), onPressed: () => Go.to(RegisterUserPage()))];
       default:
         return [];
     }

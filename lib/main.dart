@@ -72,7 +72,10 @@ class MyApp extends StatelessWidget {
           outlineVariant: AppColors.grey200,
 
           // --- Additional mapping ---
-          tertiary: AppColors.info,
+          tertiary: Colors.green[600]!, // Your vibrant "Success" green
+          onTertiary: Colors.white,
+          tertiaryContainer: Colors.green[600],
+          onTertiaryContainer: AppColors.success900,
         ),
         appBarTheme: AppBarTheme(backgroundColor: AppColors.background),
         scaffoldBackgroundColor: AppColors.background,

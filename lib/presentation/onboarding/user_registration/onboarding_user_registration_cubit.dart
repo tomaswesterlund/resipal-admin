@@ -38,6 +38,11 @@ class OnboardingUserRegistrationCubit extends Cubit<OnboardingUserRegistrationSt
     emit(FormEditingState(_formState));
   }
 
+  void onEmergencyPhoneChanged(String newEmergencyPhoneNumber) {
+    _formState = _formState.copyWith(emergencyPhoneNumber: newEmergencyPhoneNumber);
+    emit(FormEditingState(_formState));
+  }
+
   Future<void> submit() async {
     try {
       if (_formState.canSubmit == false) {
@@ -47,9 +52,10 @@ class OnboardingUserRegistrationCubit extends Cubit<OnboardingUserRegistrationSt
       emit(FormSubmittingState());
       final userId = await CreateUser().call(
         name: _formState.name,
-        phoneNumber: _formState.phoneNumber,
         email: _formState.email,
-        applicationStatus: ApplicationStatus.approved.name,
+        phoneNumber: _formState.phoneNumber,
+        emergencyPhoneNumber: _formState.emergencyPhoneNumber,
+        status: ApplicationStatus.approved,
         applicationMessage: 'Usuario aprobado durante creación.',
         isAdmin: true,
         isResident: true,

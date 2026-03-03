@@ -86,6 +86,16 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
 
+                      TextInputField(
+                        label: 'Teléfono de emergencia',
+                        hint: 'Ej: 55 8765 4321',
+                        isRequired: false,
+                        keyboardType: TextInputType.phone,
+                        helpText: 'Número de un contacto de confianza en caso de incidentes dentro de la comunidad.',
+                        onChanged: cubit.onEmergencyPhoneChanged,
+                      ),
+                      const SizedBox(height: 20.0),
+
                       _ReadOnlyEmailField(email: form.email),
 
                       const SizedBox(height: 48),
@@ -125,10 +135,7 @@ class _ReadOnlyEmailField extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
           child: Text(
             'Correo Electrónico',
-            style: theme.textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.w600, 
-              color: colorScheme.primary,
-            ),
+            style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.primary),
           ),
         ),
         Container(
@@ -139,10 +146,7 @@ class _ReadOnlyEmailField extends StatelessWidget {
             borderRadius: BorderRadius.circular(20.0),
             border: Border.all(color: colorScheme.outlineVariant),
           ),
-          child: Text(
-            email, 
-            style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline),
-          ),
+          child: Text(email, style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline)),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 8.0, top: 4.0),
