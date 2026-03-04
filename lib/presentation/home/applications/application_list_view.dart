@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:resipal_admin/presentation/home/applications/application_card.dart';
+import 'package:resipal_admin/presentation/home/applications/register_application/register_application_page.dart';
 import 'package:resipal_core/lib.dart';
+import 'package:short_navigation/short_navigation.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
 
 class ApplicationListView extends StatelessWidget {
@@ -10,7 +12,7 @@ class ApplicationListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (applications.isEmpty) return const _EmptyApplications();
+    if (applications.isEmpty) return const _Empty();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -24,14 +26,13 @@ class ApplicationListView extends StatelessWidget {
   }
 }
 
-class _EmptyApplications extends StatelessWidget {
-  const _EmptyApplications();
+class _Empty extends StatelessWidget {
+  const _Empty();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
     return Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(32.0),
@@ -41,7 +42,7 @@ class _EmptyApplications extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(color: colorScheme.primary.withOpacity(0.1), shape: BoxShape.circle),
-              child: Icon(Icons.assignment_ind_outlined, size: 64, color: colorScheme.primary),
+              child: Icon(Icons.document_scanner_outlined, size: 64, color: colorScheme.primary),
             ),
             const SizedBox(height: 32),
             HeaderText.four('Sin solicitudes', textAlign: TextAlign.center, color: colorScheme.primary),
@@ -49,7 +50,14 @@ class _EmptyApplications extends StatelessWidget {
             Text(
               'No hay solicitudes pendientes ni invitaciones activas en este momento.',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.inverseSurface),
+            ),
+            const SizedBox(height: 32),
+            TextButton.icon(
+              onPressed: () => Go.to(RegisterApplicationPage()),
+              icon: const Icon(Icons.add),
+              label: const Text('Registrar solicitud'),
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
             ),
           ],
         ),

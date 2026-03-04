@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:resipal_admin/presentation/payments/payment_card.dart';
+import 'package:resipal_admin/presentation/payments/register_payment/register_payment_page.dart';
 import 'package:resipal_core/lib.dart';
+import 'package:short_navigation/short_navigation.dart';
 import 'package:wester_kit/lib.dart';
 
 class PaymentListView extends StatefulWidget {
@@ -40,7 +42,7 @@ class _PaymentListViewState extends State<PaymentListView> {
     // 2. Sort by date (Descending)
     filteredPayments.sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
-    if (widget.payments.isEmpty) return const _EmptyPayments();
+    if (widget.payments.isEmpty) return const _Empty();
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -85,18 +87,11 @@ class _PaymentListViewState extends State<PaymentListView> {
       padding: const EdgeInsets.only(top: 40.0),
       child: Column(
         children: [
-          Icon(
-            Icons.search_off_outlined, 
-            color: colorScheme.outline.withOpacity(0.5), 
-            size: 48,
-          ),
+          Icon(Icons.search_off_outlined, color: colorScheme.outline.withOpacity(0.5), size: 48),
           const SizedBox(height: 12),
           Text(
             'No hay pagos con este filtro',
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline,
-              fontWeight: FontWeight.w500,
-            ),
+            style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline, fontWeight: FontWeight.w500),
           ),
         ],
       ),
@@ -104,44 +99,38 @@ class _PaymentListViewState extends State<PaymentListView> {
   }
 }
 
-class _EmptyPayments extends StatelessWidget {
-  const _EmptyPayments();
+class _Empty extends StatelessWidget {
+  const _Empty();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 60),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(32.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: colorScheme.secondary.withOpacity(0.1),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                Icons.history, 
-                size: 48, 
-                color: colorScheme.secondary,
-              ),
+              decoration: BoxDecoration(color: colorScheme.primary.withOpacity(0.1), shape: BoxShape.circle),
+              child: Icon(Icons.attach_money, size: 64, color: colorScheme.primary),
             ),
-            const SizedBox(height: 24),
-            HeaderText.five(
-              'Sin historial de pagos', 
-              color: colorScheme.onBackground,
-            ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 32),
+            HeaderText.four('Sin pagos', textAlign: TextAlign.center, color: colorScheme.primary),
+            const SizedBox(height: 16),
             Text(
-              'Aún no se han registrado pagos en la comunidad.',
+              'Aún no has registrado ningún pago en esta sección.',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: colorScheme.outline,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.inverseSurface),
+            ),
+            const SizedBox(height: 32),
+            TextButton.icon(
+              onPressed: () => Go.to(const RegisterPaymentPage()),
+              icon: const Icon(Icons.add),
+              label: const Text('Registrar pago'),
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
             ),
           ],
         ),

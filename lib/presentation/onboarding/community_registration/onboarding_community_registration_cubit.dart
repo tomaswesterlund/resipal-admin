@@ -42,17 +42,21 @@ class OnboardingCommunityRegistrationCubit extends Cubit<OnboardingCommunityRegi
       final userId = _authService.getSignedInUserId();
 
       final communityId = await CreateCommunity().call(
-        userId: userId,
         name: _formState.name,
         location: _formState.address,
         description: _formState.location,
+      );
+
+      final membershipId = CreateMembership().call(
+        communityId: communityId,
+        userId: userId,
         isAdmin: true,
-        isUser: true,
-        isSecurity: true,
+        isResident: false,
+        isSecurity: false,
       );
 
       await FetchCommunity().call(communityId);
-      await FetchUsers().call(); // TODO Switch to listen by Community ID
+      await FetchUsers().call(); // TODO Switch to listen by Community ID (we'll need Memberships)
       final community = GetCommunityById().call(communityId);
       final user = GetUserById().call(userId);
 

@@ -12,7 +12,6 @@ class LoadingState extends PaymentDetailsState {}
 
 class LoadedState extends PaymentDetailsState {
   final PaymentEntity payment;
-  
 
   LoadedState(this.payment);
 

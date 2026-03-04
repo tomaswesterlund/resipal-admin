@@ -78,7 +78,7 @@ class HomeOverview extends StatelessWidget {
                     count: community.paymentLedger.pendingPayments.length,
                     icon: Icons.receipt_long_outlined,
                     // Replaces AppColors.warning with Terracotta/Secondary
-                    color: colorScheme.secondary,
+                    color: colorScheme.surfaceTint,
                     onPressed: onPendingPaymentsPressed,
                   ),
                   const SizedBox(height: 12),
@@ -88,7 +88,7 @@ class HomeOverview extends StatelessWidget {
                     count: community.applications.length,
                     icon: Icons.person_add_outlined,
                     // Replaces AppColors.info with System/Info Tertiary
-                    color: colorScheme.tertiary,
+                    color: colorScheme.surfaceTint,
                     onPressed: onPendingApplicationsPressed,
                   ),
                 ],

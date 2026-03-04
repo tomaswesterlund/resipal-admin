@@ -48,8 +48,11 @@ class AuthPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const ResipalLogo(),
-                    HeaderText.giga('RESIPAL', color: colorScheme.primary),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 12),
+                    HeaderText.giga('Resipal', color: colorScheme.inverseSurface),
+                    const SizedBox(height: 8),
+                    HeaderText.three('Administrator', color: colorScheme.inverseSurface),
+
                     const LoadingView(
                       title: 'Iniciando Panel de Control',
                       description: 'Verificando credenciales de administrador...',

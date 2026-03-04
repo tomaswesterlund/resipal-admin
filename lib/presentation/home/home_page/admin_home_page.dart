@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
 import 'package:resipal_admin/presentation/home/applications/application_list_view.dart';
+import 'package:resipal_admin/presentation/home/applications/register_application/register_application_page.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
 import 'package:resipal_admin/presentation/members/member_list_view.dart';
 import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
-import 'package:resipal_admin/presentation/payments/register_payment/register_payment_page.dart';
 import 'package:resipal_admin/presentation/properties/properties_page.dart';
 import 'package:resipal_admin/presentation/properties/property_list_view.dart';
-import 'package:resipal_admin/presentation/properties/register_property/register_property_page.dart';
 import 'package:resipal_admin/presentation/users/register_user/register_user_page.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:resipal_core/lib.dart';
@@ -66,9 +65,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
               onChanged: (index) => setState(() => _currentPageIndex = index),
               items: [
                 FloatingNavBarItem(icon: Icons.dashboard_outlined, label: 'Inicio'),
-                FloatingNavBarItem(icon: Icons.house_outlined, label: 'Propiedades'),
+                FloatingNavBarItem(icon: Icons.home_work_outlined, label: 'Propiedades'),
                 FloatingNavBarItem(
-                  icon: Icons.account_balance_wallet_outlined,
+                  icon: Icons.attach_money,
                   label: 'Pagos',
                   badgeCount: community.paymentLedger.pendingPayments.length,
                 ),
@@ -80,8 +79,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 FloatingNavBarItem(icon: Icons.groups_outlined, label: 'Miembros'),
               ],
             ),
-            floatingActionButton: _getFAB(),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
             drawer: Drawer(
               backgroundColor: colorScheme.background,
               width: MediaQuery.of(context).size.width * 0.85,
@@ -172,27 +169,28 @@ class _AdminHomePageState extends State<AdminHomePage> {
       case 0:
         return [IconButton(icon: const Icon(Icons.notifications_none), onPressed: () {})];
       case 1:
-        return [IconButton(icon: const Icon(Icons.add_business), onPressed: () {})];
+        return [
+          IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.add), onPressed: () {})];
       case 2:
         return [
-          IconButton(icon: const Icon(Icons.file_download), onPressed: () {}),
           IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.add), onPressed: () {}),
         ];
       case 3:
-        return [IconButton(icon: const Icon(Icons.add), onPressed: () => Go.to(RegisterUserPage()))];
+        return [
+          IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.add), onPressed: () => Go.to(RegisterApplicationPage())),
+        ];
+
+      case 4:
+        return [
+          IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
+          IconButton(icon: const Icon(Icons.add), onPressed: () => Go.to(RegisterUserPage())),
+        ];
       default:
         return [];
     }
-  }
-
-  Widget? _getFAB() {
-    if (_currentPageIndex == 1) {
-      return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPropertyPage()));
-    }
-    if (_currentPageIndex == 2) {
-      return WkFloatingActionButton(onPressed: () => Go.to(const RegisterPaymentPage()));
-    }
-    return null;
   }
 
   Widget _buildDrawerHeader(BuildContext context, CommunityEntity community) {

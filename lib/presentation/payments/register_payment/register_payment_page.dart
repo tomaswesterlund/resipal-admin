@@ -23,7 +23,7 @@ class RegisterPaymentPage extends StatelessWidget {
           listener: (context, state) {},
           builder: (context, state) {
             if (state is NoResidentsFound) return const _NoResidentsFound();
-            
+
             if (state is FormSubmittingState) {
               return const LoadingView(title: 'Procesando pago...');
             }
@@ -38,7 +38,7 @@ class RegisterPaymentPage extends StatelessWidget {
                 onActionButtonPressed: () => Navigator.of(context).pop(),
               );
             }
-            
+
             if (state is FormEditingState) {
               return _Form(state.formState);
             }
@@ -73,11 +73,7 @@ class _Form extends StatelessWidget {
           ),
 
           const SizedBox(height: 24),
-          AmountInputField(
-            label: 'Monto', 
-            isRequired: true, 
-            onChanged: cubit.updateAmount,
-          ),
+          AmountInputField(label: 'Monto', isRequired: true, onChanged: cubit.updateAmount),
 
           const SizedBox(height: 24),
           DatePickerField(
@@ -95,7 +91,7 @@ class _Form extends StatelessWidget {
             isRequired: true,
             onChanged: cubit.updateReference,
           ),
-          
+
           const SizedBox(height: 24),
           TextInputField(
             label: 'Nota Interna',
@@ -103,9 +99,9 @@ class _Form extends StatelessWidget {
             maxLines: 2,
             onChanged: cubit.updateNote,
           ),
-          
+
           const SizedBox(height: 24),
-          
+
           if (formState.receiptImage != null)
             XFileImagePreview(
               xFile: formState.receiptImage!,
@@ -116,14 +112,14 @@ class _Form extends StatelessWidget {
               onCamera: () => cubit.pickImage(ImageSource.camera),
               onGallery: () => cubit.pickImage(ImageSource.gallery),
             ),
-            
+
           const SizedBox(height: 48),
-          
+
           SizedBox(
             width: double.infinity,
             child: PrimaryButton(
-              label: 'REGISTRAR PAGO', 
-              canSubmit: formState.canSubmit, 
+              label: 'REGISTRAR PAGO',
+              canSubmit: formState.canSubmit,
               onPressed: () => cubit.submit(),
             ),
           ),
@@ -140,61 +136,34 @@ class _NoResidentsFound extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: colorScheme.secondary.withOpacity(0.1), 
-              shape: BoxShape.circle,
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(color: colorScheme.primary.withOpacity(0.1), shape: BoxShape.circle),
+              child: Icon(Icons.groups_outlined, size: 64, color: colorScheme.primary),
             ),
-            child: Icon(
-              Icons.person_add_disabled_outlined, 
-              size: 64, 
-              color: colorScheme.secondary,
+            const SizedBox(height: 32),
+            HeaderText.four('No hay residentes registrados', textAlign: TextAlign.center, color: colorScheme.primary),
+            const SizedBox(height: 16),
+            Text(
+              'No puedes registrar un pago si no hay residentes en el sistema. Primero debes dar de alta a los usuarios y asignarles una propiedad.',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.inverseSurface),
             ),
-          ),
-          const SizedBox(height: 32),
-          HeaderText.four(
-            'No hay residentes registrados', 
-            textAlign: TextAlign.center, 
-            color: colorScheme.primary,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'No puedes registrar un pago si no hay residentes en el sistema. Primero debes dar de alta a los usuarios y asignarles una propiedad.',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline,
-              height: 1.5,
+            const SizedBox(height: 32),
+            TextButton.icon(
+              onPressed: () {},
+              icon: const Icon(Icons.add),
+              label: const Text('Registrar residente'),
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
             ),
-          ),
-          const SizedBox(height: 48),
-          SizedBox(
-            width: double.infinity,
-            child: PrimaryButton(
-              label: 'IR AL DIRECTORIO',
-              onPressed: () {
-                // Navigation logic here
-              },
-            ),
-          ),
-          const SizedBox(height: 16),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Volver',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: colorScheme.outline,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

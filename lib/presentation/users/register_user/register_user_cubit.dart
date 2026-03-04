@@ -62,12 +62,7 @@ class RegisterUserCubit extends Cubit<RegisterUserState> {
         name: _formState.name!,
         phoneNumber: _formState.phoneNumber!,
         emergencyPhoneNumber: _formState.emergencyPhoneNumber,
-        email: _formState.email!,
-        status: ApplicationStatus.approved,
-        applicationMessage: 'Invitación enviado por la administración.',
-        isAdmin: _formState.isAdmin,
-        isResident: _formState.isResident,
-        isSecurity: _formState.isSecuriy,
+        email: _formState.email!
       );
 
       emit(FormSubmittedSuccessfullyState());

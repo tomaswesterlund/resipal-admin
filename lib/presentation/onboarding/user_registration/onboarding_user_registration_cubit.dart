@@ -54,12 +54,7 @@ class OnboardingUserRegistrationCubit extends Cubit<OnboardingUserRegistrationSt
         name: _formState.name,
         email: _formState.email,
         phoneNumber: _formState.phoneNumber,
-        emergencyPhoneNumber: _formState.emergencyPhoneNumber,
-        status: ApplicationStatus.approved,
-        applicationMessage: 'Usuario aprobado durante creación.',
-        isAdmin: true,
-        isResident: true,
-        isSecurity: true,
+        emergencyPhoneNumber: _formState.emergencyPhoneNumber
       );
 
       await FetchUser().call(userId);

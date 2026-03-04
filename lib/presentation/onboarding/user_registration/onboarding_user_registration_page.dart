@@ -63,7 +63,7 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                       const SizedBox(height: 8),
                       Text(
                         'Estos datos se utilizarán para que los residentes puedan contactarte y para generar tus reportes.',
-                        style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+                        style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.inverseSurface),
                       ),
                       const SizedBox(height: 32),
 
@@ -82,6 +82,7 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                         hint: 'XX XXXX XXXX',
                         isRequired: true,
                         initialValue: form.phoneNumber,
+                        helpText: 'Tu número principal para recibir notificaciones y contacto directo de la administración.',
                         onChanged: cubit.onPhoneChanged,
                       ),
                       const SizedBox(height: 20),
@@ -96,7 +97,12 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                       ),
                       const SizedBox(height: 20.0),
 
-                      _ReadOnlyEmailField(email: form.email),
+                      EmailInputField(
+                        label: 'Correo electrónicio',
+                        isRequired: true,
+                        readOnly: true,
+                        initialValue: form.email,
+                      ),
 
                       const SizedBox(height: 48),
                       SizedBox(
@@ -115,47 +121,6 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class _ReadOnlyEmailField extends StatelessWidget {
-  final String email;
-  const _ReadOnlyEmailField({required this.email});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, bottom: 8.0),
-          child: Text(
-            'Correo Electrónico',
-            style: theme.textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w600, color: colorScheme.primary),
-          ),
-        ),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 18.0),
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceVariant, // Standardized "locked" field color
-            borderRadius: BorderRadius.circular(20.0),
-            border: Border.all(color: colorScheme.outlineVariant),
-          ),
-          child: Text(email, style: theme.textTheme.bodyLarge?.copyWith(color: colorScheme.outline)),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(left: 8.0, top: 4.0),
-          child: Text(
-            'El correo está vinculado a tu cuenta.',
-            style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.outline),
-          ),
-        ),
-      ],
     );
   }
 }

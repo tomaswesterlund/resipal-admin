@@ -813,7 +813,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: ac263bf57a2f2a15af607c7cb99e8b6cf05e06c1
+      resolved-ref: c0da7c359b52c9820a3ebd7b39c092d527d1079a
       url: "https://github.com/tomaswesterlund/resipal-core.git"
     source: git
     version: "0.0.1"
@@ -1058,10 +1058,10 @@ packages:
     dependency: transitive
     description:
       name: uuid
-      sha256: a11b666489b1954e01d992f3d601b1804a33937b5a8fe677bd26b8a9f96f96e8
+      sha256: "1fef9e8e11e2991bb773070d4656b7bd5d850967a2456cfc83cf47925ba79489"
       url: "https://pub.dev"
     source: hosted
-    version: "4.5.2"
+    version: "4.5.3"
   vector_graphics:
     dependency: transitive
     description:
@@ -1131,7 +1131,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "13206772d9036adea2b674a769a918fac9769f95"
+      resolved-ref: "35c9eeb5f5cd3493333b236a848e6c4ff36dc512"
       url: "https://github.com/tomaswesterlund/WesterKit"
     source: git
     version: "0.0.1"

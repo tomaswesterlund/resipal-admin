@@ -144,7 +144,7 @@ class _Empty extends StatelessWidget {
             Text(
               'Aún no has dado de alta ninguna unidad en esta sección.',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.outline),
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.inverseSurface),
             ),
             const SizedBox(height: 32),
             TextButton.icon(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:resipal_admin/presentation/home/applications/application_details/application_details_page.dart';
 import 'package:resipal_core/lib.dart';
+import 'package:short_navigation/short_navigation.dart';
 import 'package:wester_kit/ui/texts/body_text.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
 
@@ -73,9 +75,7 @@ class ApplicationCard extends StatelessWidget {
 
                           // Action Button
                           GestureDetector(
-                            onTap: () {
-                              // Go.to(ApplicationDetailsPage(application));
-                            },
+                            onTap: () => Go.to(ApplicationDetailsPage(application: application,)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(

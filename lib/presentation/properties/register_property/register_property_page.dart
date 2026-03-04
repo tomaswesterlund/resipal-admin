@@ -25,7 +25,7 @@ class RegisterPropertyPage extends StatelessWidget {
           builder: (ctx, state) {
             if (state is NoContractsFound) return const _NoContractsFound();
             if (state is FormEditingState) return _Form(state.formState);
-            
+
             if (state is FormSubmittingState) {
               return const LoadingView(title: 'Registrando nueva propiedad ...');
             }
@@ -117,55 +117,34 @@ class _NoContractsFound extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: colorScheme.secondary.withOpacity(0.1), 
-              shape: BoxShape.circle,
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(color: colorScheme.primary.withOpacity(0.1), shape: BoxShape.circle),
+              child: Icon(Icons.description_outlined, size: 64, color: colorScheme.primary),
             ),
-            child: Icon(Icons.description_outlined, size: 64, color: colorScheme.secondary),
-          ),
-          const SizedBox(height: 32),
-          HeaderText.four(
-            'No hay contratos activos', 
-            textAlign: TextAlign.center, 
-            color: colorScheme.primary,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Para registrar una propiedad, primero necesitas definir al menos un tipo de contrato (ej: Mensualidad, Mantenimiento).',
-            textAlign: TextAlign.center,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline,
-              height: 1.5,
+            const SizedBox(height: 32),
+            HeaderText.four('No hay contratos activos', textAlign: TextAlign.center, color: colorScheme.primary),
+            const SizedBox(height: 16),
+            Text(
+              'Para registrar una propiedad, primero necesitas definir al menos un tipo de contrato (ej: Mensualidad, Mantenimiento).',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.inverseSurface),
             ),
-          ),
-          const SizedBox(height: 48),
-          SizedBox(
-            width: double.infinity,
-            child: PrimaryButton(
-              label: 'Configurar Contratos',
-              onPressed: () => Go.to(const RegisterContractPage()),
+            const SizedBox(height: 32),
+            TextButton.icon(
+              onPressed: () => Go.to(RegisterContractPage()),
+              icon: const Icon(Icons.add),
+              label: const Text('Registrar contrato'),
+              style: TextButton.styleFrom(foregroundColor: colorScheme.primary),
             ),
-          ),
-          const SizedBox(height: 16),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text(
-              'Volver',
-              style: theme.textTheme.labelLarge?.copyWith(
-                color: colorScheme.outline,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
