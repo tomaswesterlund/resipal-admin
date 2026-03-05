@@ -5,19 +5,26 @@ import 'package:resipal_core/lib.dart';
 import 'property_details_state.dart';
 
 class PropertyDetailsCubit extends Cubit<PropertyDetailsState> {
-  final String propertyId;
   final WatchPropertyById _watchProperty = WatchPropertyById();
   final LoggerService _logger = GetIt.I<LoggerService>();
   StreamSubscription? _subscription;
 
-  PropertyDetailsCubit({required this.propertyId}) : super(LoadingState());
+  PropertyDetailsCubit() : super(LoadingState());
 
-  void initialize() {
+  void initialize(PropertyEntity property) {
+    emit(LoadedState(property));
+
     _subscription?.cancel();
-    _subscription = _watchProperty(propertyId).listen(
+
+    _subscription = _watchProperty(property.id).listen(
       (property) => emit(LoadedState(property)),
       onError: (e, s) {
-        _logger.logException(exception: e, stackTrace: s, featureArea: 'PropertyDetailsCubit.initialize');
+        _logger.logException(
+          exception: e,
+          stackTrace: s,
+          featureArea: 'PropertyDetailsCubit.initialize',
+          metadata: {'property': property.toMap()},
+        );
         emit(ErrorState());
       },
     );

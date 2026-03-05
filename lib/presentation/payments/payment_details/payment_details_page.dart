@@ -10,15 +10,15 @@ import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
 class PaymentDetailsPage extends StatelessWidget {
-  final String paymentId;
-  const PaymentDetailsPage({required this.paymentId, super.key});
+  final PaymentEntity payment;
+  const PaymentDetailsPage({required this.payment, super.key});
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
     return BlocProvider(
-      create: (ctx) => PaymentDetailsCubit()..initialize(paymentId),
+      create: (ctx) => PaymentDetailsCubit()..initialize(payment),
       child: Scaffold(
         backgroundColor: colorScheme.background,
         appBar: const MyAppBar(title: 'Detalle de Pago'),

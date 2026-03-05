@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:resipal_admin/presentation/applications/application_list_page.dart';
+import 'package:resipal_admin/presentation/communities/community_details/community_details_page.dart';
 import 'package:resipal_admin/presentation/contracts/contract_list/contract_list_page.dart';
-import 'package:resipal_admin/presentation/home/applications/application_list_view.dart';
-import 'package:resipal_admin/presentation/home/applications/register_application/register_application_page.dart';
+import 'package:resipal_admin/presentation/applications/application_list_view.dart';
+import 'package:resipal_admin/presentation/applications/register_application/register_application_page.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview.dart';
+import 'package:resipal_admin/presentation/members/member_list_page.dart';
 import 'package:resipal_admin/presentation/members/member_list_view.dart';
 import 'package:resipal_admin/presentation/payments/payment_list_view.dart';
 import 'package:resipal_admin/presentation/properties/properties_page.dart';
 import 'package:resipal_admin/presentation/properties/property_list_view.dart';
+import 'package:resipal_admin/presentation/reports/reports_page.dart';
 import 'package:resipal_admin/presentation/users/register_user/register_user_page.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:resipal_core/lib.dart';
@@ -37,10 +41,11 @@ class _AdminHomePageState extends State<AdminHomePage> {
     final colorScheme = theme.colorScheme;
 
     return BlocProvider(
-      create: (context) => AdminHomeCubit()..initialize(widget.community),
+      create: (context) => AdminHomeCubit()..initialize(widget.community, widget.user),
       child: BlocBuilder<AdminHomeCubit, AdminHomeState>(
         builder: (context, state) {
           final community = (state is LoadedState) ? state.community : widget.community;
+          final user = (state is LoadedState) ? state.user : widget.user;
 
           return Scaffold(
             appBar: MyAppBar(title: _getAppBarTitle(), actions: _getAppBarActions()),
@@ -50,6 +55,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
               index: _currentPageIndex,
               children: [
                 HomeOverview(
+                  community: community,
+                  user: user,
                   onPendingApplicationsPressed: () =>
                       setState(() => _currentPageIndex = AdminHomePages.applications.index),
                   onPendingPaymentsPressed: () => setState(() => _currentPageIndex = AdminHomePages.payments.index),
@@ -60,24 +67,27 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 MemberListView(community.memberDirectory.members),
               ],
             ),
-            bottomNavigationBar: FloatingNavBar(
-              currentIndex: _currentPageIndex,
-              onChanged: (index) => setState(() => _currentPageIndex = index),
-              items: [
-                FloatingNavBarItem(icon: Icons.dashboard_outlined, label: 'Inicio'),
-                FloatingNavBarItem(icon: Icons.home_work_outlined, label: 'Propiedades'),
-                FloatingNavBarItem(
-                  icon: Icons.attach_money,
-                  label: 'Pagos',
-                  badgeCount: community.paymentLedger.pendingPayments.length,
-                ),
-                FloatingNavBarItem(
-                  icon: Icons.document_scanner,
-                  label: 'Solicitudes',
-                  warningBadgeCount: community.applications.length,
-                ),
-                FloatingNavBarItem(icon: Icons.groups_outlined, label: 'Miembros'),
-              ],
+            bottomNavigationBar: Padding(
+              padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom + 0.0, left: 0.0, right: 0.0),
+              child: FloatingNavBar(
+                currentIndex: _currentPageIndex,
+                onChanged: (index) => setState(() => _currentPageIndex = index),
+                items: [
+                  FloatingNavBarItem(icon: Icons.dashboard_outlined, label: 'Inicio'),
+                  FloatingNavBarItem(icon: Icons.home_work_outlined, label: 'Propiedades'),
+                  FloatingNavBarItem(
+                    icon: Icons.attach_money,
+                    label: 'Pagos',
+                    badgeCount: community.paymentLedger.pendingPayments.length,
+                  ),
+                  FloatingNavBarItem(
+                    icon: Icons.document_scanner,
+                    label: 'Solicitudes',
+                    warningBadgeCount: community.applications.length,
+                  ),
+                  FloatingNavBarItem(icon: Icons.groups_outlined, label: 'Miembros'),
+                ],
+              ),
             ),
             drawer: Drawer(
               backgroundColor: colorScheme.background,
@@ -100,7 +110,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             context,
                             icon: Icons.settings_applications_outlined,
                             label: 'Comunidad',
-                            onTap: () {},
+                            onTap: () => Go.to(CommunityDetailsPage(community: community)),
                           ),
                           _buildDrawerItem(
                             context,
@@ -112,7 +122,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             context,
                             icon: Icons.manage_accounts_outlined,
                             label: 'Miembros',
-                            onTap: () {}, //() => Go.to(UsersPage(community.userDirectory.users)),
+                            onTap: () => Go.to(MemberListPage(directory: community.memberDirectory)),
                           ),
 
                           _buildDrawerItem(
@@ -122,12 +132,17 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             onTap: () => Go.to(PropertiesPage(community.propertyRegistry.properties)),
                           ),
 
-                          _buildDrawerItem(context, icon: Icons.bar_chart_outlined, label: 'Reportes', onTap: () {}),
+                          _buildDrawerItem(
+                            context,
+                            icon: Icons.bar_chart_outlined,
+                            label: 'Reportes',
+                            onTap: () => Go.to(ReportsPage()),
+                          ),
                           _buildDrawerItem(
                             context,
                             icon: Icons.document_scanner,
                             label: 'Solicitudes',
-                            onTap: () {}, //() => Go.to(UsersPage(community.userDirectory.users)),
+                            onTap: () => Go.to(ApplicationListPage(applications: community.applications)),
                           ),
                           const Padding(padding: EdgeInsets.symmetric(vertical: 20.0), child: Divider(thickness: 1)),
                           const SectionHeaderText(text: 'SISTEMA'),
@@ -137,7 +152,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             icon: Icons.logout_rounded,
                             label: 'Cerrar Sesión',
                             color: colorScheme.error,
-                            onTap: () {},
+                            onTap: () => context.read<AdminHomeCubit>().signout(),
                           ),
                           const SizedBox(height: 12.0),
                           Center(
@@ -171,7 +186,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
       case 1:
         return [
           IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),
-          IconButton(icon: const Icon(Icons.add), onPressed: () {})];
+          IconButton(icon: const Icon(Icons.add), onPressed: () {}),
+        ];
       case 2:
         return [
           IconButton(icon: const Icon(Icons.filter_list), onPressed: () {}),

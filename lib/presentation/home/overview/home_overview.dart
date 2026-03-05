@@ -2,13 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_cubit.dart';
 import 'package:resipal_admin/presentation/home/overview/home_overview_state.dart';
+import 'package:resipal_core/lib.dart';
 import 'package:wester_kit/lib.dart';
 
 class HomeOverview extends StatelessWidget {
+  final CommunityEntity community;
+  final UserEntity user;
   final VoidCallback onPendingPaymentsPressed;
   final VoidCallback onPendingApplicationsPressed;
 
-  const HomeOverview({required this.onPendingPaymentsPressed, required this.onPendingApplicationsPressed, super.key});
+  const HomeOverview({
+    required this.community,
+    required this.user,
+    required this.onPendingPaymentsPressed,
+    required this.onPendingApplicationsPressed,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +25,7 @@ class HomeOverview extends StatelessWidget {
     final colorScheme = theme.colorScheme;
 
     return BlocProvider(
-      create: (context) => HomeOverviewCubit()..initialize(),
+      create: (context) => HomeOverviewCubit()..initialize(community, user),
       child: Scaffold(
         backgroundColor: colorScheme.background,
         body: BlocBuilder<HomeOverviewCubit, HomeOverviewState>(
@@ -30,7 +39,7 @@ class HomeOverview extends StatelessWidget {
               return ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
-                  HeaderText.four('¡Bienvenido, ${state.member.name}!'),
+                  HeaderText.four('¡Bienvenido, ${state.user.name}!'),
                   const SizedBox(height: 4),
                   Text(
                     community.name,

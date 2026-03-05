@@ -98,11 +98,11 @@ class _PropertyListViewState extends State<PropertyListView> {
           const SizedBox(height: 12),
           Text(
             isSuccessState 
-                ? '¡Excelente! No hay unidades con deuda' 
+                ? '¡Excelente! No hay propiedades con deuda.' 
                 : 'No hay unidades que coincidan',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: colorScheme.outline, 
+              color: colorScheme.inverseSurface, 
               fontWeight: FontWeight.w500,
             ),
           ),

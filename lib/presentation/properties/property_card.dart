@@ -88,25 +88,10 @@ class PropertyCard extends StatelessWidget {
                               ),
                             ],
                           ),
-                          // Compact Detail Button
-                          GestureDetector(
-                            onTap: () => Go.to(PropertyDetailsPage(propertyId: property.id)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Detalles',
-                                    style: theme.textTheme.labelLarge?.copyWith(
-                                      color: colorScheme.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(Icons.arrow_forward_ios, size: 12, color: colorScheme.primary),
-                                ],
-                              ),
-                            ),
+
+                          ActionLink(
+                            label: 'Detalles',
+                            onTap: () => Go.to(PropertyDetailsPage(property: property)),
                           ),
                         ],
                       ),

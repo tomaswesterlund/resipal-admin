@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:resipal_admin/presentation/home/applications/application_details/application_details_state.dart';
+import 'package:resipal_admin/presentation/applications/application_details/application_details_state.dart';
 import 'package:resipal_core/lib.dart';
 
 class ApplicationDetailsCubit extends Cubit<ApplicationDetailsState> {

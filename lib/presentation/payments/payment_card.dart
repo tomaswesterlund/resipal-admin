@@ -130,7 +130,7 @@ class PaymentCard extends StatelessWidget {
                           ),
 
                           GestureDetector(
-                            onTap: () => Go.to(PaymentDetailsPage(paymentId: payment.id)),
+                            onTap: () => Go.to(PaymentDetailsPage(payment: payment)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(

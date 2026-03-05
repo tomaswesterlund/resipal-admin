@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:resipal_admin/presentation/auth/auth_cubit.dart';
-import 'package:resipal_admin/presentation/auth/auth_state.dart';
+import 'package:resipal_admin/presentation/auth/auth_gate_cubit.dart';
+import 'package:resipal_admin/presentation/auth/auth_gate_state.dart';
 import 'package:resipal_admin/presentation/home/home_page/admin_home_page.dart';
 import 'package:resipal_admin/presentation/onboarding/community_registration/onboarding_community_registration_page.dart';
 import 'package:resipal_admin/presentation/onboarding/onboarding_start_page.dart';
@@ -10,64 +10,72 @@ import 'package:resipal_admin/presentation/signin/signin_page.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:wester_kit/lib.dart';
 
-class AuthPage extends StatelessWidget {
-  const AuthPage({super.key});
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider<AuthGateCubit>(
+      // Initialize immediately to check session
+      create: (ctx) => AuthGateCubit()..initialize(),
+      child: BlocBuilder<AuthGateCubit, AuthGateState>(
+        builder: (ctx, state) {
+          // 1. Loading / Initialization States
+          if (state is InitialState || state is LoadingState) {
+            return const _AuthLoadingScreen();
+          }
+
+          // 2. Unauthenticated -> Go to Sign In
+          if (state is UserNotSignedIn) {
+            return const SigninPage();
+          }
+
+          // 3. Authenticated but No Profile -> Go to Onboarding
+          if (state is UserNotOnboarded) {
+            return const OnboardingStartPage();
+          }
+
+          // 4. Profile exists but No Community -> Go to Community Registration
+          if (state is CommunityNotOnboarded || state is UserHasNoAdminMembership) {
+            return const _UserHasNoAdminMembership();
+          }
+
+          // 5. Success -> The Main Admin Dashboard
+          if (state is UserSignedIn) {
+            return AdminHomePage(community: state.community, user: state.user);
+          }
+
+          // 6. Error / Edge Cases
+          if (state is UserIsNotAdmin) return const AccessDeniedView();
+          if (state is ErrorState) return const ErrorView();
+
+          return const UnknownStateView();
+        },
+      ),
+    );
+  }
+}
+
+class _AuthLoadingScreen extends StatelessWidget {
+  const _AuthLoadingScreen();
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-
     return Scaffold(
       backgroundColor: colorScheme.background,
-      body: BlocProvider<AuthCubit>(
-        create: (ctx) => AuthCubit()..initialize(),
-        child: BlocConsumer<AuthCubit, AuthState>(
-          listener: (ctx, state) {
-            if (state is UserSignedIn) {
-              Go.to(AdminHomePage(community: state.community, user: state.user));
-            }
-            if (state is UserNotSignedIn) {
-              Go.to(const SigninPage());
-            }
-            if (state is UserNotOnboarded) {
-              Go.to(const OnboardingStartPage());
-            }
-
-            if (state is CommunityNotOnboarded) {
-              Go.to(const OnboardingCommunityRegistrationPage());
-            }
-          },
-          builder: (ctx, state) {
-            if (state is InitialState ||
-                state is LoadingState ||
-                state is UserSignedIn ||
-                state is UserNotSignedIn ||
-                state is UserNotOnboarded) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const ResipalLogo(),
-                    const SizedBox(height: 12),
-                    HeaderText.giga('Resipal', color: colorScheme.inverseSurface),
-                    const SizedBox(height: 8),
-                    HeaderText.three('Administrator', color: colorScheme.inverseSurface),
-
-                    const LoadingView(
-                      title: 'Iniciando Panel de Control',
-                      description: 'Verificando credenciales de administrador...',
-                    ),
-                  ],
-                ),
-              );
-            }
-
-            if (state is UserIsNotAdmin) return const AccessDeniedView();
-            if (state is UserHasNoAdminMembership) return const _UserHasNoAdminMembership();
-            if (state is ErrorState) return const ErrorView();
-
-            return const UnknownStateView();
-          },
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const ResipalLogo(),
+            const SizedBox(height: 12),
+            HeaderText.giga('Resipal', color: colorScheme.inverseSurface),
+            const SizedBox(height: 8),
+            HeaderText.three('Administrator', color: colorScheme.inverseSurface),
+            const SizedBox(height: 48),
+            const LoadingView(title: 'Iniciando Panel', description: 'Verificando credenciales...'),
+          ],
         ),
       ),
     );

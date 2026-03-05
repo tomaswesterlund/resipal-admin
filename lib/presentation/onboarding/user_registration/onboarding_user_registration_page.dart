@@ -100,7 +100,7 @@ class OnboardingUserRegistrationPage extends StatelessWidget {
                       EmailInputField(
                         label: 'Correo electrónicio',
                         isRequired: true,
-                        readOnly: true,
+                        isReadonly: true,
                         initialValue: form.email,
                       ),
 

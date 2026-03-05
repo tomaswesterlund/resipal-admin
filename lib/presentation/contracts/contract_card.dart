@@ -73,28 +73,7 @@ class ContractCard extends StatelessWidget {
                               AmountText.fromCents(contract.amountInCents, fontSize: 18, color: colorScheme.onSurface),
                             ],
                           ),
-                          // Action Button
-                          GestureDetector(
-                            onTap: () {
-                              // TODO: Implement management logic
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Gestionar',
-                                    style: theme.textTheme.labelLarge?.copyWith(
-                                      color: colorScheme.primary,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  Icon(Icons.arrow_forward_ios, size: 12, color: colorScheme.primary),
-                                ],
-                              ),
-                            ),
-                          ),
+                          ActionLink(label: 'Detalles', onTap: () {}),
                         ],
                       ),
                     ],

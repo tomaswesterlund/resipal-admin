@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:resipal_admin/presentation/home/applications/application_details/application_details_page.dart';
+import 'package:resipal_admin/presentation/applications/application_details/application_details_page.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
-import 'package:wester_kit/ui/texts/body_text.dart';
-import 'package:wester_kit/ui/texts/header_text.dart';
+import 'package:wester_kit/lib.dart';
 
 class ApplicationCard extends StatelessWidget {
   final ApplicationEntity application;
@@ -73,20 +72,11 @@ class ApplicationCard extends StatelessWidget {
                             ),
                           ),
 
-                          // Action Button
-                          GestureDetector(
+                          ActionLink(
+                            label: 'Detalles',
                             onTap: () => Go.to(ApplicationDetailsPage(application: application,)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Row(
-                                children: [
-                                  BodyText.small('Revisar', color: colorScheme.primary, fontWeight: FontWeight.bold),
-                                  const SizedBox(width: 4),
-                                  Icon(Icons.arrow_forward_ios, size: 10, color: colorScheme.primary),
-                                ],
-                              ),
-                            ),
                           ),
+
                         ],
                       ),
                     ],

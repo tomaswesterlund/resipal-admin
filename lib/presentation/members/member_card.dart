@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:resipal_admin/presentation/members/member_details/member_details_page.dart';
 import 'package:resipal_core/lib.dart';
-import 'package:wester_kit/ui/texts/amount_text.dart';
-import 'package:wester_kit/ui/texts/body_text.dart';
-import 'package:wester_kit/ui/texts/header_text.dart';
+import 'package:short_navigation/short_navigation.dart';
+import 'package:wester_kit/lib.dart';
 
 class MemberCard extends StatelessWidget {
   final MemberEntity member;
@@ -111,22 +111,10 @@ class MemberCard extends StatelessWidget {
                             ),
                           ),
 
-                          // Action Button
-                          GestureDetector(
-                            onTap: () {
-                              // Navigate to details using the user reference
-                              // Go.to(MemberDetailsPage(member));
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 4),
-                              child: Row(
-                                children: [
-                                  BodyText.small('Detalles', color: colorScheme.primary, fontWeight: FontWeight.bold),
-                                  const SizedBox(width: 4),
-                                  Icon(Icons.arrow_forward_ios, size: 10, color: colorScheme.primary),
-                                ],
-                              ),
-                            ),
+                          
+                          ActionLink(
+                            label: 'Detalles',
+                            onTap: () => Go.to(MemberDetailsPage(member: member)),
                           ),
                         ],
                       ),

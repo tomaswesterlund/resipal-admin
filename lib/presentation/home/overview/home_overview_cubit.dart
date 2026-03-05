@@ -15,19 +15,15 @@ class HomeOverviewCubit extends Cubit<HomeOverviewState> {
 
   HomeOverviewCubit() : super(InitialState());
 
-  Future<void> initialize() async {
+  Future<void> initialize(CommunityEntity community, UserEntity user) async {
     try {
-      emit(LoadingState());
-
-      final communityId = _sessionService.communityId;
-      final userId = _authService.getSignedInUserId();
-      final member = GetMemberByUserAndCommunityId().call(communityId: communityId, userId: userId);
+      emit(LoadedState(community: community, user: user));
 
       _streamSubscription = _watchCommunityById
-          .call(communityId: communityId)
+          .call(communityId: community.id)
           .listen(
             (community) {
-              emit(LoadedState(community: community, member: member));
+              emit(LoadedState(community: community, user: user));
             },
             onError: (e, s) {
               _logger.logException(exception: e, stackTrace: s, featureArea: 'HomeOverviewCubit.initialize / listener');

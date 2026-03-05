@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:resipal_admin/presentation/home/applications/application_card.dart';
-import 'package:resipal_admin/presentation/home/applications/register_application/register_application_page.dart';
+import 'package:resipal_admin/presentation/applications/application_card.dart';
+import 'package:resipal_admin/presentation/applications/register_application/register_application_page.dart';
 import 'package:resipal_core/lib.dart';
 import 'package:short_navigation/short_navigation.dart';
 import 'package:wester_kit/ui/texts/header_text.dart';
@@ -15,9 +15,9 @@ class ApplicationListView extends StatelessWidget {
     if (applications.isEmpty) return const _Empty();
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ListView.separated(
-        padding: const EdgeInsets.only(top: 16, bottom: 96),
+        padding: const EdgeInsets.only(top: 0, bottom: 96),
         itemCount: applications.length,
         separatorBuilder: (_, __) => const SizedBox(height: 8),
         itemBuilder: (context, index) => ApplicationCard(applications[index]),

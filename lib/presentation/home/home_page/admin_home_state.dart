@@ -12,8 +12,9 @@ class LoadingState extends AdminHomeState {}
 
 class LoadedState extends AdminHomeState {
   final CommunityEntity community;
+  final UserEntity user;
 
-  LoadedState(this.community);
+  LoadedState(this.community, this.user);
 
   @override
   List<Object?> get props => [community];

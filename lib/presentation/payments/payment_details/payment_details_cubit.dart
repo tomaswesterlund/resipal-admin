@@ -13,12 +13,12 @@ class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
 
   PaymentDetailsCubit() : super(InitialState());
 
-  Future initialize(String paymentId) async {
+  Future initialize(PaymentEntity payment) async {
     try {
-      emit(LoadingState());
+      emit(LoadedState(payment));
 
       _streamSubscription = _watchPaymentById
-          .call(paymentId)
+          .call(payment.id)
           .listen(
             (payment) async {
               emit(LoadedState(payment));
@@ -28,7 +28,7 @@ class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
                 featureArea: 'PaymentDetailsCubit.initialize',
                 exception: e,
                 stackTrace: s,
-                metadata: {'paymentId': paymentId},
+                metadata: {'payment': payment.toMap()},
               );
 
               emit(ErrorState());
@@ -39,7 +39,7 @@ class PaymentDetailsCubit extends Cubit<PaymentDetailsState> {
         exception: e,
         featureArea: 'PaymentDetailsCubit.initialize',
         stackTrace: s,
-        metadata: {'paymentId': paymentId},
+        metadata: {'payment': payment.toMap()},
       );
 
       emit(ErrorState());
