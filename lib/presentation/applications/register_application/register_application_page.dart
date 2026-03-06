@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:resipal_admin/presentation/applications/register_application/registar_application_cubit.dart';
+import 'package:resipal_admin/presentation/applications/register_application/register_application_cubit.dart';
 import 'package:wester_kit/lib.dart';
 import 'register_application_state.dart';
 import 'register_application_form_state.dart';

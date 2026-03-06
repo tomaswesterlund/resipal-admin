@@ -12,9 +12,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 class MemberBreakdownReportPage extends StatelessWidget {
-  final bool onlyDebtors;
-
-  const MemberBreakdownReportPage({this.onlyDebtors = false, super.key});
+  const MemberBreakdownReportPage({super.key});
 
   Future<void> _generatePdf(LoadedState state) async {
     final pdf = pw.Document();
@@ -36,7 +34,6 @@ class MemberBreakdownReportPage extends StatelessWidget {
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
               pw.Row(
-                
                 children: [
                   pw.Image(logoImage, width: 50),
                   pw.SizedBox(width: 8.0),
@@ -47,10 +44,7 @@ class MemberBreakdownReportPage extends StatelessWidget {
               pw.Column(
                 crossAxisAlignment: pw.CrossAxisAlignment.end,
                 children: [
-                  pw.Text(
-                    'Desglose de miembros',
-                    style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold),
-                  ),
+                  pw.Text('Desglose de miembros', style: pw.TextStyle(fontSize: 22, fontWeight: pw.FontWeight.bold)),
                   pw.Text(
                     'Comunidad: ${state.community.name}',
                     style: const pw.TextStyle(fontSize: 12, color: PdfColors.grey700),
@@ -126,7 +120,7 @@ class MemberBreakdownReportPage extends StatelessWidget {
                         p.name, // Property Name
                         '', // Empty Balance
                         '', // Empty Pendiente
-                        CurrencyFormatter.fromCents(p.totalOverdueFeeInCents)
+                        CurrencyFormatter.fromCents(p.totalOverdueFeeInCents),
                       ],
                     )
                     .toList();
@@ -181,11 +175,11 @@ class MemberBreakdownReportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (ctx) => MemberBreakdownReportCubit()..initialize(onlyDebtors: onlyDebtors),
+      create: (ctx) => MemberBreakdownReportCubit()..initialize(),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: MyAppBar(
-          title: onlyDebtors ? 'Reporte de Morosos' : 'Reporte de Miembros',
+          title: 'Desglose de Miembros',
           actions: [
             // Use BlocBuilder here to access the current state data for the PDF
             BlocBuilder<MemberBreakdownReportCubit, MemberBreakdownReportState>(

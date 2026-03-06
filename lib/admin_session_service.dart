@@ -59,6 +59,8 @@ class AdminSessionService {
 
         _setupSubscription(GetIt.I<ApplicationDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<ContractDataSource>().watchByCommunityId(communityId)),
+        _setupSubscription(GetIt.I<EmailInvitationDataSource>().watchByCommunityId(communityId)),
+        _setupSubscription(GetIt.I<ContractDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<InvitationDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<MaintenanceFeeDataSource>().watchByCommunityId(communityId)),
         _setupSubscription(GetIt.I<MembershipDataSource>().watchByCommunityId(communityId)),

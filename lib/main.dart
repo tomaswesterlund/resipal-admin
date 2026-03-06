@@ -13,11 +13,11 @@ Future main() async {
   await dotenv.load(fileName: ".env");
 
   // Setup Supabase
-  final supabaseConfig = ResipalSupabaseConfig(
+  final supabaseConfig = SupabaseConfig(
     url: dotenv.get('SUPABASE_URL'),
     anonKey: dotenv.get('SUPABASE_ANON_KEY'),
   );
-  GetIt.instance.registerSingleton<ResipalSupabaseConfig>(supabaseConfig);
+  GetIt.instance.registerSingleton<SupabaseConfig>(supabaseConfig);
 
   // Setup Auth Config
   final authConfig = AuthServiceConfig(

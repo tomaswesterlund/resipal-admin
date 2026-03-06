@@ -9,30 +9,31 @@ class MemberBreakdownReportCubit extends Cubit<MemberBreakdownReportState> {
 
   MemberBreakdownReportCubit() : super(InitialState());
 
-  void initialize({required bool onlyDebtors}) {
+  void initialize() {
     emit(LoadingState());
     try {
       final communityId = _session.communityId;
       final community = GetCommunityById().call(communityId);
       final directory = community.memberDirectory;
 
-      final members = onlyDebtors
-          ? directory.members.where((m) => m.propertyRegistry.hasDebt).toList()
-          : directory.members;
+      final totalDebt = directory.members.fold<int>(0, (sum, m) => sum + m.propertyRegistry.totalOverdueFeeInCents);
+      final totalBalance = directory.members.fold<int>(0, (sum, m) => sum + m.paymentLedger.totalBalanceInCents);
 
-      final totalDebt = members.fold<int>(0, (sum, m) => sum + m.propertyRegistry.totalOverdueFeeInCents);
-      final totalBalance = members.fold<int>(0, (sum, m) => sum + m.paymentLedger.totalBalanceInCents);
-      
       // Calculate Pending Payments
-      final totalPending = members.fold<int>(0, (sum, m) => sum + m.paymentLedger.pendingPaymentAmountInCents);
+      final totalPending = directory.members.fold<int>(
+        0,
+        (sum, m) => sum + m.paymentLedger.pendingPaymentAmountInCents,
+      );
 
-      emit(LoadedState(
-        community: community,
-        members: members,
-        totalDebtCents: totalDebt,
-        totalBalanceCents: totalBalance,
-        totalPendingCents: totalPending,
-      ));
+      emit(
+        LoadedState(
+          community: community,
+          members: directory.members,
+          totalDebtCents: totalDebt,
+          totalBalanceCents: totalBalance,
+          totalPendingCents: totalPending,
+        ),
+      );
     } catch (e) {
       emit(ErrorState());
     }
