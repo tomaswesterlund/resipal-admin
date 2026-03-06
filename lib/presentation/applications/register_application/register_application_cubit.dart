@@ -53,7 +53,7 @@ class RegisterApplicationCubit extends Cubit<RegisterApplicationState> {
         isSecurity: _formState.isSecurity,
       );
 
-      await CreateApplication().call(dto);
+      await CreateApplicationAndSendInvitations().call(dto);
 
       emit(FormSubmittedSuccessfullyState());
     } catch (e, s) {

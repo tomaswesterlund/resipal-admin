@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:resipal_core/lib.dart';
 
 class RegisterApplicationFormState extends Equatable {
   final String name;
@@ -21,12 +22,15 @@ class RegisterApplicationFormState extends Equatable {
     this.isSecurity = false,
   });
 
-  bool get canSubmit =>
-      name.isNotEmpty &&
-      email.contains('@') &&
-      phoneNumber.isNotEmpty &&
-      message.isNotEmpty &&
-      (isAdmin || isResident || isSecurity);
+  bool get canSubmit {
+    if (name.isEmpty) return false;
+    if (message.isEmpty) return false;
+    if (Validators.isValidEmail(email) == false) return false;
+    if (Validators.isValidPhone(phoneNumber) == false) return false;
+    if (!isAdmin && !isResident && !isSecurity) return false;
+
+    return true;
+  }
 
   RegisterApplicationFormState copyWith({
     String? name,

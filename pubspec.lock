@@ -909,7 +909,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "6feff1645cba834946f810b664840749e8aad687"
+      resolved-ref: aef907be1ceec39231f35e27ce8ecac519b0f10d
       url: "https://github.com/tomaswesterlund/resipal-core.git"
     source: git
     version: "0.0.1"
@@ -1227,7 +1227,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "3b74ac3e636f218a0497e4e251423d6892b600b1"
+      resolved-ref: "3a64b5b50e3b6e7c6d274edaa926a292643ae243"
       url: "https://github.com/tomaswesterlund/WesterKit"
     source: git
     version: "0.0.1"

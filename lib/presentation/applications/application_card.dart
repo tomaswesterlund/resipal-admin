@@ -67,16 +67,19 @@ class ApplicationCard extends StatelessWidget {
                               children: [
                                 _buildInfoRow(Icons.email_outlined, application.email, context),
                                 const SizedBox(height: 4),
-                                _buildInfoRow(Icons.phone_outlined, application.phoneNumber, context),
+                                _buildInfoRow(
+                                  Icons.phone_outlined,
+                                  PhoneFormatter.toDisplay(application.phoneNumber),
+                                  context,
+                                ),
                               ],
                             ),
                           ),
 
                           ActionLink(
                             label: 'Detalles',
-                            onTap: () => Go.to(ApplicationDetailsPage(application: application,)),
+                            onTap: () => Go.to(ApplicationDetailsPage(application: application)),
                           ),
-
                         ],
                       ),
                     ],
